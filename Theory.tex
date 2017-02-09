@@ -275,8 +275,8 @@ Conditional densities for $X$ given $Y$: $f_0(X)=f(X|Y=0)$, $f_1=(X|Y=1)$.\\
 \textbf{Example\\}
 
 Let $f_0(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}\sim N(0,1)$, $f_1(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{(x-1)^2}{2}}$, $q_0=\frac{1}{2}$, $q_1=\frac{1}{2}$. Then the a posteriori probabilities would be
-$$p(Y=1|X=x)=\frac{f_1(x)q_1}{f_1(x)q_1+f_0(x)q_0},$$
-$$p(Y=0|X=x)=\frac{f_0(x)q_0}{f_1(x)q_1+f_0(x)q_0}.$$
+$$\mathbb{P}(Y=1|X=x)=\frac{f_1(x)q_1}{f_1(x)q_1+f_0(x)q_0},$$
+$$\mathbb{P}(Y=0|X=x)=\frac{f_0(x)q_0}{f_1(x)q_1+f_0(x)q_0}.$$
 Then, $p^*(x)=\left\{\begin{array}{ll}
 1 & \text{if }\frac{f_1(x)}{f_0(x)}>\frac{q_0}{q_1}\\
 0 & \text{otherwise}
@@ -352,10 +352,14 @@ As $\min(\eta,1-\eta)\leq2\eta(1-\eta)\leq 2\min(\eta,1-\eta)$, we always have t
 
 The K-NN rule takes a majority vote among the $K$ closest points to predict. This rule have the same property as the previous one, $d(X_{(k)}(x),x)\underset{\scriptsize{n\rightarrow \infty}}{\longrightarrow}0$. \\
 
-The risk for a general $K$ would be $R^{K-NN}=P(Y\neq \text{majority}\{Y_{(1)},\dots,Y_{(K)}\})$. For $K=3$, $R^{3-NN}=P(Y\neq \text{majority}\{Y_{(1)},\dots,Y_{(K)}\})=\mathbb{E}[\eta(x)(1-\eta(x))]+4\mathbb{E}[\eta(x)^2(1-\eta(x))^2]\leq2\mathbb{E}[\eta(x)(1-\eta(x))]=R^{NN}$. If we develop in general for any $K$, we get
+The risk for a general $K$ would be $R^{K-NN}=P(Y\neq \text{majority}\{Y_{(1)},\dots,Y_{(K)}\})$. For $K=3$ this will happen if $Y=1$ and the at least two of the nearest neighbors are 0, that is if either two of them are 0 or the three are 0 (similarly for $Y=0$). So, $P(Y\neq \text{majority}\{Y_{(1)},Y_{(3)},Y_{(3)}\})=\eta[(1-\eta)^3+3\eta(1-\eta)^2]+(1-\eta)[\eta^3+3(1-\eta)\eta^2]$ working out the equations we get $P(Y\neq \text{majority}\{Y_{(1)},Y_{(3)},Y_{(3)}\})=\eta(1-\eta)+4\eta^2(1-\eta)^2$. Then, the risk of the 3 nearest neighbor will be
+\begin{equation}
+	R^{3-NN}=\mathbb{E}[\eta(x) (1-\eta(x))]+4\mathbb{E}[\eta(x)^2(1-\eta(x))^2]\leq2\mathbb{E}[\eta(x)(1-\eta(x))]=R^{NN}
+\end{equation}
+If we develop in general for any $K$, we get
 \begin{align}
-	R^{K-NN} = &\mathbb{E}[\eta(X)\mathbb{P}(\text{Bin}(K,\eta(X))<\frac{K}{2}|X)+(1-\eta)\mathbb{P}(\text{Bin}(K,\eta(X))>\frac{K}{2}|X)]=\\
-	= & \mathbb{E}[\min(\eta(X),1-\eta(X))]+\mathbb{E}[(2\eta(X)-1)\mathbb{P}(\text{Bin}(K,\min(\eta,\eta-1))>\frac{K}{2}|X)]\leq\\
+	R^{K-NN} = &\mathbb{E}[\eta(X)\mathbb{P}\left(\text{Bin}(K,\eta(X))<\frac{K}{2}|X\right)+(1-\eta)\mathbb{P}\left(\text{Bin}(K,\eta(X))>\frac{K}{2}|X\right)]=\\
+	= & \mathbb{E}[\min(\eta(X),1-\eta(X))]+\mathbb{E}[(2\eta(X)-1)\mathbb{P}\left(\text{Bin}(K,\min(\eta,\eta-1))>\frac{K}{2}|X\right)]\leq\\
 	\underset{\scriptsize{\text{Hoeffding}}}{\leq} & R^*+e^{-2K|\eta(X)-\frac{1}{2}|^2}\leq R^*+\underset{\eta}{\max}|2\eta-1|e^{-2K|\eta(X)-\frac{1}{2}|^2}\leq\\
 	\leq & R^*+\frac{1}{\sqrt{eK}},
 \end{align}
