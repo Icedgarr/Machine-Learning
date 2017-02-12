@@ -454,20 +454,38 @@ If we condition now on $D_n$, then $p_n^{(j)}$ will be a fixed classifier not de
 \end{equation}
 with probability $\geq 1-\delta$ respect to $D_m'$ conditioned on $D_n$. \\
 
-\textbf{Vapnik–Chervonenkis (VC) theory\\}
+\large{\textbf{Vapnik–Chervonenkis (VC) theory\\}}
 
-We will try to quantify overfitting by taking into account the structure of the class of classifiers. Given a class $\mathcal{C}$ of non-data-dependent classifiers, we want to understand 
+\normalsize We will try to quantify overfitting by taking into account the structure of the class of classifiers. Given a class $\mathcal{C}$ of non-data-dependent classifiers, we want to understand 
 \begin{equation}
-	\underset{g\in\mathcal{C}}{\max}|R_n(g)-R(g)|.
+	\underset{g\in\mathcal{C}}{\max}|R_n(g)-R(g)|,
 \end{equation}
-We have seen that if $\mathcal{C}$ is finite, then with probability $\geq 1-\delta$ the maximum is $\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}$. Observe that $R_n(g)$ counts for each $g$ how many mistakes it takes, so it is a binomial random variable $R_n(g)\sim \frac{1}{n}Bin(n,R(g))$. So, we are looking for the deviation of binomials with their expected value.\\
+where $R_(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i\neq Y_i)}\mathbb{P}(g(X)\neq Y)$ and $R(g)=g(X)\neq Y$. We know that if $\hat{g}_n=\underset{g\in\mathcal{C}}{\text{argmin}}R_n(g)$, then $R(\hat{g}_n)-\underset{g\in\mathcal{C}}{\min}R(g)\leq2\underset{g\in\mathcal{C}}{\min}|R_n(g)-R(g)|$.\\
+
+Also, we have seen that if $\mathcal{C}$ is finite, then with probability $\geq 1-\delta$ the maximum is $\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}$. Observe that $R_n(g)$ counts for each $g$ how many mistakes it takes, so it is a binomial random variable $R_n(g)\sim \frac{1}{n}Bin(n,R(g))$. So, we are looking for the deviation of binomials with their expected value.\\
 
 Let's start simplifying the notation. Let $X_1,\dots,X_n$ be iid taking values on $\Omega$. For $A\subset \Omega$, we define $P(A)=P(X\in A)$ and $P_n(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_i\in A}$. And let $\mathcal{A}$ be a class of sets $A$. We are interested in 
 \begin{equation}
 	\underset{A\in\mathcal{A}}{\max}|P_n(A)-P(A)|.
 \end{equation}
+This notation is more general, the case of study is when $(X_i,Y_i)\rightarrow X_i$ ($\mathcal{C}\rightarrow \mathcal{A}$). For the finite case, $\mathcal{A}=\{A_1,\dots,A_N\}$, with probability $\geq 1-\delta$ we got that 
+\begin{equation}
+	\underset{A\in\mathcal{A}}{\max}|\mathbb{P}_n(A)-\mathbb{P}(A)|\leq\sqrt{\frac{\log\frac{2N}{\delta}}{2n}}.
+\end{equation}
+Let us bound now the expected value $\mathbb{E}\underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))$, to do so let's first take the exponential for $\lambda>0$
+\begin{align}
+	e^{\lambda\mathbb{E}\text{ }\underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))}\underset{\text{Jensen's}}{\leq}\mathbb{E}e^{\lambda\text{ }\underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))}.
+\end{align}
+As the exponential function is increasingly monotonous, the maximum value of the exponent leads to the maximum value of the exponential, so 
+\begin{align}
+	&\mathbb{E}e^{\lambda\text{ }\underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))}=\mathbb{E}\text{ }\underset{A\in\mathcal{A}}{\max}\text{ }e^{\lambda(\mathbb{P}_n(A)-\mathbb{P}(A))}\leq\mathbb{E}\sum\limits_{A\in\mathcal{A}}e^{\lambda(\mathbb{P}_n(A)-\mathbb{P}(A)}=\\
+	&\sum\limits_{A\in\mathcal{A}}\mathbb{E}e^{\lambda(\mathbb{P}_n(A)-\mathbb{P}(A)}\underset{\text{Hoeffding's}}{\leq}\sum\limits_{A\in\mathcal{A}}e^{\frac{\lambda^2}{8n}}=Ne^{\frac{\lambda^2}{8n}}.
+\end{align}
+Now, applying logarithm on the beginning and on the end of the inequality, we get
+\begin{equation}
+	\mathbb{E}\underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))\leq\frac{\log N}{\lambda}+\frac{\lambda}{8n}=\sqrt{\frac{\log N}{2n}},
+\end{equation}
+where the last equality is the result of finding the minimum with respect to $\lambda$.\\
 
-
-
-
+ 
 \end{document}

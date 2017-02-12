@@ -6,81 +6,51 @@ Created on Tue Feb  7 23:22:30 2017
 """
 
 import sklearn as sk
-import math as mat
 import numpy as np
 from numpy import random as rand
 from sklearn import neighbors
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def risk_knn(n,d,k,m):
 
-    #Generate X of uniform distribution
-    train_X=rand.uniform(low=0,high=1,size=(n,d))
-    
-    #Generates Y from X as a Bernoulli with p=x[0] in each case
-    train_p=train_X[:,0]
+    train_X=rand.uniform(low=0,high=1,size=(n,d)) #Generate X of uniform distribution    
+    train_p=train_X[:,0] #Generates Y from X as a Bernoulli with p=x[0] in each case
     train_Y=rand.binomial([1]*len(train_p),train_p,size=len(train_p))
     
-    #Zip data
-    #train_data=list(zip(train_X,train_Y))
+    knn=neighbors.KNeighborsClassifier(n_neighbors=k)  #Generate the KNN function
+    knn.fit(train_X,train_Y) #Train the models
     
-    #Generate the KNN function
-    knn=neighbors.KNeighborsClassifier(n_neighbors=k)
-    
-    #Train the models
-    knn.fit(train_X,train_Y)
-    
-    #Generate test data
-    test_X=rand.uniform(low=0,high=1,size=(m,d))
+    test_X=rand.uniform(low=0,high=1,size=(m,d)) #Generate test data
     test_p=test_X[:,0]
     test_Y=rand.binomial([1]*len(test_p),test_p,size=len(test_p))
     
-    #Predict values
-    knn_pred=knn.predict(test_X)
+    knn_pred=knn.predict(test_X)     #Predict values
     
-    #Compute error frequency
-    knn_check=test_Y==knn_pred
+    knn_check=test_Y==knn_pred #Compute error frequency
     knn_wrong=m-sum(knn_check)
     return knn_wrong/m
-    
 
 n=[10000]*5
-m=[1000000]*5
+m=[10000]*5
 k=[1,3,5,7,9]
 
 #Estimate risk knn for different d
-d=[1]*5
-risks1=list(map(risk_knn,n,d,k,m))
-risks1
+i=1
+all_risks=[0]*6
+for d in [1,5,10,50,100,1000]:
 
-d=[2]*5
-risks2=list(map(risk_knn,n,d,k,m))
-risks2
+    s=[d]*5
+    risks=list(map(risk_knn,n,s,k,m))
+    all_risks[i-1]=risks
+    #plt.subplot(3,2,i)    
+    plt.plot(k, risks)
+    #plt.ylim([0.15,0.5])
+    plt.title("KNN's Risk vs. 'K'NN. N= %.0f D=%.0f" %(n[0],d)) 
+    i+=1
+plt.legend(['d=1','d=5', 'd=10', 'd=50', 'd=100', 'd=1000' ],loc='upper right')
+plt.xlabel('Number of Neighbors')
+plt.ylabel('Risk')
+plt.title("KNN's Risk vs Number of Neighbours for N= %.0f" %n[0])
 
-d=[3]*5
-risks3=list(map(risk_knn,n,d,k,m))
-risks3
-
-d=[4]*5
-risks4=list(map(risk_knn,n,d,k,m))
-risks4
-
-d=[5]*5
-risks5=list(map(risk_knn,n,d,k,m))
-risks5
-
-d=[10]*5
-risks10=list(map(risk_knn,n,d,k,m))
-risks10
-
-d=[15]*5
-risks15=list(map(risk_knn,n,d,k,m))
-risks15
-
-d=[25]*5
-risks25=list(map(risk_knn,n,d,k,m))
-risks25
-
-d=[50]*5
-risks50=list(map(risk_knn,n,d,k,m))
-risks50
 
