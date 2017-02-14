@@ -11,13 +11,15 @@ from numpy import random as rand
 from sklearn import neighbors
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
 
 def risk_knn(n,d,k,m):
 
     train_X=rand.uniform(low=0,high=1,size=(n,d)) #Generate X of uniform distribution    
     train_p=train_X[:,0] #Generates Y from X as a Bernoulli with p=x[0] in each case
     train_Y=rand.binomial([1]*len(train_p),train_p,size=len(train_p))
-    
     knn=neighbors.KNeighborsClassifier(n_neighbors=k)  #Generate the KNN function
     knn.fit(train_X,train_Y) #Train the models
     
@@ -54,3 +56,44 @@ plt.ylabel('Risk')
 plt.title("KNN's Risk vs Number of Neighbours for N= %.0f" %n[0])
 
 
+
+
+
+n=100
+d=3
+k=3
+
+from sklearn.model_selection import train_test_split
+
+train, test = train_test_split(labeled, test_size = 0.3)
+
+
+
+data_X=rand.uniform(low=0,high=1,size=(n,d)) #Generate X of uniform distribution    
+data_p=data_X[:,0] #Generates Y from X as a Bernoulli with p=x[0] in each case
+data_Y=rand.binomial([1]*len(data_p),data_p,size=len(data_p))
+data=pd.DataFrame(list(zip(data_X,data_Y)))
+
+train, test = train_test_split(data, test_size = 0.3)
+
+knn=neighbors.KNeighborsClassifier(n_neighbors=k)  #Generate the KNN function
+knn.fit(train[0],train[1]) #Train the models
+
+
+def risk_knn(n,d,k,m):
+
+    data_X=rand.uniform(low=0,high=1,size=(n,d)) #Generate X of uniform distribution    
+    data_p=data_X[:,0] #Generates Y from X as a Bernoulli with p=x[0] in each case
+    data_Y=rand.binomial([1]*len(data_p),data_p,size=len(data_p))
+    data=pd.DataFrame(list(zip(data_X,data_Y)))
+    
+    train, test = train_test_split(data, test_size = 0.3)
+    
+    knn=neighbors.KNeighborsClassifier(n_neighbors=k)  #Generate the KNN function
+    knn.fit(list(train[0]),list(train[1])) #Train the models
+
+    knn_pred=knn.predict(test[0])     #Predict values
+    m=len(knn_pred)
+    knn_check=test[1]==knn_pred #Compute error frequency
+    knn_wrong=m-sum(knn_check)
+    return knn_wrong/m
