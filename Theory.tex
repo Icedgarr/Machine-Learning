@@ -39,7 +39,7 @@
 \setlength{\parindent}{0pt}
 
 \title{Open guide for Machine Learning: Theory}
-\author{Roger Garriga Calleja}
+\author{Roger Garriga Calleja \& Javier Mas Adell}
 \date{\today}
 
 \begin{document}
@@ -488,6 +488,31 @@ Now, applying logarithm on the beginning and on the end of the inequality, we ge
 where the last equality is the result of finding the minimum with respect to $\lambda$.\\
 
 Now, let us look the case where we have \textbf{possibly infinite classes:}. To tackle this problem we will use a beautiful trick called \textbf{symmetrization}.\\
-We generate a ghost sample $X_1',\dots,X_n'$ iid with the same distribution as $X_1,\dots,X_n$. Then, the ghost empirical probability is $\mathbb{P}_n'(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_1'\in A}$.
+We generate a ghost sample $X_1',\dots,X_n'$ iid with the same distribution as $X_1,\dots,X_n$. Then, the ghost empirical probability is $\mathbb{P}_n'(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_1'\in A}$. The main idea is that if $P_n'$ and $P_n$ are close with probability $\geq 1-\delta$, then $P_n$ and $P$ are also close with probability $\geq 1-\delta$ and vice-versa. Because both empirical distributions are drawn from $P$. Let's show that
+\begin{align}
+	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-\mathbb{E}'P_n'(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A),
+\end{align}
+because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality (because the supreme of a convex function is convex).
+\begin{align}
+	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A)\leq \mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A)).
+\end{align}
+ This in particular implies our previous statement, if the expected value of the supreme of $P_n(A)-P_n'(A)$ is small, then the expected value of the supreme of $P_n(A)-P(A)$ will also be close (it is smaller). Now,
+ \begin{align}
+ 	\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A))=&\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n(\mathbbm{1}_{Y_i\in A}-\mathbbm{1}_{Y_i'\in A})=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n(\mathbbm{1}_{Y_i\in A}-\mathbbm{1}_{Y_i'\in A})\leq\\
+ 	\leq & 2\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A}=2\mathbb{E}_X\mathbb{E}_{\sigma}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A},
+ \end{align}
+ where $\sigma_1,\dots,\sigma_n$ are Rademacher random variables with $\mathbb{P}(\sigma_i=1)=\mathbb{P}(\sigma_i=-1)=\frac{1}{n}$.\\
+ 
+ Given a class $\mathcal{A}$ of subsets of $\Omega$ and $X_1,\dots,X_n\in \Omega$, the \textbf{shatter coefficient} of $\mathcal{A}$ is 
+ \begin{equation}
+ 	S(X_1^n,\mathcal{A})=\#\left\{A\bigcap\{X_1,\dots,X_n\}:A\in\mathcal{A}\right\},
+ \end{equation}
+ that is the number of different subsets of the data that can be obtained by intersecting with sets from $\mathcal{A}$.\\
+ 
+ Clearly $S(X_1^n,\mathcal{A})\leq 2^n$ ($2^n$ is the number of subsets in $\{X_1,\dots,X_n\}$), and thus from that we obtain $\mathbb{E}_{\sigma}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A}\leq \sqrt{\frac{2\log S(X_1^n,\mathcal{A})}{n}}$.
+ For example consider $\Omega=\Re$, $\mathcal{A}=\{[a,b]:a,b\in\Re\}$ and $n$ points $X=\{x_1,\dots,x_n\}$. If $x_i<x_j<x_k$, one cannot obtain a subset containing $x_i, x_k$ that does not contain $x_j$ by intersecting subsets of $\mathcal{A}$ with $X$. In this case $S(X_1^n,\mathcal{A})<2^n$, we will compute the actual shatter coefficient later in this section.\\
+ 
+ \textbf{Theorem VC inequality:}
+ 
  
 \end{document}
