@@ -577,6 +577,17 @@ Suppose that $a_1,\dots,a_r$ are such that $\{x:\su{i=1}{r}a_i\varphi_i(x)\geq0\
 A lot of classes of sets can be written on the form $\{x:\su{i=1}{d}\varphi_i(x)a_i\geq 0\}$ and the number features $\varphi_i$ (algebraic dimension) will give us an upper bound of the VC dimension. However, there are more complicated things that cannot be written in this form, so finding the VC dimension is not an easy problem in general.\\
 
 \textbf{Example:} Neural networks with one hidden layer. 
+\begin{figure}
+	[h!tbp]
+	\centering
+	\includegraphics[scale=0.3]{neurnet.jpg}
+	%\captionsetup{width=13cm}
+\end{figure}
+Now the class of sets would be 
+\begin{equation}
+	\mathcal{A}=\left\{\left\{\su{j=1}{k} b_j \sigma\left(\su{i=1}{d}a_{ij}x^{(i)}+c_j\right)+d\geq 0\right\}:b_j,c_j,d\in\Re,\text{ and }\sigma \text{ fixed decision function}\right\}.
+\end{equation}
+In this case the VC dimension would depend on the properties of $\sigma$ and it could be infinite or finite. Moreover, when one increases the number of layers this becomes more and more complicated and the VC dimension keeps growing. But, since we use stochastic gradient descend, back-propagation or any other algorithm, we probably do not explore the entire space of possible combinations. So, probably because of this algorithms the entire complexity of the class do not matter, if it mattered the deep neural networks would not work (the VC of the entire class where they are defined is either uncontrollable or just too big). There is a mysterious reason not yet understood that makes deep neural networks avoid overfitting (probably because of the algorithms).
 
 
 
