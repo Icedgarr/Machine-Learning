@@ -26,6 +26,8 @@
 \usepackage{dsfont}
 \usepackage{bbm}
 
+\newcommand{\su}[2]{\sum\limits_{#1}^{#2}}
+
 \newcommand{\grafico}[5]{
 \begin{figure}
 [h!tbp]
@@ -69,7 +71,7 @@ For any random variable with finite variance
 	Q.E.D
 \end{proof}
 
-In particular, if $S=\sum\limits_{i=1}^n x_i$ independent, then $\text{Var}(S)=\sum\limits_{i=1}^n \text{Var}(x_i)$ and $=n\text{Var}(x_1)$ if they are independent identically distributed (iid from now on). So,
+In particular, if $S=\su{i=1}{n} x_i$ independent, then $\text{Var}(S)=\sum\limits_{i=1}^n \text{Var}(x_i)$ and $=n\text{Var}(x_1)$ if they are independent identically distributed (iid from now on). So,
 \begin{equation}
 	P(|S-\mathbb{E} S|\geq t)\leq \frac{n\text{Var}(x_1)}{t^2}.
 \end{equation}
@@ -546,11 +548,35 @@ for some constant $c$. The last inequality can be found working harder in a non-
 	\item Now, let $\Omega=\Re^d$, $\mathcal{A}=\{[a_1,b_1]x[a_2,b_2]x\dots x[a_d,b_d]\}$. First we consider $\Omega=\Re^2$, then we have $S_{\mathcal{A}}(1)=2^1$, $S_{\mathcal{A}}(2)=2^2$, $S_{\mathcal{A}}(3)=2^3$, $S_{\mathcal{A}}(4)=2^4$, but $S_{\mathcal{A}}(5)<2^5$. That is because we cannot build a rectangle containing all points that are extremal (the most east point, the most west point, the most north point and the most south point) but not the rest. In $d$ dimension it would happen the same, we cannot build a rectangle containing the extremal points in each side of each dimension but not the rest, so $V_{\mathcal{A}}=2d$.
 	\item Finally, $\Omega=\Re^2$, $\mathcal{A}=\{\text{all convex sets}\}$. In this case the VC dimension is $V_{\mathcal{A}}=\infty$. The way of picking the maximum of points is intersecting with the convex hull, in this case if there exists a point inside we could not obtain the points on the hull in the intersection without obtaining also the one inside. However, for any $n$ it is possible that all the points belong to the convex hull. So the VC dimension is $\infty$. That case, though, is very unlikely, therefore the effective VC dimension is not infinite, but it will depend on the distribution of the data, the number of points and the dimension. There is no general way to bound the effective VC dimension in this case.
 \end{itemize} 
-\textbf{Theorem:} Let $\phi_1,\dots,\phi_r:\Omega\longrightarrow\Re$ be fixed functions (called "feature mappings"), meaning that $\forall x\in \Omega$ we have $\phi_i(x)\forall i=1,\dots,r$. And we consider $\mathcal{A}=\{\{x:\sum\limits_{i=1}^ra_i\phi_i(x)\geq 0\}:a_1,\dots,a_r\in\Re\}$. Then, $V_{\mathcal{A}}\leq r$.
+\textbf{Theorem:} Let $\varphi_1,\dots,\varphi_r:\Omega\longrightarrow\Re$ be fixed functions (called "feature mappings"), meaning that $\forall x\in \Omega$ we have $\varphi_i(x)\forall i=1,\dots,r$. And we consider $\mathcal{A}=\{\{x:\sum\limits_{i=1}^ra_i\varphi_i(x)\geq 0\}:a_1,\dots,a_r\in\Re\}$. Then, $V_{\mathcal{A}}\leq r$.
 
-\textbf{Proof:}
+\textbf{Proof:} We want to prove that for all collections of $r+1$ points, $X=\{x_1,x_2,\dots,x_{r+1}\}$ the set is not shattered. Meaning that there exists a subset $B\subset X$ of points that cannot be obtained by intersection with a subset of $\mathcal{A}$ (if all points in $B$ are obtained by intersection, there will also be at least another point $x_j\notin B$ also contained in the intersection).\\
 
+To prove this let's fix $x_1,\dots,x_{r+1}$ and define $L:\Re^r\rightarrow\Re{r+1}$ by 
+\begin{equation}
+L(a_1,\dots,a_r)\rightarrow(\su{i=1}{r}a_i\varphi_i(x_1),\su{i=1}{r}a_i\varphi_i(x_2),\dots,\su{i=1}{r}a_i\varphi_i(x_{r+1})).
+\end{equation}
+As $L$ is a linear function, the image of $L$ is at most an $r$ dimensional subspace (it comes from a $r$ dimensional space) of $\Re^{r+1}$. This means that $L(a_1,\dots,a_r)$ is contain in an hyperplane that goes through the origin. So, there exists a vector $\gamma=(\gamma_1,\dots,\gamma_{r+1})$ that is orthogonal to $L(a)\forall a=(a_1,\dots,a_r)$. Which means that
+\begin{equation}
+	\gamma_1\su{i=1}{r}a_i\varphi_i(x_1)+\dots+\gamma_{r+1}\su{i=1}{r}a_i\varphi_i(x_{r+1}),\forall a_1,\dots,a_r,
+\end{equation}
+separating the $\gamma$'s by sign, this is equivalent 
+\begin{equation}
+	\su{j:\gamma_j\geq 0}{}\gamma_j(\su{i=1}{r}a_i\varphi_i(x_j))\overset{(*)}{=}-\su{j:\gamma_j<0}{}\gamma_j(\su{i=1}{r}a_i\varphi_i(x_j)).
+\end{equation}
+Suppose that $a_1,\dots,a_r$ are such that $\{x:\su{i=1}{r}a_i\varphi_i(x)\geq0\}$ contains exactly those $x_j$'s for which $\gamma_j\geq 0$. Then, the left-hand side of $(*)$ is non-negative and the right-hand side is negative ($\gamma_j<0$ by definition and $\su{i=1}{r}a_i\varphi_i(x_j)<0$ because are not contained in the set $\Rightarrow$ their product is positive!! contradiction). So we found a subset that is not covered by any set in $\mathcal{A}$. Q.E.D.\\
 
+\textbf{Examples:}
+\begin{itemize}
+	\item Let $\Omega=\Re^d$ and $\mathcal{A}=\{\{x:x^Tw\geq 0\}:w\in\Re^d\}$. This class $\mathcal{A}$ can be written in the same form as in the theorem taking $\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)}$, where $x=(x^{(1)},\dots,x^{(d)})$. Then, by the theorem $V_{\mathcal{A}}\leq d$. In fact for this case $V_{\mathcal{A}}=d$.
+	\item A similar case would be with $\Omega=\Re^d$ and $\mathcal{A}=\{\{x:x^Ta+b\geq 0\}:a\in\Re^d,b\in\Re\}$. Here $\mathcal{A}$ can also be written as before but taking $\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)},\varphi_{d+1}(x)=1$, where $x=(x^{(1)},\dots,x^{(d)})$. By the theorem $V_{\mathcal{A}}\leq d+1$ and in this case also we have that $V_{\mathcal{A}}=d+1$.
+	\item Let $\Omega=\Re^d$ and take the class of all closed balls $\mathcal{A}=\{\{x:||x-a||\leq r\}:a\in\Re^d,r>0 \}$. We can work a bit to rewrite on our desired form: $||x-a||\leq r\Leftrightarrow ||x-a||^2\leq r^2$, now expanding the square we get $||x-a||^2-r^2=||x||^2-2\su{i=1}{d}a_ix^{(i)}+||a||^2-||r||^2$, and now taking $\varphi=||x||^2,\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)},\varphi_{d+1}(x)$ we can write all possible $||x-a||^2-r^2$ and apply the theorem. So, the VC dimension will be $V_{\mathcal{A}}\leq d+2$ and, in this case it turns out that $V_{\mathcal{A}}=d+1$ (this is not trivial to prove).
+	\item Now, consider the ellipsoids in $\Omega=\Re^d$: $\mathcal{A}=\{\{x:(x)^TA(x)+b\leq 0\}:A\text{symmetric positive semidefinite matrix } dxd,b\in\Re^d\}$. Then, we can write the product as $x^TAx=\su{i,j}{}x^{(i)}x^{(j)}A_{ij}$, so we would take $\varphi_{i,j}(x)=x^{(i)}x^{(j)}$, and since in a positive semidefinite $dxd$ matrix we have $\frac{d(d+1)}{2}$ free parameters, that would be the number of $\varphi$'s. So, applying the theorem, the VC dimension would be $V_{\mathcal{A}}\leq\frac{d(d+1)}{2}+1$.
+
+\end{itemize}
+A lot of classes of sets can be written on the form $\{x:\su{i=1}{d}\varphi_i(x)a_i\geq 0\}$ and the number features $\varphi_i$ (algebraic dimension) will give us an upper bound of the VC dimension. However, there are more complicated things that cannot be written in this form, so finding the VC dimension is not an easy problem in general.\\
+
+\textbf{Example:} Neural networks with one hidden layer. 
 
 
 
