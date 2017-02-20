@@ -12,7 +12,7 @@
  right=20mm
  }
 
-
+\usepackage{wrapfig}
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -675,7 +675,101 @@ so $t\leq\left(\frac{R}{\gamma}\right)^2$ Q.E.D.\\
 
 This result implies that under the conditions that our data is linearly separable in a certain $d$-dimensional space with a margin $\gamma$ and the constrain $R$.
 
-
-
-
+ \section{Large Margin Classifiers}
+ 
+ If the data are not linearly separable, the perceptron algorithm does not halt. In this section, we consider classifiers of the form:
+ 
+ \begin{equation*}
+ g_f(x)=\begin{cases}
+ 1, & \text{if} \quad f(x) > 0\\
+ -1, & \text{otherwise}.
+ \end{cases}
+ \end{equation*}
+ where $f:\mathfrak{X} \rightarrow R$.\\
+ \textbf{Example.} $f(x) = w^TX+c$ for some $w \in \mathbb{R}^d$.
+ We write $R(f) = R(g_f) = P(-Yf(x)>0) = \mathbb{E}\mathbbm{1}_{-yf(x)>0}$ for the risk or expectation of the number of mislabeled inputs.
+ 
+ One usually "convexifies" the optimization problem by replacing the cost function $\mathbbm{1}_x>0$ by a convex (or at least continuous) cost function, such that,
+ 
+ $$\phi(x) \geq \mathbbm{1}_x>0$$
+ 
+ 
+ \begin{wrapfigure}{R}{0.4\textwidth}
+ 	\centering
+ 	\includegraphics[width=0.45\textwidth]{cost_functions.pdf}
+ \end{wrapfigure}
+ 
+ For instance, in a linear regression setting, $R_n(w) = \frac{1}{n} \sum_{i=1}^{n} \mathbbm{1}_{-yw^Tx_i>0}$, which is not convex, therefore, we need a function $\frac{1}{n} \sum_{i=1}^{n} \phi(-yw^Tx_i>0)$ such that it becomes convex problem, which is easier to optimize.\\
+ 
+ \textbf{Example.} ``Hinge loss" a.k.a. Rectified Linear Unit (ReLU)\\
+ $$\phi(x) = (1+x)_+$$
+ \textbf{Example.} Exponential loss\\
+ $$\phi(x) = e^x$$
+ \textbf{Example.} Logarithmic loss\\
+ $$\phi(x) = log_2(1+e^x)$$
+ 
+ Define $$A(f) = \mathbbm{E}\phi(-yf(x))$$ $$A_n(f) = \frac{1}{n}\sum_i \phi(-yf(x_i)),$$ such that 
+ $$R(f) \leq A(f)$$
+ $$R_n(f) \leq A_n(f)$$
+ 
+ Suppose $\mathfrak{F}$ is a class of real valued functions and we use data to learn $f_n$ (say, by minimizing $A_n(f)$ over $f \in \mathfrak{F}$). Then,
+ 
+ \begin{align*}
+ R(f_n)\leq A(f_n) &\leq A_n(f_n) + \max_{f \in \mathfrak{F}}(A(f) - A_n(f))\\
+ & \approx A_n(f_n) + \mathbbm{E}\ [\max_{f \in \mathfrak{F}}(A(f) - A_n(f))]\\
+ & \leq A_n(f_n) + 2 \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma \phi(-y_i f(x_i))|]\\
+ & \leq A_n(f) + 2L \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma f(x_i)|]
+ \end{align*}
+ 
+ \textbf{Example.} $\mathfrak{F} = \{f(x) = w^Tx : ||w|| = 1\}$ then the Rademacher average
+ 
+ $$\mathbbm{E} |sup \ \frac{1}{n} \sum \sigma_i w^T x_i| = \mathbbm{E} [sup \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i)]$$
+ 
+ Note that $\sup\limits_{w:||w||=1} \ w^T a = ||a||$, therefore
+ 
+ \begin{align*}
+ \mathbbm{E} [sup \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i)] &=\mathbbm{E} ||\frac{1}{n} \sum_i \sigma_i x_i||\\
+ &\leq \sqrt{\mathbbm{E}||\frac{1}{n} \sum_i \sigma_i x_i||^2}\\
+ &= \sqrt{\mathbbm{E} \sum_j (\frac{1}{n} \sum_i \sigma_i X_i^{(i)})^2}\\
+ &= \frac{1}{n} \sqrt{\mathbbm{E} \sum_i ||X_i||^2}
+ \end{align*}
+ 
+ where $||X_i||^2 \leq R^2$, hence:
+ 
+ $$\frac{1}{n} \sqrt{\mathbbm{E} \sum_i ||X_i||^2} \leq \frac{R}{\sqrt{n}}$$
+ 
+ which is independent of the dimensions of the problem. If we apply the previous to our inequality $R(f_n) \leq A_n(f) + 2L \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma f(x_i)|]$, we get
+ 
+ $$R(f_n) \leq A_n(f_n) + \frac{2LR}{\sqrt{n}} + c$$
+ 
+ where $c$ is a small constant.\\
+ 
+ 
+ \begin{wrapfigure}{L}{0.4\textwidth}
+ 	\centering
+ 	\includegraphics[width=0.35\textwidth]{marginloss.pdf}
+ 	\caption{\small With the margin loss function, observations within the margins, although correctly classified, add risk as well.}
+ \end{wrapfigure}
+ 
+ Now, consider the "margin loss", then $L = \frac{1}{\gamma}$, and
+ \begin{align*}
+ R(f_n) &\leq A_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c\\
+ &\leq R_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c
+ \end{align*}
+ where the empirical risk $R_n^{\gamma}(f) = \frac{1}{n} \sum_i \mathbbm{1}_{y_iw^Tx_i < -\gamma}$ and $\gamma$ is the distance from our linear classifier that defines a boundary beyond which a correct classification is not considered risk (and viceversa).\\
+ 
+ If we manage to classify with a large margin, then $R(f_n)$ will be small no matter the dimension, hence we can map the problem into a larger dimension.
+ 
+ Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk is $\mathbbm{E}[e^{-yf(x)}] = \mathbbm{E_xE_y}[e^{-y\phi(x)}|X]$, where $\mathbbm{E_y}[e^{-y\phi(x)}|X] = \eta(x) e^{-f(x)} + (1-\eta(x)e^{f(x)})$, and that we can minimize:
+ 
+ \begin{align*}
+ arg min &\ \eta e^{-f} + (1-\eta)e^f\\
+ & e^{2f} = \frac{\eta}{1 - \eta}\\
+ & f = \frac{1}{2} ln \frac{\eta}{1 - \eta}
+ \end{align*}
+ \linebreak
+ \linebreak
+ \\
+ which is $f^*$ the optimal function. Note that $f^*(x)>0 \Leftrightarrow \eta(x)>\frac{1}{2}$, so $g^* = sgn(f^*(x))$ is the Bayes classifier. The same argument holds for all convex surrogate risks.
+ 
 \end{document}
