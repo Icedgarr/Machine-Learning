@@ -124,7 +124,9 @@ If $X_i$ are iid with $\mathbb{E}X=0$, then $v=n\sigma^2$ ($\sigma^2=\text{Var}X
 \end{equation} 
 
 
+\subsection{Jensen's inequality}
 
+\subsection{Cauchy-Schwartz's inequality}
 
 \section{Mean estimator}
 
@@ -587,7 +589,92 @@ Now the class of sets would be
 \begin{equation}
 	\mathcal{A}=\left\{\left\{\su{j=1}{k} b_j \sigma\left(\su{i=1}{d}a_{ij}x^{(i)}+c_j\right)+d\geq 0\right\}:b_j,c_j,d\in\Re,\text{ and }\sigma \text{ fixed decision function}\right\}.
 \end{equation}
-In this case the VC dimension would depend on the properties of $\sigma$ and it could be infinite or finite. Moreover, when one increases the number of layers this becomes more and more complicated and the VC dimension keeps growing. But, since we use stochastic gradient descend, back-propagation or any other algorithm, we probably do not explore the entire space of possible combinations. So, probably because of this algorithms the entire complexity of the class do not matter, if it mattered the deep neural networks would not work (the VC of the entire class where they are defined is either uncontrollable or just too big). There is a mysterious reason not yet understood that makes deep neural networks avoid overfitting (probably because of the algorithms).
+In this case the VC dimension would depend on the properties of $\sigma$ and it could be infinite or finite. Moreover, when one increases the number of layers this becomes more and more complicated and the VC dimension keeps growing. But, since we use stochastic gradient descend, back-propagation or any other algorithm, we probably do not explore the entire space of possible combinations. So, probably because of this algorithms the entire complexity of the class do not matter, if it mattered the deep neural networks would not work (the VC of the entire class where they are defined is either uncontrollable or just too big). There is a mysterious reason not yet understood that makes deep neural networks avoid overfitting (probably because of the algorithms).\\
+
+\textbf{Structural properties that are useful\\}
+If we bound the shatter coefficient, then we have a bound for the VC dimension and vice-versa. Results that bound the shatter coefficient:
+\begin{itemize}
+	\item The union of two classes have a smaller coefficient than the sum of their respective shatter coefficients. That is, if $\mathcal{A}=\mathcal{A}_1\bigcup\mathcal{A}_2$, then 
+	$S_{\mathcal{A}} (n)\leq S_{\mathcal{A}_1}(n) +S_{\mathcal{A}_2}(n)$.
+ 	\item If $\mathcal{A}_c=\{A^c:A\in\mathcal{A}\}$, then $S_{\mathcal{A}_c}(n)=S_{\mathcal{A}}(n)$.
+	\item The shatter coefficient of a class of sets that are union of sets of other classes is bounded by the product of their shatter coefficients. If $\mathcal{A}=\{A=B\bigcup C:B\in\mathcal{B},C\mathcal{C}\}$, then $S_{\mathcal{A}}(n)\leq S_{\mathcal{B}}(n)S_{\mathcal{C}}(n)$. If instead of unions we have intersections we obtain the same result. We will prove the intersection.\\
+	\textbf{Proof:} Let's fix $x_1,\dots,x_n$ and suppose that $\mathcal{B}$ induces $N\leq S_{\mathcal{B}}(n)$ subsets of $\{x_1,\dots,x_n\}$. Call them $S_1,S_2,\dots,S_N$. For each $S_i$, $\mathcal{C}$ picks at most $S_{\mathcal{C}}(|S_i|)\leq S_{\mathcal{C}}(n)$. In total we have at most $S_{\mathcal{B}}(n)S_{\mathcal{C}}(n)$ subsets. From here, as $B\bigcup C=(B^c\bigcap C^c)^c$, using the previous property we obtain the union.
+	\item 
+\end{itemize}
+\textbf{Example:} Class $\mathcal{A}$ of all unions of $k$ intervals in $\Re$. As we know that the shatter coefficient of one interval is $S(n)\leq (n+1)^2$, then the shatter coefficient of $\mathcal{A}$ will be $S_{\mathcal{A}}\leq (n+1)^{2k}$. From here we can bound the VC dimension. We would need to find the smallest $n$ such that $(n+1)^{2k}<2^n$. Solving the equation for $k$ we would obtain $k<\frac{n}{2\log_2(n+1)}$ and from this we can say that the $VC$ dimension is $V_{\mathcal{A}}\leq ck\log k$.\\
+
+The crucial result from the properties is that once we have found the shatter coefficient for some classes, we can start playing around with them and find bounds for others. The general purpose of this whole study around the classes is to understand how the size of the class  affects the overfitting, meaning that if the class is too big we expect to find a set that overfits the data. A good way to quantify overfitting is by using the inequation 
+\begin{equation}
+	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}|\mathbb{P}_n-\mathbb{P}|\leq c\sqrt{\frac{V_{\mathcal{A}}\log n}{n}}.
+\end{equation}
+This can be used in model selection.
+\subsubsection{Model selection: Structure risk minimization, complexity regularization}
+A simple case to illustrate this is to suppose that we have data, we want to classify it by intervals but we want to choose how many intervals we permit. So, we want to choose the complexity of our classifier given data. \\
+
+Let $\mathcal{C}_1\subset \mathcal{C}_2\subset\dots$ classes of classifiers and suppose that for each $\mathcal{C}_k$, $\hat{g}_n^{(k)}=\underset{g\in\mathcal{C}_k}{\text{argmin }}R_n(g)$. The empirical risk and the true risk will not have the same form. Typically the empirical risk will be smaller than the true risk and will be decreasing with $k$ until it reaches 0 at some point. While the true risk have a first decreasing part until it reaches the minimum and then slowly increases with $k$. Usually we "pay more" in the true risk by slightly underfitting that for slight overfitting.\\
+
+We would like to minimize the true risk, but we only see the empirical risk, so we need to compensate. A way to do it is by adding a penalty that depends on the complexity. As we have seen that $R_n(\hat{g}_n^{(k)})-\underset{g\in \mathcal{C}_k}{\min}R(g)\leq c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$, a reasonable way of choosing $k$ would be to select the one that minimizes 
+\begin{equation}
+	R_n(\hat{g}_n^{(k)})+c\sqrt{\frac{V_{\mathcal{C}_k}}{n}},
+\end{equation}
+where $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ is the penalty for complexity that we add. This argument is distribution free, but it is not the best one. Any other penalty smaller than $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ that upper bounds $R_n(\hat{g}_n^{(k)})-\underset{g\in \mathcal{C}_k}{\min}R(g)$ is better. A better one is the Rademacher complexity ($2\mathbb{E}_{\sigma}[\underset{g\in\mathcal{C}}{\sup}\frac{1}{n}\su{i=1}{n}\sigma_i\mathbbm{1}_{g(X_i)\neq Y_i}]$) and it is purely empirical, can be computed by Monte Carlo (the expected value is over the random generated $\sigma$'s), however finding the supreme is a complicated issue, but it is theoretically empirical.
+\begin{figure}
+	[h!tbp]
+	\centering
+	\includegraphics[scale=0.3]{risk_comparison.jpg}
+	%\captionsetup{width=13cm}
+\end{figure}
+
+If $g_n$ is the classifier minimizing the penalized empirical risk, then
+\begin{equation}
+	R_(g_n)\leq \underset{k}{\min}(R(\bar{g}^{(k)})+\text{Penalty}(k))+\text{peanuts},
+\end{equation} 
+where $\bar{g}^{(k)}=\underset{g\in\mathcal{C}_k}{\text{argmin }}R(g)$.
+
+\subsection{Machine Learning Algorithms}
+
+\subsubsection{Linear Classifiers}
+
+Suppose that $\Omega= \Re^d$, our data is $\mathcal{D}_n=(X_1,Y_1),\dots,(X_n,Y_n)$, $X_i\in \Omega$, $Y_i\in\{-1,1\}$. We want to learn a linear classifier that has the form of 
+\begin{equation}
+	g(X)=\text{sign}(w^TX),
+\end{equation}
+(if $g(X)=0$ then we pick our favorite class). With that, if $d$ is much less than the number of observations the classifier will not overfit. The classification will be done by an hyperplane characterized by its normal vector $w^T$, so we may assume that $\|w\|=1$.\\
+
+Now, the idea is to minimize the risk of our classifier, which means to find the $w^T$ that minimizes the number of mistakes we do. This problem is NP hard when the dimension $d$ is an input. It is doable in time $n^d$ if we fix $d$, but of course this does not solve anything when $d>2$. To tackle the problem we can suppose that the classification is easy, meaning that the data is nearly separable. Then, we have a simple and fast algorithm called \textbf{Perceptron algorithm}.
+
+\subsubsection{Perceptron algorithm}
+This algorithm was invented on the 50's and learns a neuron (a linear classifier is basically a neural network with one neuron). \\
+Suppose that the data is nearly separable. Let's see the algorithm.\\
+
+1. We start with an arbitrary $w_0$, for example $w_0=0$.\\
+2. Then we go through our data points one by one.\\
+At time $t$:
+\hspace{2cm} if $w_{t-1}X_tY_t> 0$ then we do nothing\\
+\hspace{2cm} if $w_{t-1}X_tY_t\leq 0$ then $w_t=w_{t-1}+X_tY_t$.\\
+3. Stop when all data points are correctly classified. Cycle through the data the several times if needed. \\
+So the linear classifier is $\hat{w}=\su{t}{}X_tY_t\mathbbm{1}_{w_{t-1}X_tY_t\leq 0}$.\\
+
+The beautiful thing is that this algorithm will work, and the time it takes to stop depends on how nice the data is. The niceness of the data is measured by how big is the circle that contains all the points and how far the nearest points to the boundary are (margin). (If the margin is large the algorithm will converge fast).\\
+
+\textbf{Perceptron convergence theorem - Novinkov theorem: }Let $w_*$ be such that $\|w_*\|=1$, $w_*^TX_iY_i>0$ and $\underset{i=1,\dots,n}{\min}|w_*^TX_i|\geq\gamma$ is the margin. Then, the perceptron algorithm holds after at most $\left(\frac{R}{\gamma}\right)^2$ times (adjustments), where $R=\underset{i}{\|X_i\|}$. Observe that it does not depend on the dimension $d$, so if we can guarantee a map in an arbitrary large dimensional space in which we can represent our points that are not too big and can be classified with a large margin, then the perceptron algorithm will work very fast.\\
+
+\textbf{Proof:} Whenever an update is made (noting it as the update number $t^*$), by definition of $w_t$
+\begin{equation}
+	w_*^Tw_t= w_*^Tw_{t-1} + w_*^TX_tY_t\geq t^*\gamma,	
+\end{equation}
+because $w_*^TX_tY_t$ is positive and will be always bigger or equal to the margin $\gamma$.
+\begin{equation}
+	\|w_t\|^2=\|w_{t-1}+X_tY_t\|^2=\|w_{t-1}\|+2w_{t-1}^TX_tY_t+\|X_t\|^2\leq t^*R^2,
+\end{equation} 
+because $w_{t-1}^TX_tY_t\leq 0$ (we make an update) and $\|X_t\|^2\leq R^2$ (definition of $R$). Now, $\frac{w_*^Tw_t}{\|w_t\|}\geq \frac{t \gamma}{\sqrt{t}R}$ and, since $w_*$ and $\frac{w}{\|w\|}$ are a unit vectors, applying the Cauchy-Schwartz inequality 
+\begin{equation}
+	1\geq \frac{w_*^Tw_t}{\|w_t\|}\geq \frac{t \gamma}{\sqrt{t}R},
+\end{equation} 
+so $t\leq\left(\frac{R}{\gamma}\right)^2$ Q.E.D.\\
+
+This result implies that under the conditions that our data is linearly separable in a certain $d$-dimensional space with a margin $\gamma$ and the constrain $R$.
+
 
 
 
