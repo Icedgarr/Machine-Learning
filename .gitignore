@@ -1,6 +1,11 @@
 # Other files and folders
 .settings/
 
+risk_comparison.jpg
+cost_functions.pdf
+marginloss.pdf
+neurnet.jpg
+
 # Executables
 *.gz
 *.log
