@@ -649,8 +649,8 @@ Suppose that the data is nearly separable. Let's see the algorithm.\\
 
 1. We start with an arbitrary $w_0$, for example $w_0=0$.\\
 2. Then we go through our data points one by one.\\
-At time $t$:
-\hspace{2cm} if $w_{t-1}X_tY_t> 0$ then we do nothing\\
+At time $t$:\\
+\indent if $w_{t-1}X_tY_t> 0$ then we do nothing\\
 \hspace{2cm} if $w_{t-1}X_tY_t\leq 0$ then $w_t=w_{t-1}+X_tY_t$.\\
 3. Stop when all data points are correctly classified. Cycle through the data the several times if needed. \\
 So the linear classifier is $\hat{w}=\su{t}{}X_tY_t\mathbbm{1}_{w_{t-1}X_tY_t\leq 0}$.\\
