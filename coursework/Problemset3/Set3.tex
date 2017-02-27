@@ -1,0 +1,149 @@
+\documentclass[11pt, english]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	left=20mm,
+	top=30mm,
+	right=20mm
+}
+
+
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm} 
+\usepackage{mathrsfs}
+\usepackage{mathabx}
+\usepackage{graphicx}
+\usepackage{eurosym}
+\usepackage{subfigure}
+\usepackage{dsfont}
+\usepackage{bbm}
+\usepackage{caption}
+
+
+\newcommand{\grafico}[5]{
+	\begin{figure}
+		[h!tbp]
+		\centering
+		\includegraphics[scale=#2, angle=#3]{#1}
+		%\captionsetup{width=13cm}
+		\caption{#4\label{#5}}
+	\end{figure}
+}
+\newcommand{\su}[2]{\sum\limits_{#1}^{#2}}
+
+
+\setlength{\parindent}{0pt}
+
+\title{Machine Learning Exercises: Set 3}
+\author{Roger Garriga Calleja}
+\date{\today}
+
+\begin{document}
+	\maketitle
+\textbf{Problem 9 (Rademacher averages.) Let $A$ be a bounded subset of $\Re^n$. Define the Rademacher
+average}
+\begin{equation}
+	R_n(A)=\mathbb{E}\text{ }\underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_ia_i\right|
+\end{equation}
+\textbf{where $\sigma_1,\dots,\sigma_n$ are independent random variables with $\mathbb{P}(\sigma_i=1)=\mathbb{P}(\sigma_i=-1)=\frac{1}{2}$ and $a_1,\dots,a_n$ are the components of the vector $a$. Let $A,B\subset\Re^n$ be bounded sets and let $c\in\Re$ be a constant. Prove the following "structural" results:}
+\begin{equation}
+	R_n(A\cup B)\leq R_n(A)+R_n(B),\hspace{0.5cm}R_n(c\cdot A)=|c|R_n(A),\hspace{0.5cm}R_n(A\oplus B)\leq R_n(A)+R_n(B),
+\end{equation}
+\textbf{where $c\cdot A=\{ca:a\in A\}$ and $A\oplus B=\{a+b:a\in A, b\in B\}$. Moreover, if absconv($A$)$=\left\{\su{j=1}{N}c_ja^{(j)}:N\in\mathbb{N},\su{j=1}{N}|c_j|\leq 1,a^{(j)}\in A\right\}$ is the absolute convex hull of $A$, then}
+\begin{equation}
+	R_n(A)=R_n(\text{absconv}(A)).
+\end{equation}
+The Rademacher complexity of the union will be 
+\begin{equation}
+	R_n(A\cup B)=\mathbb{E}\underset{e\in A\cup B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|,
+\end{equation}
+where $e_1,\dots,e_n$ are the components of the vector $e$. Now, since either $e\in A$ or $e\in B$,
+\begin{equation}
+	\underset{e\in A\cup B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|=\sup\left\{\underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i a_i\right|,\underset{b\in B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i b_i\right|\right\}.
+\end{equation} 
+So, as both supremums are positive,
+\begin{equation}
+	\underset{e\in A\cup B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|\leq \underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i a_i\right|+\underset{b\in B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i b_i\right|.
+\end{equation}
+Finally, using the linearity of the expectation,
+\begin{align}
+	R_n(A\cup B)&=\mathbb{E}\underset{e\in A\cup B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|\leq\mathbb{E}\text{ }\left\{\underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i a_i\right|+\underset{b\in B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i b_i\right|\right\}=\\
+	&=\mathbb{E}\text{ }\underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i a_i\right|+\mathbb{E}\text{ }\underset{b\in B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i b_i\right|=R_n(A)+R_n(B).
+\end{align}
+Let's prove now that $R_n(c\cdot A)=|c|R_n(A)$:
+\begin{equation}
+	R_n(c\cdot A)=\mathbb{E}\text{ }\underset{e\in c\cdot A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|,
+\end{equation}
+since $\forall e\in c\cdot A$, $e=c\cdot a$ for some $a\in A$,
+\begin{align}
+	R_n(c\cdot A)& =\mathbb{E}\text{ }\underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i ca_i\right|=|c|\mathbb{E}\text{ }\underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i a_i\right|=|c|R_n(A).
+\end{align}
+Let's prove now that $R_n(A\oplus B)\leq R_n(A)+R_n(B)$:
+\begin{equation}
+	R_n(A\oplus B)=\mathbb{E}\underset{e\in A\oplus B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|,
+\end{equation}
+since $\forall e\in A\oplus B$, $e=a+b$ for some $a\in A$ and $b\in B$, applying the triangle inequality
+
+\begin{align}
+	R_n(A\oplus B)&=\mathbb{E}\underset{a\in A,b\in B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i (a_i+b_i)\right|=\mathbb{E}\underset{a\in A,b\in B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i a_i+\su{i=1}{n}\sigma_i b_i\right|\leq\\
+	&\leq \mathbb{E}\underset{a\in A,b\in B}{\text{sup }}\frac{1}{n}\left\{\left|\su{i=1}{n}\sigma_i a_i\right|+\left|\su{i=1}{n}\sigma_i b_i\right|\right\}=\\
+	&=\mathbb{E}\underset{a\in A}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i a_i\right|+\mathbb{E}\underset{b\in B}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i b_i\right|=R_n(A)+R_n(B).
+\end{align} 
+Finally, let's prove that $R_n(A)=R_n(\text{absconv}(A))$ (to simplify notation I'll call absconv$(A)=H(A)$):
+\begin{equation}
+	R_n(H(A))=\mathbb{E}\text{ }\underset{e\in H(A)}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|,
+\end{equation}
+where $e_i\in H(A)$. It is clear that $R_n(A)\leq R_n(H(A))$ because $A\subset H(A)$. Now, once fixed $N$ and the $c_j$'s, $H_{N,c_j\text{'s}}(A)=c_1 A\oplus c_2 A\oplus\dots\oplus c_N A$. Since $\su{j=1}{N}|c_j|\leq 1$, using the third property we obtain that \begin{equation}
+	R_n(H_{N,c_j\text{'s}}(A))\leq R_n(A), \text{ }\forall N,c_j\text{'s}.
+\end{equation}
+And since $H(A)=\bigcup\limits_{N,c_j\text{'s}}H_{N,c_j\text{'s}}(A)$, using the argument that the supremum of elements belonging to a union of sets is the supremum over the elements of all the subsets, we get that $R_n(H(A))\leq R_n(A)$. As $R_n(H(A))\leq R_n(A)$ and $R_n(A)\leq R_n(H(A))$, we conclude that $R_n(A)=R_n(H(A))=R_n(\text{absconv(A)})$.
+\newpage
+
+\textbf{Problem 10: A circle in the plane is a set of the form $C_{c,r}=\{x\in\Re^2:\|x-c\|\leq r\}$ for some $c\Re^2$ and $r\geq 0$.\\
+Determine the VC dimension of the class $\mathcal{A}=\{C_{c,r}:c\in\Re^2,r\geq 0 \}$ of all circles.\\
+What is the VC dimension of the class $\mathcal{A_1}=\{C_{c,1}:c\in\Re^2\}$ of all circles of radius 1?\\}
+
+We consider first the general circle in the plane $C_{c,r}=\{x\in\Re^2:\|x-c\|\leq r\}$, where $c$ is the center and $r$ the radius. It is clear that we can shatter at least three points in the plane, by looking at the next graphic we can see the 8 possible subsets of three points.
+\grafico{graphics/shatters.jpeg}{0.4}{0}{All the different ways to separate the points with circles.}{shatter}
+
+
+However four points cannot be shattered. It is clear that if at least three of them are in the same line, it is impossible to shatter them (by convexity of the circle one cannot take the two extreme points without the ones in the middle). \\
+Apart from that there are two different cases depending on their convex hull: either their convex hull is formed by connecting three of the points (triangular convex hull with a point inside), or their convex hull is formed by connecting the four points (quadrilateral convex hull). \\
+In the first case, by convexity of the circle, one could not include the three vertices of the triangle and leave the other point out. \\In the second case, consider the two diagonals that connect the opposite extremes of the quadrilater. One could not build a circle containing the two points connected by the longest diagonal that does not contain at least one of the other two points. (if the two diagonals were equal then one could not build a circle containing either of the pair of opposite points that does not contain any of the others). \\
+So, four points cannot be shattered, hence the VC-dimension is 3.
+\\
+
+Regarding to the circles of radius 1 in the plane, $C_{c,1}=\{x\in\Re^2:\|x-c\|\leq 1\}$. We can shatter also up to three points, but not four as we showed before.
+\grafico{graphics/shatters1.jpeg}{0.4}{0}{All the different ways to separate the points with circles of radius 1.}{shatter1}
+\newpage
+\textbf{Problem 11: A half plane is a set of the form $H_{a,b,c}= \{(x, y) \in \Re^2:ax + by\geq c\}$ for some real numbers $a, b, c$. Determine the $n$-shatter coefficient of the classes}
+\begin{equation}
+	\mathcal{A}_0=\{H_{a,b,c}:a,b\in\}\hspace{0.5cm}\text{and} \hspace{0.5cm} \mathcal{A}=\{H_{a,b,c}:a,b,c\in\Re\}
+\end{equation}
+First, notice that $H_{a,b,c}$ can be constructed as $H_{a,b,c}\{(x, y) \in \Re^2:\su{i=1}{3}a_i\varphi_i(x,y)\geq 0\}$, where $a_1=a$, $a_2=b$, $a_3=c$, $\varphi_1(x,y)=x$, $\varphi_2(x,y)=y$, $\varphi_3(x,y)=1$. So, the VC dimension of the two classes will be bounded by $\mathcal{A}_0\leq 2$ and $\mathcal{A}\leq 3$. It is easy to see that $\mathcal{A}_0= 2$ and $\mathcal{A}= 3$. With Sauer's lemma we can bound $S_{\mathcal{A}_0}(n)\leq (n+1)^2$ and $S_{\mathcal{A}}(n)\leq (n+1)^3$. But this does not give us the exact shatter coefficient.\\
+
+For $\mathcal{A}_0$ observe that the points are separated by a line through the origin that cuts the plane in two, and for each separation we can choose between including the points on one side or the other. Let us consider two cases, when all $n$ points can be contained into a half plane and when that is not possible.\\
+
+On the first case, we would have a line that cuts the plane in one half that contains all the points and the other none. Then, we can order the points by the angle that form each them with the origin and start tilting the line to build all the different separations. When putting the line between $x_1$ and $x_2$ we obtain a half plane that contains $x_1$  and the other the rest of the points. Then, we can tilt more and put it between $x_2$ and $x_3$ so we would have a plane that contains $x_1$ and $x_2$ and the other the rest of the points. If we keep doing the process tilting the line until it is between each possible pair, we would obtain $n$ lines that lead to different separations. For each separating we can either take the point of one half or the other, so $S_{\mathcal{A}_0}(n)=2n$.\\
+On the second case, we would obtain at least two less combinations of points (all the points and none of them).\\
+
+For $\mathcal{A}$, the way to have the points spread so we can do the highest number of combinations is when they form the convex hull of the points. That way, we can separate each of them. Without loss of generality, let us pick one of the points as the first one, and numerate from it clockwise. Then, for each point $i$ we put $n-1$ lines that cut the plane in a way that the first line creates the half plane that contains the point $i$, the second line creates the half plane that contains $i$ and $i+1$, and so on until the last line that contains all the points but the $i-1$ (considering that $i-1=n$ when $i=1$). Following this procedure for all points we would obtain $n(n-1)$ different subsets of points by intersection with the half planes. Apart from this we would have the subset of all the points and the subset without any point. In total $S_{\mathcal{A}}(n)=n(n-1)+2$.
+\newpage
+
+\textbf{Problem 12: Write a program that generates n uniformly distributed points $X_1,\dots,X_n$ in the $d$-dimensional cube $[-2^{\frac{1}{d}},2^{\frac{1}{d}}]^d$. Assign labels such that $Y_i=1$ if $X_i\in[-1,1]^d$ and $Y_i=0$ otherwise. (Thus, about half of the points have label 1.)}\\
+\textbf{Train two different classifiers, both performing empirical risk minimization as follows.}\\
+\textbf{The first classifier selects the smallest cube of form $[-a,a]^d$ (for some $a\leq0$) that contains all points with label 1 and classifies with 1 inside the cube and with 0 outside.}\\
+\textbf{The second classifier selects the smallest rectangle of form$[a_1,b_1]\times\cdot\times[a_d,b_d]$ (for arbitrary real numbers $a_i\leq b_i$, $i=1,\dots,d$) that contains all points with label 1 and classifies with 1 inside the rectangle and with 0 outside.}\\
+\textbf{Try a wide range of values of d and n and plot the test error (measured on a large independent test set) for both classifiers. Explain what you see.}
+
+
+
+\end{document}
