@@ -103,13 +103,13 @@ for d in [3,5,10,50,100]:
         aux_rect=list(map(check_classrect,[X_test]*lenn,[Y_test]*lenn,class_rect))
         check_rect=list(map(np.add,check_rect,aux_rect))
     
-    check_cube=list(map(np.divide,check_cube,[1000]*lenn))
-    check_rect=list(map(np.divide,check_rect,[1000]*lenn))
+    check_cube=list(map(np.divide,check_cube,[10]*lenn))
+    check_rect=list(map(np.divide,check_rect,[10]*lenn))
     #plt.subplot(3,2,i)    
     plt.figure(0)    
-    plt.plot(list(map(mat.log,n,[10]*len(n))), check_cube)
+    plt.plot(list(map(mat.log,n,[10]*lenn)), check_cube)
     plt.figure(1)    
-    plt.plot(list(map(mat.log,n)), check_rect)
+    plt.plot(list(map(mat.log,n,[10]*lenn)), check_rect)
     #plt.ylim([0.15,0.5])
 
 plt.figure(0)
