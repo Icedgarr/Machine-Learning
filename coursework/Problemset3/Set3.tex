@@ -44,7 +44,7 @@
 
 \title{Machine Learning Exercises: Set 3}
 \author{Roger Garriga Calleja}
-\date{\today}
+\date{February 27, 2017}
 
 \begin{document}
 	\maketitle
@@ -101,7 +101,7 @@ Finally, let's prove that $R_n(A)=R_n(\text{absconv}(A))$ (to simplify notation 
 \begin{equation}
 	R_n(H(A))=\mathbb{E}\text{ }\underset{e\in H(A)}{\text{sup }}\frac{1}{n}\left|\su{i=1}{n}\sigma_i e_i\right|,
 \end{equation}
-where $e_i\in H(A)$. It is clear that $R_n(A)\leq R_n(H(A))$ because $A\subset H(A)$. Now, once fixed $N$ and the $c_j$'s, $H_{N,c_j\text{'s}}(A)=c_1 A\oplus c_2 A\oplus\dots\oplus c_N A$. Since $\su{j=1}{N}|c_j|\leq 1$, using the third property we obtain that \begin{equation}
+where $e_i\in H(A)$. It is clear that $R_n(A)\leq R_n(H(A))$ because $A\subset H(A)$. Now, once fixed $N$ and the $c_j$'s, we define $H_{N,c_j\text{'s}}(A)=\left\{\su{j=1}{N}c_ja^{(j)}:a^{(j)}\in A\right\}=c_1 A\oplus c_2 A\oplus\dots\oplus c_N A$. Since $\su{j=1}{N}|c_j|\leq 1$, using the third property we obtain that \begin{equation}
 	R_n(H_{N,c_j\text{'s}}(A))\leq R_n(A), \text{ }\forall N,c_j\text{'s}.
 \end{equation}
 And since $H(A)=\bigcup\limits_{N,c_j\text{'s}}H_{N,c_j\text{'s}}(A)$, using the argument that the supremum of elements belonging to a union of sets is the supremum over the elements of all the subsets, we get that $R_n(H(A))\leq R_n(A)$. As $R_n(H(A))\leq R_n(A)$ and $R_n(A)\leq R_n(H(A))$, we conclude that $R_n(A)=R_n(H(A))=R_n(\text{absconv(A)})$.
@@ -142,8 +142,145 @@ For $\mathcal{A}$, the way to have the points spread so we can do the highest nu
 \textbf{Train two different classifiers, both performing empirical risk minimization as follows.}\\
 \textbf{The first classifier selects the smallest cube of form $[-a,a]^d$ (for some $a\leq0$) that contains all points with label 1 and classifies with 1 inside the cube and with 0 outside.}\\
 \textbf{The second classifier selects the smallest rectangle of form$[a_1,b_1]\times\cdot\times[a_d,b_d]$ (for arbitrary real numbers $a_i\leq b_i$, $i=1,\dots,d$) that contains all points with label 1 and classifies with 1 inside the rectangle and with 0 outside.}\\
-\textbf{Try a wide range of values of d and n and plot the test error (measured on a large independent test set) for both classifiers. Explain what you see.}
+\textbf{Try a wide range of values of d and n and plot the test error (measured on a large independent test set) for both classifiers. Explain what you see.}\\
+
+The hypercube's classifier risk is clearly lower than the hyperrectangle's classifier. This is a clear example of how overfit can hurt us. Our data classification was done by a hypercube of size 1, so estimating the classification with a hypercube is more accurate than doing it with a hyperrectangle. Observe that the hypercube's class is a subclass of the hyperrectangle's class, but in the second one we have more free parameters, so it will fit the data training data in a more complex way, reducing the volume of the region classified as 1. Therefore leading to more errors when testing the classifier's performance.\\
+
+Also, it can be seen that increasing the number of points used in the training data set reduces very significantly the risk, in especial with the hyperrectangle's classifier. Observe that for the hypercube's classifier with only 100 the performance is quite good. While with the hyperrectangle we need at least 1000 points for low dimensions (3,5,10) and more than 10000 for higher ones (50,100) in order to have a fairly good classifier. That is because in the hypercube just with one of the components of a point being close enough to 1 we have a strong classifier, while in the hyperrectangle we need that most of the components are of any point to be close to 1 (which is much harder when the dimension increases, being even a totally coin toss classifier when dimension is high and the number of points is small). 
+
+\grafico{graphics/cube_class.png}{0.4}{0}{Risk of the hypercube classifier for different dimensions (d=3,5,10,50,100) and different training sample sizes (N=10,50,100,1000,5000,10000).}{cube}
+\grafico{graphics/rect_class.png}{0.4}{0}{Risk of the hyperrectangle classifier for different dimensions (d=3,5,10,50,100) and different training sample sizes (N=10,50,100,1000,5000,10000).}{rect}
 
 
+
+
+\newpage
+
+\section*{Appendix}
+
+\textbf{Ex 12:}
+
+\begin{lstlisting}[language=Python]
+
+import sklearn as sk
+import numpy as np
+from numpy import random as rand
+from sklearn import neighbors
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import math as mat
+
+
+
+def gen_data(n,d):
+X=rand.uniform(low=-2**(1/d),high=2**(1/d),size=(n,d))
+
+Y=[2]*n
+for i in range(0,n):
+if any(abs(n)>1 for n in X[i])==True:
+Y[i]=0
+else:
+Y[i]=1
+return(X,Y)
+
+
+def cube_classifier(X,Y):
+data=list(zip(X,Y))
+data=pd.DataFrame(data)
+data.columns=['X','Y']
+
+data1=data[data['Y']==1]
+a=np.amax(list(abs(data1['X'])))
+return(a)
+
+
+
+def rectangle_classifier(X,Y):
+data=np.column_stack([X,Y])
+data1=data[data[:,d]==1]
+
+a=np.amin(data1[:,0:d],axis=0)
+b=np.amax(data1[:,0:d],axis=0)
+return(list(zip(a,b)))
+
+
+def check_classcube(X_test,Y_test,class_cube):
+m=len(X_test)    
+Y_emp_cube=[]
+for i in range(0,m):
+if any(abs(n)>class_cube for n in X_test[i])==True:
+Y_emp_cube.append(0)
+else:
+Y_emp_cube.append(1)
+
+check_cube=np.array(Y_test)!=np.array(Y_emp_cube)
+wrong_cube=sum(check_cube)
+freq_cube=wrong_cube/m
+return(freq_cube)
+
+def check_classrect(X_test,Y_test,class_rectangle):    
+m=len(X_test)  
+Y_emp_rect=[]
+for i in range(0,m):
+if any((X_test[i][j]<class_rectangle[j][0] or X_test[i][j]>class_rectangle[j][1]) 
+for j in range(0,d))==True:
+Y_emp_rect.append(0)
+else:
+Y_emp_rect.append(1)
+
+check_rect=np.array(Y_test)!=np.array(Y_emp_rect)
+wrong_rect=sum(check_rect)
+freq_rect=wrong_rect/m
+
+return(freq_rect)
+
+
+m=100000
+
+for d in [3,5,10,50,100]:
+
+s=[d]*6
+n=[10,50,100,1000,5000,10000]
+lenn=len(n)    
+check_cube=[0]*lenn
+check_rect=[0]*lenn
+X_test, Y_test=gen_data(m,d)    
+
+for i in range(0,10):
+
+train=list(map(gen_data,n,s))
+X_train=[x[0] for x in train]
+Y_train=[x[1] for x in train]
+class_cube=list(map(cube_classifier,X_train,Y_train))
+class_rect=list(map(rectangle_classifier,X_train,Y_train))
+aux_cube=list(map(check_classcube,[X_test]*lenn,[Y_test]*lenn,class_cube))
+check_cube=list(map(np.add,check_cube,aux_cube))
+aux_rect=list(map(check_classrect,[X_test]*lenn,[Y_test]*lenn,class_rect))
+check_rect=list(map(np.add,check_rect,aux_rect))
+
+check_cube=list(map(np.divide,check_cube,[1000]*lenn))
+check_rect=list(map(np.divide,check_rect,[1000]*lenn))
+#plt.subplot(3,2,i)    
+plt.figure(0)    
+plt.plot(list(map(mat.log,n,[10]*lenn)), check_cube)
+plt.figure(1)    
+plt.plot(list(map(mat.log,n,[10]*lenn)), check_rect)
+#plt.ylim([0.15,0.5])
+
+plt.figure(0)
+plt.legend(['d=3','d=5', 'd=10', 'd=50', 'd=100' ],loc='upper right')
+plt.xlabel('log(n)')
+plt.ylabel('Risk')
+plt.title("Cube classifier's Risk vs log n train points")
+
+
+plt.figure(1)
+plt.legend(['d=3','d=5', 'd=10', 'd=50', 'd=100', 'd=1000' ],loc='upper right')
+plt.xlabel('log(n)')
+plt.ylabel('Risk')
+plt.title("Rectangle classifier's Risk vs log n train points")
+
+\end{lstlisting}
 
 \end{document}
