@@ -25,22 +25,6 @@
 \usepackage{subfigure}
 \usepackage{dsfont}
 \usepackage{bbm}
-\usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta,calc}
-
-
-
-\tikzset{
-	arro/.style={
-		->,
-		>=latex
-	},
-	bloque/.style={
-		draw,
-		minimum height=1cm,
-		minimum width=0.5cm
-	}  
-}
 
 \newcommand{\su}[2]{\sum\limits_{#1}^{#2}}
 
@@ -596,59 +580,12 @@ Suppose that $a_1,\dots,a_r$ are such that $\{x:\su{i=1}{r}a_i\varphi_i(x)\geq0\
 A lot of classes of sets can be written on the form $\{x:\su{i=1}{d}\varphi_i(x)a_i\geq 0\}$ and the number features $\varphi_i$ (algebraic dimension) will give us an upper bound of the VC dimension. However, there are more complicated things that cannot be written in this form, so finding the VC dimension is not an easy problem in general.\\
 
 \textbf{Example:} Neural networks with one hidden layer. 
-
-\begin{tikzpicture}
-\node[]
-(input)
-{Input};
-\node[bloque,below=of input,label={left:$a_1^Tx+c_1$}]
-(inputi)
-{};
-\node[bloque,below=of inputi,label={left:$a_2^Tx+c_2$}]
-(inputii)
-{};
-\coordinate[below=of inputii] (aux);  
-\node[bloque,below=of aux,label={left:$a_{k-1}^Tx+c_{k-1}$}]
-(inputiii)
-{};
-\node[bloque,below=of inputiii,label={left:$a_k^Tx+c_k$}]
-(inputiv)
-{};
-
-\node[right=of input]
-(proje)
-{Activation};
-\node[bloque,below=of proje]
-(projei)
-{$\sigma$};
-\node[bloque,below=of projei]
-(projeii)
-{$\sigma$};
-\coordinate[below=of projeii] (auxi);  
-\node[bloque,below=of auxi]
-(projeiii)
-{$\sigma$};
-\node[bloque,below=of projeiii]
-(projeiv)
-{$\sigma$};
-
-\node[right=of proje]
-(out)
-{Output};
-\node[bloque,label={right:$b^T\sigma+d$}]
-at (out|-aux)
-(outi)
-{};
-
-\foreach \Valor in {i,ii,iii,iv}
-{
-	\draw[arro] (input\Valor) -- (proje\Valor);
-	\draw[arro] (proje\Valor) -- (outi);
-}  
-
-\end{tikzpicture}
-
-
+\begin{figure}
+	[h!tbp]
+	\centering
+	\includegraphics[scale=0.3]{neurnet.jpg}
+	%\captionsetup{width=13cm}
+\end{figure}
 Now the class of sets would be 
 \begin{equation}
 	\mathcal{A}=\left\{\left\{\su{j=1}{k} b_j \sigma\left(\su{i=1}{d}a_{ij}x^{(i)}+c_j\right)+d\geq 0\right\}:b_j,c_j,d\in\Re,\text{ and }\sigma \text{ fixed decision function}\right\}.
@@ -682,12 +619,12 @@ We would like to minimize the true risk, but we only see the empirical risk, so 
 	R_n(\hat{g}_n^{(k)})+c\sqrt{\frac{V_{\mathcal{C}_k}}{n}},
 \end{equation}
 where $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ is the penalty for complexity that we add. This argument is distribution free, but it is not the best one. Any other penalty smaller than $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ that upper bounds $R_n(\hat{g}_n^{(k)})-\underset{g\in \mathcal{C}_k}{\min}R(g)$ is better. A better one is the Rademacher complexity ($2\mathbb{E}_{\sigma}[\underset{g\in\mathcal{C}}{\sup}\frac{1}{n}\su{i=1}{n}\sigma_i\mathbbm{1}_{g(X_i)\neq Y_i}]$) and it is purely empirical, can be computed by Monte Carlo (the expected value is over the random generated $\sigma$'s), however finding the supreme is a complicated issue, but it is theoretically empirical.
-%\begin{figure}
-%	[h!tbp]
-%	\centering
-%	\includegraphics[scale=0.3]{risk_comparison.jpg}
+\begin{figure}
+	[h!tbp]
+	\centering
+	\includegraphics[scale=0.3]{risk_comparison.jpg}
 	%\captionsetup{width=13cm}
-%\end{figure}
+\end{figure}
 
 If $g_n$ is the classifier minimizing the penalized empirical risk, then
 \begin{equation}
@@ -713,8 +650,8 @@ Suppose that the data is nearly separable. Let's see the algorithm.\\
 
 1. We start with an arbitrary $w_0$, for example $w_0=0$.\\
 2. Then we go through our data points one by one.\\
-At time $t$:\\
-\indent if $w_{t-1}X_tY_t> 0$ then we do nothing\\
+At time $t$:
+\hspace{2cm} if $w_{t-1}X_tY_t> 0$ then we do nothing\\
 \hspace{2cm} if $w_{t-1}X_tY_t\leq 0$ then $w_t=w_{t-1}+X_tY_t$.\\
 3. Stop when all data points are correctly classified. Cycle through the data the several times if needed. \\
 So the linear classifier is $\hat{w}=\su{t}{}X_tY_t\mathbbm{1}_{w_{t-1}X_tY_t\leq 0}$.\\
