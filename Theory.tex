@@ -773,4 +773,162 @@ This result implies that under the conditions that our data is linearly separabl
  \\
  which is $f^*$ the optimal function. Note that $f^*(x)>0 \Leftrightarrow \eta(x)>\frac{1}{2}$, so $g^* = sgn(f^*(x))$ is the Bayes classifier. The same argument holds for all convex surrogate risks.
  
+
+\section{Kernel methods}
+
+Suppose that $X_i \in R^d$. We may define a ``feature map'' $\Phi : R^d \rightarrow R^D$ where $ D>d$ and work with $(\Phi(X_i), Y_i), \dots, (\Phi(X_n), Y_n)$ and do linear classification in $R^D$. If one achieves a classifier that correctly classifies most of the data with a high margin, then the generalization error is small. The key of kernel methods methods is the inner product $<\Phi(x), \Phi(y)> = \Phi(x)^T \Phi(y) = K(x,y)$.\\
+
+\textbf{Def.} Let $\Omega$ be a vector space (if $x, y \in \Omega$ then $ax + by \in \Omega \ \forall \ a,b \in \mathbb{R})$. An inner product assigns a real number to any $x,y \in \Omega: <x,y>$ such that
+\begin{align}
+	&<x,y> = <y,x>\\
+	&<ax + by, z> = a<x,z> + b<y, z>\\
+	&<x,x> = 0 \Leftrightarrow x = 0
+\end{align}
+
+\textbf{Example:}\\
+
+$<x,y> = x^Ty \quad \forall ,y \in \mathbb{R}^d$\\
+
+$<x,y> = x^TAy \ \text{if A is symmetric positive definite}$\\
+
+If $\Omega$ is the set of all functions $f: \mathbb{R} \rightarrow \mathbb{R}$ s.t. $\int f(x)^2 dx < \infty$. Then,\\
+
+$<f,g> = \int f(x) g(x) dx$ is an inner product for $f, g \in \Omega$\\
+
+\textbf{Def.} A complete vector space with an inner product is called a Hilbert Space.\\
+
+\textbf{Def.}\ A function $k : \Omega \ \text{x}\ \Omega \rightarrow \mathbb{R}$ is a kernel if there exists a feature map $\Phi : \Omega \rightarrow \mathcal{H}$ such that $k(x,y) = <\Phi(x), \Phi(y)>$.\\
+
+\textbf{Example:} Let $\Omega = \mathbb{R}^2$ and let $\Phi : \mathbb{R}^2 \rightarrow \mathbb{R}^3$ be a feature map defined by
+
+$$
+\Phi \begin{bmatrix}
+x_1 \\
+x_2
+\end{bmatrix} = (x^2_1, x^2_2, \sqrt{2}x_1x_2)^T
+$$
+
+
+
+A linear function in the linear space is:
+$$f(x_1,x_2) = ax^2_1 + bx^2_2 + c\sqrt{2}x_1x_2 \quad \text{is a quadratic function in}\ \mathbb{R}^2$$
+
+Then $<\Phi\begin{bmatrix}
+x_1 \\
+x_2
+\end{bmatrix}, \Phi\begin{bmatrix}
+y_1 \\
+y_2
+\end{bmatrix}> = x^2_1y_1^2 + x_2^2y_2^2 + 2x_1x_2y_1y_2 = (x_1y_1 + x_2y_2)^2 = (x^Ty)^2$
+
+Hence, in $\mathbb{R}^2$, $K(x,y) = (x^Ty)^2$ is a kernel function.\\
+
+\textbf{Theorem:} A function $K : \Omega\ \text{x}\ \Omega$ is a kernel if and only if K is a \textbf{positive definite} function, that is, the matrix $(K(x_i,x_j))_{n x n}$ is positive definite $\forall n\ \text{and}\ x_i, \dots, x_n \in \Omega$.
+
+\subsection{Properties of kernels and examples}
+
+If $K_1, K_2$ are kernels on $\Omega$, then 
+\begin{itemize}
+	\item $K_1 + K_2$, $K_1 \cdot K_2$, $a - K$ are all kernels, for $a>0$.
+	\item $K(x,y) = f(x)f(y)$ is a kernel for any $f: \Omega \rightarrow \mathbb{R}$.
+	\item $K(x,y) = P(K(x,y))$ is a kernel for any polynomial P with positive coefficients.
+	\item $e^{K(x,y)}$ is also a kernel.
+	\item $e^{||x-y||^2 /(2\sigma^2)}$ is the Gaussian kernel, where $\sigma$ is any positive number.
+	\item $K(x,y) = (x^Ty)^k$ is the polynomial kernel in $\mathbb{R}^d$ for any $k>1$
+\end{itemize}
+
+Intuitively, a kernel, being an inner product, is a similarity measure. The inner product $<x,y>$ is higher when the difference between $x,y$ is smaller.
+
+Let's imagine we want to classify news articles. In text classification we have sequences of strings that we need to classify. In these cases one often uses ``string kernels'' as similarity measures. One possibility could be the number of (contiguous) subsequences of a certain length that appear in both strings.
+
+\subsection{Kernel perceptron}
+
+\textbf{Algorithm:}
+\begin{enumerate}
+	\item[(0)] $w_0 = 0$
+	\item[(1)] $w_{t+1} = w_t + X^{t+1}Y^{t+1}$ if $w^T_t X^{t+1}Y^{t+1}<0$. 
+\end{enumerate}
+
+That is, we check if our estimate on a new X $w^T_t X^{t+1}$ correctly classifies $Y^{t+1}$. The resulting classifier is
+
+\begin{equation}
+g(x) = sgn(w_N^T x) = sgn((\sum_{i=1}^{n} m_i Y_i X_i)^T x) = sgn(\sum_{i=1}^{n}m_i Y_i(X_i^Tx))
+\end{equation}
+
+where $m_i$ is the number of times $X_i$ was incorrectly classified.\\
+
+This shows a ``dual'' representation of the algorithm:\\
+
+At time 0, $\alpha_i^{(0)} = 0 \quad \forall \ i = 1, \dots, n$\\
+At time t, if $Y^{t+1} \neq sgn(\sum_{i=1}^{n} \alpha_i Y_i X_i^TX^{t+1}) $ then set $\alpha_i^{t+1} = \alpha_i^t + 1$\\
+
+where $\alpha_i$ is the number of times we make a mistake for point $i$.\\ 
+
+Note that $X_i^TX^{t+1}$ can be replaced by $K(X_i, X^{t+1})$ realizing the perceptron algorithm in the Hilbert space in which $K$ is an inner product.
+
+
+\subsection{Kernelizing regularized risk minimizers}
+
+Suppose we want to compute
+\begin{equation}
+min[f(<w,\Phi(x_1)>, \dots, <w, \Phi (x_n)>, R(||w||)]
+\end{equation}
+
+Where $ R(||w||)$ is a positive increasing penalty. From now on $a_i = <w,\Phi(x_i)>$\\
+
+\textbf{Examples} \\
+``Hard-margin'' SVM:
+$$f(a_1, \dots, a_n) = \begin{cases}
+0\ \text{if}\ Y_i(a_i + b)\geq 1\\
+\infty \ \text{otherwise}
+\end{cases}$$
+
+In this case, the positive increasing penalty $R(x) = x^2$.\\
+
+That is, we add no risk if we manage to classify with a big margin $b$ but pay infinite if we don't. ``Hard-margin'' SVM only works for data that are linearly separable.\\
+
+``Soft-margin'' SVM:
+$$
+f(a_1,\dots,a_n) = \frac{1}{n} \sum_{i=1}^{n}(1 - Y_ia_i)_+
+$$
+
+In this case, the positive increasing penalty $R(x) = \lambda x^2$\\
+
+Ridge regression:
+$$
+f(a_1, \dots, a_n) = \frac{1}{n} \sum_{i=1}^{n}(a_i - Y_i)^2
+$$
+
+Here again, the regularization parameter $R(x) = \lambda x^2$.\\
+
+LASSO is not of this form because it uses the L1-norm and we need the L2-norm as we will soon see.
+
+\subsection{Representer theorem}
+
+The representer theorem states that the previous minimization problem always has a solution of the form $w = \sum_{i=1}^{n} x_i \Phi(x)$. That is, the representer theorem restricts the search of the solution to a finite dimensional space.
+
+\textbf{Proof.} Let $w^*$ be a solution. We may write $w* = \sum_{i=1}^{n}\alpha_i \Phi(x_i) + u$, where $u$ is orthogonal to the subspace spanned by $\Phi(x_1),\dots, \Phi(x_n)$. So $<u_i, \Phi(x)> = 0 \quad \forall \ i=1,\dots,n$.
+
+\begin{equation}
+||w^*||^2 = ||w||^2 + ||u||^2.
+\end{equation}
+
+
+In particular, $||w|| \leq ||w^*||$. Hence $R(||w||) \leq R(||w^*||).$
+
+On the other hand, $<w,\Phi(x_i)> = <w^*, \Phi(x_i)> \ \forall \ i = 1,\dots, n$. Hence, $f(<w,\Phi(x_1)>, \dots, <w, \Phi (x_n)> = f(<w^*,\Phi(x_1)>, \dots, <w^*, \Phi (x_n)>$. So, the minimizer must be in the span of the data $\Phi(x_1), \dots, \Phi(x_n)$. This means that it suffices to search for solutions of the form $w = \sum_{i=1}^{n}\alpha_i \Phi(x_i)$. So,
+
+\begin{equation}
+<w,\Phi(x_j)> = \sum_{i=1}^{n} \alpha_i <\Phi(x_i), \Phi(x_j)> = \sum_{i=1}^{n}\alpha_i K(x_i, x_j),
+\end{equation}
+
+and
+
+\begin{equation}
+||w||^2 = \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_i \alpha_j <\Phi(x_i), \Phi(x_j)> = \sum_{i=1}^{n}\sum_{j=1}^{n} \alpha_i \alpha_j K(x_i, x_j).
+\end{equation}
+
+Therefore, the solution can be computed by the Gram matrix $G = (K(x_i,x_j))_{nxn}$.
+
+ 
 \end{document}
