@@ -372,7 +372,7 @@ where the last inequality comes by maximizing the expression. This bound decreas
 Nearest neighbor rules are examples of averaging rules, the simplest such rules are partitioning classifiers. These are rules that partition the space into small cubes and take a majority vote within the cell of the partition where the point $X$ to be classified lies. If $h$ is the size of the cube, and $h\rightarrow 0$ such that $nh^d\rightarrow \infty$ for $n\rightarrow\infty$, then the rule is universally consistent. 
 Although the problem becomes dangerous when we increase the dimensions, because when one divides the space in cells of length $h$ the number of cells increases exponentially with the dimension. That makes the space full of cells and, as in order to be able to average inside each cell we need a fair number of points on it, we would need a lot of points to populate all the cells. We suffer the curse of dimensionality.\\
 
-\subsection{Empirical risk minimization}
+\section{Empirical risk minimization}
 
 Let $g:\Omega\rightarrow\{0,1\}$ be a classifier that not depends on data. Given data $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$, to know how good the estimator is we can estimate the risk as $R(g)=\mathbb{P}(g(X)\neq Y)$ by $R_n(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i)\neq Y_i}$. By Hoeffding's inequality we know that with probability $\geq 1-\delta$, 
 \begin{equation}
@@ -404,7 +404,7 @@ Observe that $R(\hat{p}_n)-R_n(\hat{p}_n)\leq\underset{j=1,\dots,N}{\max}R(g_j)-
 \begin{equation}
 	R(\hat{p}_n)-R(\bar{p})\leq c\left(\sqrt{\frac{R(\bar{p})\log\frac{N}{\delta}}{n}}+\frac{\log\frac{N}{\delta}}{n}\right), \text{ }c \text{ constant}.
 \end{equation}
-\subsubsection{The resubstitution estimate:}
+\subsection{The resubstitution estimate:}
 
 Let $p_n$ be a data-based estimate trained on $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$. We want to estimate the risk $R(p_n)=\mathbb{P}(p_n(X)\neq Y|D_n)$ based on the same data $D_n$. The resubstitution estimate is just counting how many errors we did on our data
 \begin{equation}
@@ -416,7 +416,7 @@ Observe that in this case this is not a sum of independent variables, because $p
 \end{equation}
 If the classifier chooses from a small class, then the resubstitution estimate would work because we could bound it, otherwise it would be impossible. Observe that in particular the 1-NN has $R_n(p_n)=0$ (for each point the nearest neighbor will be itself).
 
-\subsubsection{The deleted (or leave one out crossvalidation) estimate}
+\subsection{The deleted (or leave one out crossvalidation) estimate}
 
 In this case the empirical risk would be computed as the sum of errors made on each point, but for every point $i$ we would train a $p_n^{(i)}$ with the data except $i$, so $p_n^{(i)}$ would be train on $D_n^{(-i)}=(X_1,Y_1),\dots,(X_{i-1},Y_{i-1}), (X_{i+1},Y_{i+1}),\dots,(X_n,Y_n)$.
 \begin{equation}
@@ -442,7 +442,7 @@ So, the expected value is almost unbiased,
 
 In general saying something about $\mathbb{P}(|R_n^{(D)}-R(p_n)|>t|)$ is a challenge. All the dependencies that are when leaving one out are not trivial, so a lot of different classes have been studied to see in their particular case how it behaves. In practice we use the approximation that it is the same more or less when leaving one out, which works fairly well if we have a lot of data.
 
-\subsubsection{Data splitting}
+\subsection{Data splitting}
 
 Suppose we have $N$ data-dependent classifiers $p_n^{(1)},\dots,p_n^{(N)}$ trained on the same data $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$. And suppose we have $m$ additional data points $D_m'=(X_1',Y_1'),\dots,(X_m',Y_m')$ to test the performance. Then, we may define \begin{equation}
 	R_n'(p_n^{(j)})=\frac{1}{m}\sum\limits_{i=1}^m\mathbbm{1}_{p_n^{(j)}(X_i')\neq Y_i'}.
@@ -457,7 +457,7 @@ If we condition now on $D_n$, then $p_n^{(j)}$ will be a fixed classifier not de
 \end{equation}
 with probability $\geq 1-\delta$ respect to $D_m'$ conditioned on $D_n$. \\
 
-\subsubsection{Vapnik–Chervonenkis (VC) theory}
+\subsection{Vapnik–Chervonenkis (VC) theory}
 
 We will try to quantify overfitting by taking into account the structure of the class of classifiers. Given a class $\mathcal{C}$ of non-data-dependent classifiers, we want to understand 
 \begin{equation}
@@ -534,14 +534,15 @@ because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality
  	\mathbb{E}\underset{g\in\mathcal{C}}{\sup}|R(g)-R_n(g)|\leq 2\mathbb{E}\sqrt{\frac{2\log 2S(D_n,\mathcal{C})}{n}},
  \end{equation} where $S(D_n,\mathcal{C})$ is the nº of ways the data $X_1,\dots,X_n$ can be classified by classifiers on the class $\mathcal{C}$.\\
  
- \subsubsection*{The shatter coefficient and the VC-dimension}
- Let $\mathcal{A}$ be a class of sets and let $S_{\mathcal{A}}(n=\underset{x_1,\dots,x_n}{\max}S(X_1^n,\mathcal{A}))$. The largest integer $V$ for which $S_{\mathcal{A}}(V)=2^V$ is the \textbf{VC-dimension} of the class $\mathcal{A}$. It will be the last time that $S_{\mathcal{A}}(n)$ is the maximum possible. If $S_{\mathcal{A}}=2^n\forall n$, then $V_{\mathcal{A}}=\infty$.\\
+\subsection*{The shatter coefficient and the VC-dimension}
+Let $\mathcal{A}$ be a class of sets and let $S_{\mathcal{A}}(n=\underset{x_1,\dots,x_n}{\max}S(X_1^n,\mathcal{A}))$. The largest integer $V$ for which $S_{\mathcal{A}}(V)=2^V$ is the \textbf{VC-dimension} of the class $\mathcal{A}$. It will be the last time that $S_{\mathcal{A}}(n)$ is the maximum possible. If $S_{\mathcal{A}}=2^n\forall n$, then $V_{\mathcal{A}}=\infty$.\\
  
- \textbf{Theorem: Sauer's lemma:} For all $n$, $S_{\mathcal{A}}(n)\leq (n+1)^{V_{\mathcal{A}}}$.\\
+\textbf{Theorem: Sauer's lemma:} For all $n$, $S_{\mathcal{A}}(n)\leq (n+1)^{V_{\mathcal{A}}}$.\\
  
- This result is very important, because if the VC-dimension is not $\infty$ the shatter coefficient will be bounded by a polynomial. From that we can rewrite the VC inequality as \begin{equation}
+This result is very important, because if the VC-dimension is not $\infty$ the shatter coefficient will be bounded by a polynomial. From that we can rewrite the VC inequality as 
+\begin{equation}
  	\mathbb{E}[\underset{A\in\mathcal{A}}{\sup}|P_n(A)-P(A)]\leq 2\sqrt{\frac{2V\log 2(n+1)}{n}}\leq c\sqrt{\frac{V_{\mathcal{A}}}{n}}
- \end{equation}
+\end{equation}
 for some constant $c$. The last inequality can be found working harder in a non-trivial way from the Rademacher average.\\
 
 \textbf{Examples:}
@@ -580,12 +581,12 @@ Suppose that $a_1,\dots,a_r$ are such that $\{x:\su{i=1}{r}a_i\varphi_i(x)\geq0\
 A lot of classes of sets can be written on the form $\{x:\su{i=1}{d}\varphi_i(x)a_i\geq 0\}$ and the number features $\varphi_i$ (algebraic dimension) will give us an upper bound of the VC dimension. However, there are more complicated things that cannot be written in this form, so finding the VC dimension is not an easy problem in general.\\
 
 \textbf{Example:} Neural networks with one hidden layer. 
-\begin{figure}
-	[h!tbp]
-	\centering
-	\includegraphics[scale=0.3]{neurnet.jpg}
+%\begin{figure}
+%	[h!tbp]
+%	\centering
+%	\includegraphics[scale=0.3]{neurnet.jpg}
 	%\captionsetup{width=13cm}
-\end{figure}
+%\end{figure}
 Now the class of sets would be 
 \begin{equation}
 	\mathcal{A}=\left\{\left\{\su{j=1}{k} b_j \sigma\left(\su{i=1}{d}a_{ij}x^{(i)}+c_j\right)+d\geq 0\right\}:b_j,c_j,d\in\Re,\text{ and }\sigma \text{ fixed decision function}\right\}.
@@ -609,7 +610,7 @@ The crucial result from the properties is that once we have found the shatter co
 	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}|\mathbb{P}_n-\mathbb{P}|\leq c\sqrt{\frac{V_{\mathcal{A}}\log n}{n}}.
 \end{equation}
 This can be used in model selection.
-\subsubsection{Model selection: Structure risk minimization, complexity regularization}
+\subsection{Model selection: Structure risk minimization, complexity regularization}
 A simple case to illustrate this is to suppose that we have data, we want to classify it by intervals but we want to choose how many intervals we permit. So, we want to choose the complexity of our classifier given data. \\
 
 Let $\mathcal{C}_1\subset \mathcal{C}_2\subset\dots$ classes of classifiers and suppose that for each $\mathcal{C}_k$, $\hat{g}_n^{(k)}=\underset{g\in\mathcal{C}_k}{\text{argmin }}R_n(g)$. The empirical risk and the true risk will not have the same form. Typically the empirical risk will be smaller than the true risk and will be decreasing with $k$ until it reaches 0 at some point. While the true risk have a first decreasing part until it reaches the minimum and then slowly increases with $k$. Usually we "pay more" in the true risk by slightly underfitting that for slight overfitting.\\
@@ -619,12 +620,12 @@ We would like to minimize the true risk, but we only see the empirical risk, so 
 	R_n(\hat{g}_n^{(k)})+c\sqrt{\frac{V_{\mathcal{C}_k}}{n}},
 \end{equation}
 where $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ is the penalty for complexity that we add. This argument is distribution free, but it is not the best one. Any other penalty smaller than $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ that upper bounds $R_n(\hat{g}_n^{(k)})-\underset{g\in \mathcal{C}_k}{\min}R(g)$ is better. A better one is the Rademacher complexity ($2\mathbb{E}_{\sigma}[\underset{g\in\mathcal{C}}{\sup}\frac{1}{n}\su{i=1}{n}\sigma_i\mathbbm{1}_{g(X_i)\neq Y_i}]$) and it is purely empirical, can be computed by Monte Carlo (the expected value is over the random generated $\sigma$'s), however finding the supreme is a complicated issue, but it is theoretically empirical.
-\begin{figure}
-	[h!tbp]
-	\centering
-	\includegraphics[scale=0.3]{risk_comparison.jpg}
+%\begin{figure}
+%	[h!tbp]
+%	\centering
+%	\includegraphics[scale=0.3]{risk_comparison.jpg}
 	%\captionsetup{width=13cm}
-\end{figure}
+%\end{figure}
 
 If $g_n$ is the classifier minimizing the penalized empirical risk, then
 \begin{equation}
@@ -632,7 +633,7 @@ If $g_n$ is the classifier minimizing the penalized empirical risk, then
 \end{equation} 
 where $\bar{g}^{(k)}=\underset{g\in\mathcal{C}_k}{\text{argmin }}R(g)$.
 
-\subsection{Machine Learning Algorithms}
+\section{Machine Learning Algorithms}
 
 \subsubsection{Linear Classifiers}
 
@@ -676,102 +677,102 @@ so $t\leq\left(\frac{R}{\gamma}\right)^2$ Q.E.D.\\
 
 This result implies that under the conditions that our data is linearly separable in a certain $d$-dimensional space with a margin $\gamma$ and the constrain $R$.
 
- \section{Large Margin Classifiers}
+\subsection{Large Margin Classifiers}
  
- If the data are not linearly separable, the perceptron algorithm does not halt. In this section, we consider classifiers of the form:
+If the data are not linearly separable, the perceptron algorithm does not halt. In this section, we consider classifiers of the form:
  
- \begin{equation*}
- g_f(x)=\begin{cases}
- 1, & \text{if} \quad f(x) > 0\\
- -1, & \text{otherwise}.
- \end{cases}
- \end{equation*}
- where $f:\mathfrak{X} \rightarrow R$.\\
- \textbf{Example.} $f(x) = w^TX+c$ for some $w \in \mathbb{R}^d$.
- We write $R(f) = R(g_f) = P(-Yf(x)>0) = \mathbb{E}\mathbbm{1}_{-yf(x)>0}$ for the risk or expectation of the number of mislabeled inputs.
+\begin{equation*}
+	g_f(x)=\begin{cases}
+	1, & \text{if} \quad f(x) > 0\\
+	-1, & \text{otherwise}.
+	\end{cases}
+\end{equation*}
+where $f:\mathfrak{X} \rightarrow R$.\\
+\textbf{Example.} $f(x) = w^TX+c$ for some $w \in \mathbb{R}^d$.
+We write $R(f) = R(g_f) = P(-Yf(x)>0) = \mathbb{E}\mathbbm{1}_{-yf(x)>0}$ for the risk or expectation of the number of mislabeled inputs.
  
- One usually "convexifies" the optimization problem by replacing the cost function $\mathbbm{1}_x>0$ by a convex (or at least continuous) cost function, such that,
+One usually "convexifies" the optimization problem by replacing the cost function $\mathbbm{1}_x>0$ by a convex (or at least continuous) cost function, such that,
  
- $$\phi(x) \geq \mathbbm{1}_x>0$$
+$$\phi(x) \geq \mathbbm{1}_x>0$$
  
  
- \begin{wrapfigure}{R}{0.4\textwidth}
+\begin{wrapfigure}{R}{0.4\textwidth}
  	\centering
  	\includegraphics[width=0.45\textwidth]{cost_functions.pdf}
- \end{wrapfigure}
+\end{wrapfigure}
  
- For instance, in a linear regression setting, $R_n(w) = \frac{1}{n} \sum_{i=1}^{n} \mathbbm{1}_{-yw^Tx_i>0}$, which is not convex, therefore, we need a function $\frac{1}{n} \sum_{i=1}^{n} \phi(-yw^Tx_i>0)$ such that it becomes convex problem, which is easier to optimize.\\
+For instance, in a linear regression setting, $R_n(w) = \frac{1}{n} \sum_{i=1}^{n} \mathbbm{1}_{-yw^Tx_i>0}$, which is not convex, therefore, we need a function $\frac{1}{n} \sum_{i=1}^{n} \phi(-yw^Tx_i>0)$ such that it becomes convex problem, which is easier to optimize.\\
  
- \textbf{Example.} ``Hinge loss" a.k.a. Rectified Linear Unit (ReLU)\\
- $$\phi(x) = (1+x)_+$$
- \textbf{Example.} Exponential loss\\
- $$\phi(x) = e^x$$
- \textbf{Example.} Logarithmic loss\\
- $$\phi(x) = log_2(1+e^x)$$
+\textbf{Example.} ``Hinge loss" a.k.a. Rectified Linear Unit (ReLU)\\
+$$\phi(x) = (1+x)_+$$
+\textbf{Example.} Exponential loss\\
+$$\phi(x) = e^x$$
+\textbf{Example.} Logarithmic loss\\
+$$\phi(x) = log_2(1+e^x)$$
  
- Define $$A(f) = \mathbbm{E}\phi(-yf(x))$$ $$A_n(f) = \frac{1}{n}\sum_i \phi(-yf(x_i)),$$ such that 
- $$R(f) \leq A(f)$$
- $$R_n(f) \leq A_n(f)$$
+Define $$A(f) = \mathbbm{E}\phi(-yf(x))$$ $$A_n(f) = \frac{1}{n}\sum_i \phi(-yf(x_i)),$$ such that 
+$$R(f) \leq A(f)$$
+$$R_n(f) \leq A_n(f)$$
  
- Suppose $\mathfrak{F}$ is a class of real valued functions and we use data to learn $f_n$ (say, by minimizing $A_n(f)$ over $f \in \mathfrak{F}$). Then,
+Suppose $\mathfrak{F}$ is a class of real valued functions and we use data to learn $f_n$ (say, by minimizing $A_n(f)$ over $f \in \mathfrak{F}$). Then,
  
- \begin{align*}
- R(f_n)\leq A(f_n) &\leq A_n(f_n) + \max_{f \in \mathfrak{F}}(A(f) - A_n(f))\\
- & \approx A_n(f_n) + \mathbbm{E}\ [\max_{f \in \mathfrak{F}}(A(f) - A_n(f))]\\
- & \leq A_n(f_n) + 2 \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma \phi(-y_i f(x_i))|]\\
- & \leq A_n(f) + 2L \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma f(x_i)|]
- \end{align*}
+\begin{align*}
+	 R(f_n)\leq A(f_n) &\leq A_n(f_n) + \max_{f \in \mathfrak{F}}(A(f) - A_n(f))\\
+	 & \approx A_n(f_n) + \mathbbm{E}\ [\max_{f \in \mathfrak{F}}(A(f) - A_n(f))]\\
+	 & \leq A_n(f_n) + 2 \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma \phi(-y_i f(x_i))|]\\
+	 & \leq A_n(f) + 2L \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma f(x_i)|]
+\end{align*}
  
- \textbf{Example.} $\mathfrak{F} = \{f(x) = w^Tx : ||w|| = 1\}$ then the Rademacher average
+\textbf{Example.} $\mathfrak{F} = \{f(x) = w^Tx : ||w|| = 1\}$ then the Rademacher average
  
- $$\mathbbm{E} |sup \ \frac{1}{n} \sum \sigma_i w^T x_i| = \mathbbm{E} [sup \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i)]$$
+$$\mathbbm{E} |sup \ \frac{1}{n} \sum \sigma_i w^T x_i| = \mathbbm{E} [sup \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i)]$$
  
- Note that $\sup\limits_{w:||w||=1} \ w^T a = ||a||$, therefore
+Note that $\sup\limits_{w:||w||=1} \ w^T a = ||a||$, therefore
  
- \begin{align*}
- \mathbbm{E} [sup \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i)] &=\mathbbm{E} ||\frac{1}{n} \sum_i \sigma_i x_i||\\
- &\leq \sqrt{\mathbbm{E}||\frac{1}{n} \sum_i \sigma_i x_i||^2}\\
- &= \sqrt{\mathbbm{E} \sum_j (\frac{1}{n} \sum_i \sigma_i X_i^{(i)})^2}\\
- &= \frac{1}{n} \sqrt{\mathbbm{E} \sum_i ||X_i||^2}
- \end{align*}
+\begin{align*}
+	 \mathbbm{E} [sup \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i)] &=\mathbbm{E} ||\frac{1}{n} \sum_i \sigma_i x_i||\\
+	 &\leq \sqrt{\mathbbm{E}||\frac{1}{n} \sum_i \sigma_i x_i||^2}\\
+	 &= \sqrt{\mathbbm{E} \sum_j (\frac{1}{n} \sum_i \sigma_i X_i^{(i)})^2}\\
+	 &= \frac{1}{n} \sqrt{\mathbbm{E} \sum_i ||X_i||^2}
+\end{align*}
  
- where $||X_i||^2 \leq R^2$, hence:
+where $||X_i||^2 \leq R^2$, hence:
  
- $$\frac{1}{n} \sqrt{\mathbbm{E} \sum_i ||X_i||^2} \leq \frac{R}{\sqrt{n}}$$
+$$\frac{1}{n} \sqrt{\mathbbm{E} \sum_i ||X_i||^2} \leq \frac{R}{\sqrt{n}}$$
  
- which is independent of the dimensions of the problem. If we apply the previous to our inequality $R(f_n) \leq A_n(f) + 2L \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma f(x_i)|]$, we get
+which is independent of the dimensions of the problem. If we apply the previous to our inequality $R(f_n) \leq A_n(f) + 2L \mathbbm{E}\ [max |\frac{1}{n} \sum_{i=1}^{n}\sigma f(x_i)|]$, we get
  
- $$R(f_n) \leq A_n(f_n) + \frac{2LR}{\sqrt{n}} + c$$
+$$R(f_n) \leq A_n(f_n) + \frac{2LR}{\sqrt{n}} + c$$
  
- where $c$ is a small constant.\\
+where $c$ is a small constant.\\
  
  
- \begin{wrapfigure}{L}{0.4\textwidth}
+\begin{wrapfigure}{L}{0.4\textwidth}
  	\centering
  	\includegraphics[width=0.35\textwidth]{marginloss.pdf}
  	\caption{\small With the margin loss function, observations within the margins, although correctly classified, add risk as well.}
- \end{wrapfigure}
+\end{wrapfigure}
  
- Now, consider the "margin loss", then $L = \frac{1}{\gamma}$, and
- \begin{align*}
- R(f_n) &\leq A_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c\\
- &\leq R_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c
- \end{align*}
- where the empirical risk $R_n^{\gamma}(f) = \frac{1}{n} \sum_i \mathbbm{1}_{y_iw^Tx_i < -\gamma}$ and $\gamma$ is the distance from our linear classifier that defines a boundary beyond which a correct classification is not considered risk (and viceversa).\\
+Now, consider the "margin loss", then $L = \frac{1}{\gamma}$, and
+\begin{align*}
+	 R(f_n) &\leq A_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c\\
+	 &\leq R_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c
+\end{align*}
+where the empirical risk $R_n^{\gamma}(f) = \frac{1}{n} \sum_i \mathbbm{1}_{y_iw^Tx_i < -\gamma}$ and $\gamma$ is the distance from our linear classifier that defines a boundary beyond which a correct classification is not considered risk (and viceversa).\\
  
- If we manage to classify with a large margin, then $R(f_n)$ will be small no matter the dimension, hence we can map the problem into a larger dimension.
+If we manage to classify with a large margin, then $R(f_n)$ will be small no matter the dimension, hence we can map the problem into a larger dimension.
  
- Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk is $\mathbbm{E}[e^{-yf(x)}] = \mathbbm{E_xE_y}[e^{-y\phi(x)}|X]$, where $\mathbbm{E_y}[e^{-y\phi(x)}|X] = \eta(x) e^{-f(x)} + (1-\eta(x)e^{f(x)})$, and that we can minimize:
+Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk is $\mathbbm{E}[e^{-yf(x)}] = \mathbbm{E_xE_y}[e^{-y\phi(x)}|X]$, where $\mathbbm{E_y}[e^{-y\phi(x)}|X] = \eta(x) e^{-f(x)} + (1-\eta(x)e^{f(x)})$, and that we can minimize:
  
- \begin{align*}
- arg min &\ \eta e^{-f} + (1-\eta)e^f\\
- & e^{2f} = \frac{\eta}{1 - \eta}\\
- & f = \frac{1}{2} ln \frac{\eta}{1 - \eta}
- \end{align*}
- \linebreak
- \linebreak
- \\
- which is $f^*$ the optimal function. Note that $f^*(x)>0 \Leftrightarrow \eta(x)>\frac{1}{2}$, so $g^* = sgn(f^*(x))$ is the Bayes classifier. The same argument holds for all convex surrogate risks.
+\begin{align*}
+	 arg min &\ \eta e^{-f} + (1-\eta)e^f\\
+	 & e^{2f} = \frac{\eta}{1 - \eta}\\
+	 & f = \frac{1}{2} ln \frac{\eta}{1 - \eta}
+\end{align*}
+\linebreak
+\linebreak
+\\
+which is $f^*$ the optimal function. Note that $f^*(x)>0 \Leftrightarrow \eta(x)>\frac{1}{2}$, so $g^* = sgn(f^*(x))$ is the Bayes classifier. The same argument holds for all convex surrogate risks.
  
 
 \section{Kernel methods}
@@ -871,7 +872,7 @@ Note that $X_i^TX^{t+1}$ can be replaced by $K(X_i, X^{t+1})$ realizing the perc
 
 Suppose we want to compute
 \begin{equation}
-min[f(<w,\Phi(x_1)>, \dots, <w, \Phi (x_n)>, R(||w||)]
+	min[f(<w,\Phi(x_1)>, \dots, <w, \Phi (x_n)>, R(||w||)]
 \end{equation}
 
 Where $ R(||w||)$ is a positive increasing penalty. From now on $a_i = <w,\Phi(x_i)>$\\
