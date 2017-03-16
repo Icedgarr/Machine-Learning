@@ -175,11 +175,11 @@ Assuming that $Var(X)=\sigma^2<\infty$, by Chebyshev
 \end{equation}
 for each $j=1,\dots,K$ (we could take a probability different of $\frac{3}{4}$ that may result in a better constant, but $\frac{3}{4}$ is good enough). 
 \begin{proof}
-	$P(|X-\mathbb{E}X|\geq\epsilon)\leq\frac{\sigma^2}{n\epsilon^2}=\delta\Leftrightarrow$ with probability $\geq 1-\delta$, $|X-\mathbb{E}X|<\frac{\sigma}{\sqrt{n\delta}}$. Taking $\delta=\frac{1}{4}$, $\frac{\sigma}{\sqrt{n\delta}}=\frac{2\sigma}{\sqrt{n}}$.
+	$P(|X-\mathbb{E}X|\geq\epsilon)\leq\frac{\sigma^2}{n\epsilon^2}=\delta\Leftrightarrow P(|X-\mathbb{E}X|<\frac{\sigma}{\sqrt{n\delta}}) \geq \frac{\sigma^2}{n\frac{\sigma}{\sqrt{n\delta}}} = 1-\delta$. Taking $\delta=\frac{1}{4}$, $\frac{\sigma}{\sqrt{n\delta}}=\frac{2\sigma}{\sqrt{n}}$.
 \end{proof}
 And for the estimator, $|\hat{m}_n-m|\geq \frac{2\sigma}{\sqrt{l}}$ iif at least half of the $\mu_1,\dots,\mu_K$ are $\frac{2\sigma}{\sqrt{l}}$ away from $m$. Then, the problem is reduced to the binomial and Hoeffding's inequality can be applied:
 \begin{equation}
-	P(\text{Bin}(K,\frac{1}{4})\geq \frac{K}{2})=P(\text{Bin}(K,\frac{1}{4}-\frac{1}{4})\geq \frac{K}{4})\leq e^{-\frac{2K^2}{16K}}=e^{-\frac{K}{8}}.
+	P(\text{Bin}(K,\frac{1}{4})\geq \frac{K}{2})=P(\text{Bin}(K,\frac{1}{4})-\frac{1}{4}\geq \frac{K}{4})\leq e^{-\frac{2K^2}{16K}}=e^{-\frac{K}{8}}.
 \end{equation} 
 Then, we can choose $K$ according to the precision $\delta$ we want, $e^{-\frac{K}{8}}=\delta\Rightarrow K=[8\log\frac{1}{\delta})]$ so $l=\frac{n}{8\log\frac{1}{\delta}}$.\\
 
@@ -196,7 +196,7 @@ This bound is much better than the one obtained by Chebyshev. However it has two
 \subsection{By Random Projection}
 The idea is to map a set of $a_1,a_2,\dots,a_N$ points that belong to a space of dimension $D$, $\Re^D$ into a smaller space of dimension $d$, $\Re^d$ with $d<<D$. So we look for a function $f:\Re^D\rightarrow\Re^d$ such that $f(a_1),\dots,f(a_N)$ is a good representation of $a_1,\dots,a_N$. \\
 
-In this case the fundamental characteristic of "good representation" would be that the pairwise distances between points are preserved. This characteristic is important on clustering. But in general, if inside the set \{$a_1,\dots,a_N$\} there are $s$ points that are independent, then at most we can only reduce the dimension to $\Re{s-1}$, which is not enough because we could have a number of points of the order of $N$, so the dimensionality reduction would be minimal.\\
+In this case the fundamental characteristic of ``good representation" would be $||f(a_i) - f(a_j)|| \approx ||a_i - a_j||$ that the pairwise distances between points are preserved. This characteristic is important on clustering. But in general, if inside the set \{$a_1,\dots,a_N$\} there are $s$ points that are independent, then at most we can only reduce the dimension to $\Re^{s-1}$, which is not enough because we could have a number of points of the order of $N$, so the dimensionality reduction would be minimal.\\
 
 However, if we allow some slack, the situation changes dramatically. We require that $f$ is such that
 
