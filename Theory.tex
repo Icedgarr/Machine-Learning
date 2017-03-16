@@ -74,7 +74,7 @@ If $X\geq 0$ is a non-negative random variable and $t>0$, then
 	P(X\geq t)\leq \frac{\mathbb{E}X}{t}.
 \end{equation}
 \begin{proof}
-	$X\geq t\mathbbm{1}_{X\geq t}$. Taking expectation on both sides: $\mathbb{E}X\geq \mathbb{E}\mathbbm{1}_{X\geq t}=tP(X\geq t)$. \\ So, $P(X\geq t)=\frac{\mathbb{E}\mathbbm{1}_{X\geq t}}{t}$. \\ Q.E.D
+	$X\geq t\mathbbm{1}_{X\geq t}$. Taking expectation on both sides: $\mathbb{E}X\geq \mathbb{E}t\mathbbm{1}_{X\geq t}=tP(X\geq t)$. \\ So, $P(X\geq t) \leq \frac{\mathbb{E}\mathbbm{1}_{X\geq t}}{t}$. \\ Q.E.D.
 \end{proof}
 
 \subsection*{Chebyshev's inequality}
@@ -85,18 +85,19 @@ For any random variable with finite variance
 \end{equation}
 
 \begin{proof}
-	$P(|X-\mathbb{E}|\geq t)=P((X-\mathbb{E})^2\geq t^2)$. By Markov's inequality $P((X-\mathbb{E})^2\geq t^2)\leq \frac{\mathbb{E}(X-\mathbb{E})^2}{t^2}=\frac{\text{Var} X}{t^2}$.\\
-	Q.E.D
+	$P(|X-\mathbb{E}X|\geq t)=P((X-\mathbb{E}X)^2\geq t^2)$. \\
+	By Markov's inequality $P((X-\mathbb{E}X)^2\geq t^2)\leq \frac{(X-\mathbb{E}X)^2}{t^2}=\frac{\text{Var} X}{t^2}$.\\
+	Q.E.D.
 \end{proof}
 
-In particular, if $S=\su{i=1}{n} x_i$ independent, then $\text{Var}(S)=\sum\limits_{i=1}^n \text{Var}(x_i)$ and $=n\text{Var}(x_1)$ if they are independent identically distributed (iid from now on). So,
+In particular, if $S=\su{i=1}{n} X_i$ independent random variables, then $\text{Var}(S)=\sum\limits_{i=1}^n \text{Var}(X_i)$ and $=n\text{Var}(X_1)$ if they are independent identically distributed (iid from now on). So,
 \begin{equation}
-	P(|S-\mathbb{E} S|\geq t)\leq \frac{n\text{Var}(x_1)}{t^2}.
+	P(|S-\mathbb{E} S|\geq t)\leq \frac{n\text{Var}(X_1)}{t^2}.
 \end{equation}
 
-That implies the weak law of larges numbers, dividing by $n$:
+That implies the weak law of large numbers, dividing by $n$:
 \begin{equation}
-	P(|\frac{1}{n}S-\frac{1}{n}\mathbb{E}S|\geq \epsilon)\leq\frac{\sigma^2}{n\epsilon^2}\rightarrow 0\text{ as }n\rightarrow\infty .
+	P(|\frac{1}{n}S-\mathbb{E}\frac{1}{n}S|\geq \epsilon) = P(|S -\mathbbm{E}S| \geq n\epsilon)\leq\frac{Var(S)}{(n\epsilon)^2} = \frac{Var(X_1)}{n\epsilon^2} \rightarrow 0\text{ as }n\rightarrow\infty.
 \end{equation} 
 
 
@@ -124,7 +125,7 @@ Though Hoeffding's Lemma and Chernoff's bounds, we get the Hoeffding's inequalit
 (In particular for $X\in[0,1]$, $P(S-\mathbb{E}S\geq t)\leq e^{-\frac{2t^2}{n}}$)
 
 \begin{proof}
-	Let $S$ be the sum of $n$ iid random variables, by Chernoff's bounds $P(S-\mathbb{E}S\geq t)\leq \underset{\lambda>0}{\text{min}}\frac{\prod\limits_{i=1}^n \mathbb{E}[e^{\lambda(X_i-\mathbb{E}X_i)}]}{e^{\lambda t}}$, now using Hoeffding's Lemma, $\underset{\lambda>0}{\min}\frac{\prod\limits_{i=1}^n \mathbb{E}[e^{\lambda(X_i-\mathbb{E}X_i)}]}{e^{\lambda t}}\leq \underset{\lambda>0}{\min}\frac{e^{\lambda^2 n(b-a)}}{\lambda t}=\underset{\lambda>0}{\min}e^{\frac{\lambda^2n(b-a)}{8}-\lambda t}$. Minimizing (taking derivative to 0) we get $\lambda=\frac{4t}{n(b-a)}$, so $P(S-\mathbb{E}S\geq t)\leq e^{-\frac{2t^2}{n(b-a)^2}}$\\
+	Let $S = \sum_{i=1}^{n}X_i$ iid random variables. By Chernoff's bounds $P(S-\mathbb{E}S\geq t)\leq \underset{\lambda>0}{\text{min}}\frac{\prod\limits_{i=1}^n \mathbb{E}[e^{\lambda(X_i-\mathbb{E}X_i)}]}{e^{\lambda t}}$, now using Hoeffding's Lemma, $\underset{\lambda>0}{\min}\frac{\prod\limits_{i=1}^n \mathbb{E}[e^{\lambda(X_i-\mathbb{E}X_i)}]}{e^{\lambda t}}\leq \underset{\lambda>0}{\min}\frac{e^{(\lambda^2 n(b-a))/8}}{\lambda t}=\underset{\lambda>0}{\min}\ e^{\frac{\lambda^2n(b-a)}{8}-\lambda t}$. Minimizing (taking derivative to 0) we get $\lambda=\frac{4t}{n(b-a)}$, so $P(S-\mathbb{E}S\geq t)\leq e^{-\frac{2t^2}{n(b-a)^2}}$\\
 	Q.E.D
 \end{proof}
 
@@ -132,11 +133,11 @@ Normalizing we get $P(\frac{1}{\sqrt{n}}(S-\mathbb{E}S)\geq t)\leq e^{-\frac{2t^
 
 \subsection*{Bernstein's inequality}
 
-Let $X_1,\dots,X_n$ be independent such that $X_i\leq 1$ $\forall i$ and let $v=\sum\limits_{i=1}^n\mathbb{E}[X_i^2]$. Then, $\forall t>0$,
+Let $X_1,\dots,X_n$ be independent such that $X_i\leq b$ for some $b > 0$ and let $v=\sum\limits_{i=1}^n\mathbb{E}[X_i^2]$. Then, $\forall t>0$,
 \begin{equation}
-	P(\sum\limits_{i=1}^n\geq\mathbb{E}\sum\limits_{i=1}^n X_i+t)\leq e^{-\frac{t^2}{2(v+\frac{t}{3})}}.
+	P(\sum\limits_{i=1}^n X_i - \mathbb{E}\sum\limits_{i=1}^n X_i \geq t)\leq e^{-\frac{t^2}{2(v+\frac{bt}{3})}}.
 \end{equation}
-If $X_i$ are iid with $\mathbb{E}X=0$, then $v=n\sigma^2$ ($\sigma^2=\text{Var}X$), so
+If $X_i$ are iid with $\mathbb{E}X=0$, then $v=n\sigma^2$ ($\sigma^2=Var(X)$), so
 \begin{equation}
 	P(\sum\limits_{i=1}^n X_i\geq t)\leq e^{-\frac{t}{2n\sigma^2+\frac{2}{3}t}}.
 \end{equation} 
@@ -149,12 +150,12 @@ If $X_i$ are iid with $\mathbb{E}X=0$, then $v=n\sigma^2$ ($\sigma^2=\text{Var}X
 \section{Mean estimator}
 
 
-The motivation of this section is to find a good estimator of the expected value of a variable $X$ given $n$ observations of the variable. That said, we assume that $x_1,\dots,x_n$ are independent identically distributed (iid from now on) random variables with expected value $\mathbb{E}X=m$.\\
+The motivation of this section is to find a good estimator of the expected value of a population $X$ given a sample drawn from that population. That said, we assume that $X_1,\dots,X_n$ are independent identically distributed (iid from now on) random variables with expected value $\mathbb{E}X_1=m$. We would like to find a good empirical estimate $\hat{m}_n$ that is close to $m$. \\
 
-The estimator will be a function $\hat{m}_n(x_1,\dots,x_n)$ of the observations we have. A good estimator should have "small" error $|\hat{m}_n-m|$. However, since $\hat{m}_n$ is a random variable (it is a function of random variables) there are many ways to measure the error. In general it is measured as the expected value of a function $l:\Re\times\Re\rightarrow\Re_+$ called loss function, that symbolizes how much we "pay" by saying $m=\hat{m}_n$. Common examples of loss functions are $l(\hat{m}_n,m)=(\hat{m}_n-m)^2$ and $l(\hat{m}_n,m)=|\hat{m}_n-m|$. \\
+Hence, the estimator will be a function $\hat{m}_n(x_1,\dots,x_n)$ of the observations we have that. A good estimator should have "small" error $|\hat{m}_n-m|$. However, since $\hat{m}_n$ is a random variable (it is a function of random variables) there are many ways to measure the error. In general it is measured as the expected value of a function $l:\Re\times\Re\rightarrow\Re_+$ called loss function, that symbolizes how much we "pay" by saying $m=\hat{m}_n$. Common examples of loss functions are $l(\hat{m}_n,m)=(\hat{m}_n-m)^2$ and $l(\hat{m}_n,m)=|\hat{m}_n-m|$. \\
 A more flexible way of measuring the error is using the probability that $\hat{m}_n$ is at distance more than $\epsilon$, $P(|\hat{m}_n-m|>\epsilon)=\mathbb{E}\mathbbm{1}_{|\hat{m}_n-m|>\epsilon}$. This corresponds to the loss function $l(\hat{m}_n,m)=\mathbbm{1}_{|\hat{m}_n-m|>\epsilon}$.\\
 
-The naive estimator is the sample mean $\hat{m}_n=\frac{1}{n}\sum\limits_{i=1}^n x_i$, which is unbiased and has a mean squared error (MSE) of $\mathbb{E}(\hat{m}_n-m)=\frac{\sigma^2}{n}$. But it behaves poorly in general if the variance is large. The probability of being far from the real mean can be bounded using the inequalities:
+The naive estimator is the sample mean $\hat{m}_n=\frac{1}{n}\sum\limits_{i=1}^n x_i$, which is unbiased and has a mean squared error (MSE) of $\mathbb{E}[(\hat{m}_n-m)^2]=\frac{\sigma^2}{n}$. But it behaves poorly in general if the variance is large. The probability of being far from the real mean can be bounded using the inequalities:
 \begin{itemize}
 	\item By Chebyshev's: $P(|\hat{m}_n-m|\geq \epsilon)\leq\frac{\sigma^2}{n\epsilon^2}$.
 	\item By Hoeffding's: If $X_i\in [0,1]$, then $P(|\hat{m}_n-m|\geq \epsilon)\leq e^{-2n\epsilon^2}$.
@@ -168,11 +169,11 @@ The idea behind this estimator is to divide the data into $K$ blocks of size $l=
 
 So, the $K$ blocks would be $\{x_1,\dots,x_l\},\{x_{l+1},\dots,x_{2l}\},\dots\{x_{(K-1)l+1},\dots,x_{Kl}\}$, the means $\mu_1=\frac{1}{l}\sum\limits_{i=1}^l x_i,\mu_2=\frac{1}{l}\sum\limits_{i=l+1}^{2l}x_1,\dots,\mu_K=\sum\limits_{i=(K-1)l+1}^{Kl}x_i$ and the estimator $\hat{m}_n=\text{median}(\mu_1,\dots,\mu_k)$.\\
 
-Assuming that $\text{Var}X=\sigma^2<\infty$, by Chebyshev 
+Assuming that $Var(X)=\sigma^2<\infty$, by Chebyshev 
 \begin{equation}
 	|\mu_i-m|< \frac{2\sigma}{\sqrt{l}}\text{ with probability }\geq \frac{3}{4},
 \end{equation}
-for each $j=1,\dots,K$ (we could took a probability different of $\frac{3}{4}$ that may result in a better constant, but $\frac{3}{4}$ is good enough). 
+for each $j=1,\dots,K$ (we could take a probability different of $\frac{3}{4}$ that may result in a better constant, but $\frac{3}{4}$ is good enough). 
 \begin{proof}
 	$P(|X-\mathbb{E}X|\geq\epsilon)\leq\frac{\sigma^2}{n\epsilon^2}=\delta\Leftrightarrow$ with probability $\geq 1-\delta$, $|X-\mathbb{E}X|<\frac{\sigma}{\sqrt{n\delta}}$. Taking $\delta=\frac{1}{4}$, $\frac{\sigma}{\sqrt{n\delta}}=\frac{2\sigma}{\sqrt{n}}$.
 \end{proof}
