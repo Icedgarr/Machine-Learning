@@ -179,7 +179,7 @@ for each $j=1,\dots,K$ (we could take a probability different of $\frac{3}{4}$ t
 \end{proof}
 And for the estimator, $|\hat{m}_n-m|\geq \frac{2\sigma}{\sqrt{l}}$ iif at least half of the $\mu_1,\dots,\mu_K$ are $\frac{2\sigma}{\sqrt{l}}$ away from $m$. Then, the problem is reduced to the binomial and Hoeffding's inequality can be applied:
 \begin{equation}
-	P(\text{Bin}(K,\frac{1}{4})\geq \frac{K}{2})=P(\text{Bin}(K,\frac{1}{4})-\frac{1}{4}\geq \frac{K}{4})\leq e^{-\frac{2K^2}{16K}}=e^{-\frac{K}{8}}.
+	P(\text{Bin}(K,\frac{1}{4})\geq \frac{K}{2})=P(\text{Bin}(K,\frac{1}{4})-\frac{K}{4}\geq \frac{K}{4})\leq e^{-\frac{2K^2}{16K}}=e^{-\frac{K}{8}}.
 \end{equation} 
 Then, we can choose $K$ according to the precision $\delta$ we want, $e^{-\frac{K}{8}}=\delta\Rightarrow K=[8\log\frac{1}{\delta})]$ so $l=\frac{n}{8\log\frac{1}{\delta}}$.\\
 
@@ -204,27 +204,26 @@ However, if we allow some slack, the situation changes dramatically. We require 
 	1-\epsilon\leq\frac{||f(a_i)-f(a_j)||^2}{||a_i-a_j||^2}\leq 1+\epsilon, \text{ for some }\epsilon>0. 
 \end{equation}
 
-And it turns out that such an $f$ exists whenever $d\geq 8\frac{\log N}{\epsilon^2}$ (Johnson-Lindenstrauss lemma). But, even though we have existence, we do not know how to construct it. The good thing is that most linear functions would work, so we can pick an $f$ randomly. \\
+And it turns out that such an $f$ exists whenever $d\geq 8\frac{\log N}{\epsilon^2}$ (Johnson-Lindenstrauss lemma). That is, independently of D! Even more surprising is that to find such a function we only need to take $f$ to be linear, that is, $f(a) = Wa$, where $W=(W_{ij})$ is some random $d\times D$ matrix that projects the data points in $\Re^D$ to $\Re^d$.
 
-As $f$ is a projection from $\Re^D$ space to $\Re^d$, it has a projection matrix $W$ associated and then $f(a)=Wa$, where $W=(W_{ij})$ is a $d\times D$ matrix. We take $W_{ij}\sim N(0,\frac{1}{d})$.
-
-We want to see that $||W(a_i-a_j)||^2\approx ||a_i-a_j||^2$. For any fixed $b\in \Re{D}$, 
+We want to see that $||W(a_i-a_j)||^2\approx ||a_i-a_j||^2$. We will prove it for $W \sim \mathcal{N}(0, 1/d)$ and for any fixed $b\in \Re^D$, 
 \begin{align}
-	\mathbbm{E}||Wb||^2= & \mathbbm{E}\sum\limits_{i=1}^d\left(\sum\limits_{j=1}^D W_{ij}b_j\right)^2=\sum\limits_{i=1}^d\mathbbm{E}\left(\sum\limits_{j=1}^DW_{ij}b_j\right)^2  \underset{\text{ind}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^D\left(\mathbbm{E}W_{ij}^2bj^2\right)\\
-	& \underset{b_j\text{ ctt}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j\mathbbm{E}W_{ij}^2=\sum_{i=1}^d\frac{1}{d}\sum\limits_{j=1}^Db_j^2=||b||^2.
+	\mathbbm{E}||Wb||^2&= \mathbbm{E}\Bigg[\sum\limits_{i=1}^d\left(\sum\limits_{j=1}^D W_{ij}b_j\right)^2\Bigg]=\sum\limits_{i=1}^d\mathbbm{E}\Bigg[\left(\sum\limits_{j=1}^DW_{ij}b_j\right)^2\Bigg] \underset{\text{ind}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^D\mathbbm{E}[W_{ij}^2bj^2]\\
+	& \underset{b_j\text{ ctt}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j\mathbbm{E}[W_{ij}^2]=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j(\mathbbm{E}[W_{ij}^2] - \mathbbm{E}[W_{ij}]^2)\\
+	&=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_jVar(W)=\frac{1}{d} \sum_{i=1}^d\sum\limits_{j=1}^Db_j^2=||b||^2.
 \end{align}
 In particular, $\mathbbm{E}||W(a_i-a_j)||^2=||(a_i-a_j)||^2$. Now we want it with high probability,
 \begin{equation}
-	\left\lvert\frac{W(a_i-a_j)||^2}{||(a_i-a_j)||^2}-1\right\lvert<\epsilon.
+	\left\lvert\frac{||W(a_i-a_j)||^2}{||(a_i-a_j)||^2}-1\right\lvert<\epsilon.
 \end{equation}
-We will denote $c_{ij}=\frac{(a_i-a_j)}{||a_i-a_j||}$, (observe that $c_{ij}$ is a unit vector).
+We will denote $c_{ij}=\frac{(a_i-a_j)}{||a_i-a_j||}$. Note that, by definition $||\frac{x}{||x||}|| = \frac{1}{||x||}||x|| = 1$, hence $c_{ij}$ is the unit vector.
 	
-Then, $\| W c\|^2-1=\sum\limits_{i=1}^d\left(\sum\limits_{j=1}^DW_{ij}c_j\right)^2-1$, as $c$ is unit vector and $W_{ij}$ are $N(0,\frac{1}{d})$, $\sum\limits_{j=1}^DW_{ij}c_j\sim N(0,\frac{1}{d})$. Also, $\sum\limits{i=1}^d\mathbb{E}[N_i^2]=1$. Putting both things together, we can write 
+Then, $\| W c\|^2-1=\su{i=1}{d}\left(\su{j=1}{D}W_{ij}c_j\right)^2-1$. Note that $\su{j=1}{D}W_{ij}c_j = N_i \sim \mathcal{N}(0,\frac{1}{d})$. Furthermore, $\su{i=1}{d}\mathbb{E}[N_i^2]=1$. Putting both things together, we can write 
 \begin{equation}
 	\|Wc\|^2-1=\sum\limits_{i=1}^d\left(N_i^2-\mathbb{E}[N_i^2]\right).
 \end{equation} 
 
-Now, we can apply Chernoff bounds
+Now, note that $Z = \sum_{i=1}^{d}N_i^2 \sim \mathcal{X}^2(d)$ is a sum of squared normal random variables, hence we can apply Chernoff bounds
 $P(|\|Wc_{ij}\|-1>\epsilon)\leq e^{-\frac{\epsilon^2d}{4}}$, which implies
 \begin{equation}
 	P(\underset{i,j=1,\dots N}{\max}\|Wc_{ij}\|^2-1>\epsilon)\leq \left(\begin{array}{c}
@@ -233,7 +232,7 @@ $P(|\|Wc_{ij}\|-1>\epsilon)\leq e^{-\frac{\epsilon^2d}{4}}$, which implies
 	\end{array}\right)e^{-\frac{\epsilon^2d}{4}}\leq \frac{N^2}{2}e^{-\frac{\epsilon^2d}{4}}.
 \end{equation}
 If we want the probability to be less than $\delta$, then we find that $d\geq \frac{4}{\epsilon^2}\log\frac{N^2}{2\delta}$\\
-
+ 
 \textbf{Johnson-Lindestrauss lemma:}
 Given $a_1,\dots,a_n$, there exists $f:\Re^D\rightarrow\Re^d$ such that for all $i,j=1,\dots,N$, 
 \begin{equation}
@@ -246,7 +245,7 @@ Especial remarks after this result is that the best dimension we can hope for (e
 
 \section{Basic decision theory}
 
-The idea is to predict the value of a random variable $Y\in T$ assuming that we know the distribution of $Y$. The set $ T$ may be $\{0,1\},\{1,\dots,N\},\Re,\Re^d,\dots$. We will note our prediction as $p\in T$. The quality of the predictor is measured by a lost function
+The idea is to predict the value of a random variable $Y\in T$ assuming that we know the distribution of $Y$. The set $ T$ may be $\{0,1\},\{1,\dots,N\},\Re,\Re^d,\dots$. We will note our prediction as $p\in T$. The quality of the predictor is measured by a loss function
 $$l: T\times T\rightarrow\Re_{+}.$$
 
 There are many functions that can be used as loss functions. For $ T=\{0,1\}$ a natural one is $l(y,p)=\mathbbm{1}_{y\neq p}$. An asymmetric version that penalize more one error than the other would be
@@ -271,7 +270,7 @@ For example, if $ T=\{0,1\}$ and $l(y,p)=\mathbbm{1}_{y\neq p}$, the risk would 
 \end{equation}
 Then, $R^*=R(p^*)=\min(p(Y=0),p(Y=1))$.\\
 
-For $ T=\Re$ and $l(y,p)=(y-p)^2$, the risk would be $R(p)=\mathbb{E}(Y-p)^2=\mathbb{E}[Y^2]-2p\mathbb{E}[Y]+p^2$. The minimizer would be $p^*=\mathbb{E}Y$. If the loss function was $l(y,p)=|y-p|$, $p^*$ would be the median of $Y$. That is also a way to define the median for higher dimensional spaces $Med(Y)=\underset{p}{\text{argmin}\|Y-p\|^2}$.
+For $ T=\Re$ and $l(y,p)=(y-p)^2$, the risk would be $R(p)=\mathbb{E}(Y-p)^2=\mathbb{E}[Y^2]-2p\mathbb{E}[Y]+p^2$. The minimizer would be $p^*=\mathbb{E}Y$. If the loss function was $l(y,p)=|y-p|$, $p^*$ would be the median of $Y$. That is also a way to define the median for higher dimensional spaces $Med(Y)=\underset{p}{\text{argmin}}\|Y-p\|^2$.
 
 \subsection{Prediction problem with a covariate}
 
@@ -291,7 +290,7 @@ Basically the risk minimization and optimal predictor with a covariate work as w
 
 \textbf{Notation in binary classification:\\}
 A posteriori probability: $\eta(x)=\mathbb{P}(Y=1|X=x)=\mathbb{E}(Y|X=x)$.\\
-A priori probabilities: $q_1=\mathbb{P}(Y=0)$, $q_1=\mathbb{P}(Y=1)$.\\
+A priori probabilities: $q_0=\mathbb{P}(Y=0)$, $q_1=\mathbb{P}(Y=1)$.\\
 Marginal distribution of $X$: $\mu(A)=\mathbb{P}(X\in A)$.\\
 Conditional densities for $X$ given $Y$: $f_0(X)=f(X|Y=0)$, $f_1=(X|Y=1)$.\\
 
@@ -306,7 +305,7 @@ Then, $p^*(x)=\left\{\begin{array}{ll}
 \end{array}\right.$. If $q_0=q_1=\frac{1}{2}$ we choose the $i$ with $f_i(x)$ higher, otherwise it would depend on how different are the marginals.\\
 
 The problem is that in general we do not know the conditional distribution $X|Y$, we have data instead $D_n=\{(X_1,Y_1),\dots,(X_n,Y_n)\}$. Our assumption will be that the $(X_i,Y_i)$ are iid. With that, we will try to predict the next $Y_{n+1}$ given a new observation $X_{n+1}$. So, the predictor will depend on the new observation and the data $p(X_{n+1},D_n)=p_n(X_{n+1})$. The goal is to find a predictor $p_n$ such that the risk $R(p_n)=\mathbb{E}[l(p_n(X_{n+1}),Y)|D_n]$ is as close to $R^*$ as possible. \\
-We will measure how far is the predictor's risk from $R^*$ ($\mathbb{P}(R(p_n)-R^*>\epsilon)$) and minimize it for all distributions.\\
+We will measure how far is the predictor's risk $R^* = \mathbb{P}(R(p_n)-R^*>\epsilon)$ and minimize it for all distributions.\\
 
 We define a prediction rule to be \textbf{consistent} if $$\mathbb{E}R(p_n)\underset{n\rightarrow\infty}{\longrightarrow} R^*\Leftrightarrow \mathbb{P}(R(p_n)-R^*>0)\rightarrow 0\text{ }\forall \epsilon>0.$$
 
