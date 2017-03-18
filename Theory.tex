@@ -316,7 +316,7 @@ In order to remedy this, we restrict the class of distributions we target or the
 
 First suppose that our data is $D_n=(Y_1,\dots,Y_n)$, $Y_i\in\{0,1\}$ (no covariates $X$).\\
 
-As a first approach we could consider $p_n=Y_1$, $R(p_n)=\mathbbm{1}_{Y_1=0}\mathbb{P}(Y=1)+\mathbbm{1}_{Y=1}\mathbb{P}(Y=0)$. However, as $R^*=\min\{\mathbb{P}(Y=0),\mathbb{P}(Y=0)\}$, the expected value will not be consistent $R^*\leq\mathbb{E}R(p_n)=2\mathbb{P}(Y=0)\mathbb{P}(Y=1)\leq 2R^*$.\\
+As a first approach we could consider $p_n=Y_1$, $R(p_n)=\mathbbm{1}_{Y_1=0}\mathbb{P}(Y=1)+\mathbbm{1}_{Y=1}\mathbb{P}(Y=0)$. However, as $R^*=\min\{\mathbb{P}(Y=0),\mathbb{P}(Y=1)\}$, the expected value will not be consistent $R^*\leq\mathbb{E}R(p_n)=2\mathbb{P}(Y=0)\mathbb{P}(Y=1)\leq 2R^*$.\\
 
 A better idea is to pick $p_n$ as the majority rate, meaning $p_n=\left\{\begin{array}{ll}
 0 & \text{if }\frac{1}{n}\sum\limits_{i=1}^nY_i<\frac{1}{2}\\
@@ -348,12 +348,18 @@ known as Bayes decision (even though Bayesian Statistics is not involved) (recal
 
 \subsubsection{The nearest neighbor rule}
 
-With this rule, we predict the new observation as the same category as his nearest neighbor. We would order the data as $(X_{(1)}(x),Y_{(1)}(x),\dots,(X_{(n)}(x),Y_{(n)}(x)$ according to the distance to $X$. That is $d(X_{(1)}(x),x)\leq\dots\leq d(X_{(n)}(x),x)$. The first question is how to define the notion of distance in each problem. We could use $d(x,y)=\|x-y\|_1,\dots,d(x,y)=\|x-y\|_{\infty}$, or also in general $d(x,y)=\sqrt{(x-y)^TA(x-y)}$, where $A$ is a symmetric positive semidefinite matrix.\\
+With this rule, we predict the new observation as the same category as his nearest neighbor. We would order the data as $(X_{(1)}(x),Y_{(1)}(x)),\dots,(X_{(n)}(x),Y_{(n)}(x))$ according to the distance to $X$. That is $d(X_{(1)}(x),x)\leq\dots\leq d(X_{(n)}(x),x)$. And choose $p_n(x) = Y_1(x)$, that is, we take the nearest guy to our new $x$ and we assign its label. The first question is how to define the notion of distance in each problem. We could use:
+\begin{itemize}
+\item $d(x,y) = \sqrt{\sum_{i=1}^{d}(x_i - y_i)^2} = \|x - y\|$, the Euclidean distance
+\item $d(x,y)= \max\limits_{i=1,\dots,d}\|x-y\|_1,\dots,\|x-y\|_d=\|x-y\|_{\infty}$
+\item $d(x,y) = \sum_{i=1}^{d} |x_i - y_i|$, the $l_1$ or ``Manhattan'' distance.
+\item $d(x,y)=\sqrt{(x-y)^TA(x-y)}$, where $A$ is a symmetric positive semidefinite matrix.
+\end{itemize}
 
-However, when we increase the dimension we suffer the \textbf{curse of dimensionality}, the probability of being near decays exponentially with the dimensions. Suppose that our $X$ are uniformly distributed in $[0,1]$, then
-\begin{equation}
-	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)=\mathbb{P}(d(x,X_1)>\epsilon),\dots,\mathbb{P}(d(x,X_n)>\epsilon)=\mathbb{P}(d(x,X_1)>\epsilon)^n=(1-\mathbb{P}(d(x,X_1)\leq \epsilon)).
-\end{equation}
+Note that if the features have different scales some of the previous measurements of distances make no sense (some previous scaling would be needed). However, when we increase the dimension we suffer the \textbf{curse of dimensionality}, the probability of being near decays exponentially with the dimensions. Suppose that our $X$ are uniformly distributed in $[0,1]$, then
+\begin{align}
+	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)&=\mathbb{P}(d(x,X_1)>\epsilon)\cdot\dots\cdot \mathbb{P}(d(x,X_n)>\epsilon)\\ &=\mathbb{P}(d(x,X_1)>\epsilon)^n=(1-\mathbb{P}(d(x,X_1)\leq \epsilon))^n.
+\end{align}
 As $X$ are iid uniform distributions, $\mathbb{P}(d(x,X_1)\leq \epsilon)=\epsilon^dv_d$, where $v_d$ is the volume of the unit ball in $\Re^d$. So
 \begin{equation}
 	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)=(1-v_d\epsilon^d)^n\leq e^{-v_dn\epsilon^d},
@@ -368,11 +374,11 @@ Remark: Nearest neighbor works if the classes are well separated. Then, even if 
 \end{equation}
 That is true for all distributions.\\
 
-As $\min(\eta,1-\eta)\leq2\eta(1-\eta)\leq 2\min(\eta,1-\eta)$, we always have that $R^*\leq R_{NN}\leq 2R^*(1-R^*)$, so $R_{NN}$ will only be consistent whenever $R^*=0$. That means that it will only be consistent if we $Y$ is a deterministic function of $X$.\\
+As $\min(\eta,1-\eta)\leq2\eta(1-\eta)\leq 2\min(\eta,1-\eta)$, we always have that $R^*\leq R_{NN}\leq 2R^*(1-R^*)$, so $R_{NN}$ will only be consistent whenever $R^*=0$. That means that it will only be consistent if $Y$ is a deterministic function of $X$.\\
 
 \subsubsection{K-nearest neighbor rule}
 
-The K-NN rule takes a majority vote among the $K$ closest points to predict. This rule have the same property as the previous one, $d(X_{(k)}(x),x)\underset{\scriptsize{n\rightarrow \infty}}{\longrightarrow}0$. \\
+The K-NN rule takes a majority vote among the $K$ closest points to predict. This rule has the same property as the previous one, $d(X_{(k)}(x),x)\underset{\scriptsize{n\rightarrow \infty}}{\longrightarrow}0$. \\
 
 The risk for a general $K$ would be $R^{K-NN}=P(Y\neq \text{majority}\{Y_{(1)},\dots,Y_{(K)}\})$. For $K=3$ this will happen if $Y=1$ and the at least two of the nearest neighbors are 0, that is if either two of them are 0 or the three are 0 (similarly for $Y=0$). So, $P(Y\neq \text{majority}\{Y_{(1)},Y_{(3)},Y_{(3)}\})=\eta[(1-\eta)^3+3\eta(1-\eta)^2]+(1-\eta)[\eta^3+3(1-\eta)\eta^2]$ working out the equations we get $P(Y\neq \text{majority}\{Y_{(1)},Y_{(3)},Y_{(3)}\})=\eta(1-\eta)+4\eta^2(1-\eta)^2$. Then, the risk of the 3 nearest neighbor will be
 \begin{equation}
