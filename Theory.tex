@@ -74,7 +74,7 @@ If $X\geq 0$ is a non-negative random variable and $t>0$, then
 	P(X\geq t)\leq \frac{\mathbb{E}X}{t}.
 \end{equation}
 \begin{proof}
-	$X\geq t\mathbbm{1}_{X\geq t}$. Taking expectation on both sides: $\mathbb{E}X\geq \mathbb{E}t\mathbbm{1}_{X\geq t}=tP(X\geq t)$. \\ So, $P(X\geq t) \leq \frac{\mathbb{E}\mathbbm{1}_{X\geq t}}{t}$. \\ Q.E.D.
+	$X\geq t\mathbbm{1}_{X\geq t}$. Taking expectation on both sides: $\mathbb{E}X\geq \mathbb{E}t\mathbbm{1}_{X\geq t}=tP(X\geq t)$. \\ So, $P(X\geq t) \leq \frac{\mathbb{E}X}{t}$. \\ Q.E.D.
 \end{proof}
 
 \subsection*{Chebyshev's inequality}
@@ -86,7 +86,7 @@ For any random variable with finite variance
 
 \begin{proof}
 	$P(|X-\mathbb{E}X|\geq t)=P((X-\mathbb{E}X)^2\geq t^2)$. \\
-	By Markov's inequality $P((X-\mathbb{E}X)^2\geq t^2)\leq \frac{(X-\mathbb{E}X)^2}{t^2}=\frac{\text{Var} X}{t^2}$.\\
+	By Markov's inequality $P((X-\mathbb{E}X)^2\geq t^2)\leq \frac{\mathbb{E}[(X-\mathbb{E}X)^2]}{t^2}=\frac{\text{Var} X}{t^2}$.\\
 	Q.E.D.
 \end{proof}
 
@@ -117,7 +117,7 @@ For any $\lambda>0$,
 \textbf{Hoeffding's Lemma:} If $X$ is a random variable taking values in $[a,b]$, then $\mathbb{E}[e^{\lambda(X-\mathbb{E}X)}]\leq e^{\frac{\lambda^2(b-a)}{8}}$.
 (In particular for $X\in[0,1]$, $\mathbb{E}[e^{\lambda(X-\mathbb{E}X)}]\leq e^{\frac{\lambda^2}{8}}$).\\
 
-Though Hoeffding's Lemma and Chernoff's bounds, we get the Hoeffding's inequality:
+Using Hoeffding's Lemma and Chernoff's bounds, we get to the Hoeffding's inequality:
 \begin{equation}
 	P(S-\mathbb{E}S\geq t)\leq e^{-\frac{2t^2}{n(b-a)^2}}.
 \end{equation}
@@ -139,13 +139,36 @@ Let $X_1,\dots,X_n$ be independent such that $X_i\leq b$ for some $b > 0$ and le
 \end{equation}
 If $X_i$ are iid with $\mathbb{E}X=0$, then $v=n\sigma^2$ ($\sigma^2=Var(X)$), so
 \begin{equation}
-	P(\sum\limits_{i=1}^n X_i\geq t)\leq e^{-\frac{t}{2n\sigma^2+\frac{2}{3}t}}.
+	P(\sum\limits_{i=1}^n X_i\geq t)\leq e^{-\frac{t^2}{2n\sigma^2+\frac{2}{3}t}}.
 \end{equation} 
 
 
-\subsection{Jensen's inequality}
+\subsection*{Jensen's inequality}
 
-\subsection{Cauchy-Schwartz's inequality}
+Given $p_1,\dots,p_n$ positive numbers such that $\su{i=1}{n}p_i=1$ and $f(x)$ a continuous and convex function, then
+\begin{equation}
+	f(\su{i=1}{n}p_ix_i)\leq \su{i=1}{n}p_if(x_i).
+\end{equation}
+If $f(x)$ is concave, the inverse inequality holds,
+\begin{equation}
+f(\su{i=1}{n}p_ix_i)\geq \su{i=1}{n}p_if(x_i).
+\end{equation}
+It also works for the continuous case, where $f(x)$ is such that $\int_{\Omega}f(x)\text{d}x=1$ and $var\phi(x)$ is a differentiable convex function defined on $\Omega$, then
+\begin{equation}
+	\varphi(\int_{\Omega}f(x)x\text{d}x)\leq \int_{\Omega} f(x)\varphi(x)\text{d}x.
+\end{equation}
+This implies an inequality on expectations. For $f(x)$ convex and finite,
+\begin{equation}
+	f(\mathbb{E}[X])\leq \mathbb{E}[f(x)].
+\end{equation}
+
+
+\subsection*{Cauchy-Schwartz's inequality}
+
+For $u,v\in \Re^n$ vectors and $\|\cdot\|$ norm,
+\begin{equation}
+	\|\langle u,v\rangle\|\leq\|u\|\cdot\|v\|.
+\end{equation}
 
 \section{Mean estimator}
 
@@ -167,7 +190,7 @@ In general it is difficult that we can apply Hoeffding's inequality or that we h
 
 The idea behind this estimator is to divide the data into $K$ blocks of size $l=\frac{n}{K}$ each, compute the mean in each block and compute the median of the means. \\
 
-So, the $K$ blocks would be $\{x_1,\dots,x_l\},\{x_{l+1},\dots,x_{2l}\},\dots\{x_{(K-1)l+1},\dots,x_{Kl}\}$, the means $\mu_1=\frac{1}{l}\sum\limits_{i=1}^l x_i,\mu_2=\frac{1}{l}\sum\limits_{i=l+1}^{2l}x_1,\dots,\mu_K=\sum\limits_{i=(K-1)l+1}^{Kl}x_i$ and the estimator $\hat{m}_n=\text{median}(\mu_1,\dots,\mu_k)$.\\
+So, the $K$ blocks would be $\{x_1,\dots,x_l\},\{x_{l+1},\dots,x_{2l}\},\dots\{x_{(K-1)l+1},\dots,x_{Kl}\}$, the means $\mu_1=\frac{1}{l}\sum\limits_{i=1}^l x_i,\mu_2=\frac{1}{l}\sum\limits_{i=l+1}^{2l}x_1,\dots,\mu_K=\frac{1}{l}\sum\limits_{i=(K-1)l+1}^{Kl}x_i$ and the estimator $\hat{m}_n=\text{median}(\mu_1,\dots,\mu_k)$.\\
 
 Assuming that $Var(X)=\sigma^2<\infty$, by Chebyshev 
 \begin{equation}
