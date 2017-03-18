@@ -293,13 +293,13 @@ For example, if $ T=\{0,1\}$ and $l(y,p)=\mathbbm{1}_{y\neq p}$, the risk would 
 \end{equation}
 Then, $R^*=R(p^*)=\min(p(Y=0),p(Y=1))$.\\
 
-For $ T=\Re$ and $l(y,p)=(y-p)^2$, the risk would be $R(p)=\mathbb{E}(Y-p)^2=\mathbb{E}[Y^2]-2p\mathbb{E}[Y]+p^2$. The minimizer would be $p^*=\mathbb{E}Y$. If the loss function was $l(y,p)=|y-p|$, $p^*$ would be the median of $Y$. That is also a way to define the median for higher dimensional spaces $Med(Y)=\underset{p}{\text{argmin}}\|Y-p\|^2$.
+For $ T=\Re$ and $l(y,p)=(y-p)^2$, the risk would be $R(p)=\mathbb{E}(Y-p)^2=\mathbb{E}[Y^2]-2p\mathbb{E}[Y]+p^2$. The minimizer would be $p^*=\mathbb{E}Y$. If the loss function was $l(y,p)=|y-p|$, $p^*$ would be the median of $Y$. That is also a way to define the median for higher dimensional spaces $\text{Med}(Y)=\underset{p}{\text{argmin}}\|Y-p\|^2$.
 
 \subsection{Prediction problem with a covariate}
 
-Let ($X,Y$) be a pair of random variables taking values in $\Omega\times T$. We usually call $X$ observations, features or covariates and $Y$ label or target. We want to predict $Y$ given an observed value $X$. If we assume that the joint distribution of ($X,Y$) is known, a predictor $p$ is a function of $X$ $p:\Omega\times T$. Given a loss function $l:T\times T\rightarrow \Re_{+}$, the loss function will be $l(p(X),Y)$ and the risk $R(p)=\mathbb{E}l(p(X,Y))$. Then, the risk can also be written as 
+Let ($X,Y$) be a pair of random variables taking values in $\Omega\times T$. We usually call $X$ observations, features or covariates and $Y$ label or target. We want to predict $Y$ given an observed value $X$. If we assume that the joint distribution of ($X,Y$) is known, a predictor $p$ is a function of $X$ $p:\Omega\rightarrow T$. Given a loss function $l:T\times T\rightarrow \Re_{+}$, the loss function will be $l(p(X),Y)$ and the risk $R(p)=\mathbb{E}l(p(X,Y))$. Then, the risk can also be written as 
 \begin{equation}
-	R(p)=\mathbb{E}[l(p(x),Y)]=\mathbb{E}_X\mathbb{E}_{Y|X}[l(p(X),Y)|X].
+	R(p)=\mathbb{E}[l(p(X),Y)]=\mathbb{E}_X\mathbb{E}_{Y|X}[l(p(X),Y)|X].
 \end{equation}
 
 
@@ -312,7 +312,7 @@ Binary classification: $T=\{0,1\}$, $l(p,Y)=\mathbbm{1}_{p\neq Y}$. Then the ris
 Basically the risk minimization and optimal predictor with a covariate work as without it but instead of marginal probabilities we take conditional probabilities $Y|X$.\\
 
 \textbf{Notation in binary classification:\\}
-A posteriori probability: $\eta(x)=\mathbb{P}(Y=1|X=x)=\mathbb{E}(Y|X=x)$.\\
+A posteriori probability: $\eta(x)=\mathbb{P}(Y=1|X=x)=\mathbb{E}[Y|X=x]$.\\
 A priori probabilities: $q_0=\mathbb{P}(Y=0)$, $q_1=\mathbb{P}(Y=1)$.\\
 Marginal distribution of $X$: $\mu(A)=\mathbb{P}(X\in A)$.\\
 Conditional densities for $X$ given $Y$: $f_0(X)=f(X|Y=0)$, $f_1=(X|Y=1)$.\\
@@ -345,7 +345,7 @@ A better idea is to pick $p_n$ as the majority rate, meaning $p_n=\left\{\begin{
 0 & \text{if }\frac{1}{n}\sum\limits_{i=1}^nY_i<\frac{1}{2}\\
 1 & \text{otherwise}
 \end{array}\right.$. For $n$ big that would tend to $p^*=\left\{\begin{array}{ll}
-1 & \text{if }\mathbb{P}(Y=1|X)>\frac{1}{2}\\
+1 & \text{if }\mathbb{P}(Y=1)>\frac{1}{2}\\
 0 & \text{otherwise}\end{array}\right.$. \\
 This predictor is consistent: $R(p_n)=\eta\mathbbm{1}_{\sum\limits_{i=1}^nY_i<\frac{n}{2}}+(1-\eta)\mathbbm{1}_{\sum\limits_{i=1}^nY_i>\frac{n}{2}}$. The expected value  of the risk would be
 \begin{equation}
@@ -353,7 +353,7 @@ This predictor is consistent: $R(p_n)=\eta\mathbbm{1}_{\sum\limits_{i=1}^nY_i<\f
 \end{equation}
 Using that $\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})=1-\mathbb{P}(\text{Bin}(n,\eta)<\frac{n}{2})$ and assuming without lost of generality $\eta<\frac{1}{2}$ we get $\mathbb{E}R(p_n)=\eta+(1-2\eta)\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})$. Since in this case $R^*=\eta$, using Hoeffding's inequality we get that 
 \begin{equation}
-	\mathbb{E}R(p_n)-R^*=\eta+(1-2\eta)\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})\leq e^{-2n(\frac{1}{2}-\eta)^2},
+	\mathbb{E}R(p_n)-R^*=(1-2\eta)\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})\leq e^{-2n(\frac{1}{2}-\eta)^2},
 \end{equation}
 which decreases fast with $n$. The maximum will be taken for $\eta\approx \frac{1}{2}-\frac{1}{\sqrt{n}}$.
 
