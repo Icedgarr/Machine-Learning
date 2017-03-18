@@ -239,9 +239,9 @@ In particular, $\mathbbm{E}||W(a_i-a_j)||^2=||(a_i-a_j)||^2$. Now we want it wit
 \begin{equation}
 	\left\lvert\frac{||W(a_i-a_j)||^2}{||(a_i-a_j)||^2}-1\right\lvert<\epsilon.
 \end{equation}
-We will denote $c_{ij}=\frac{(a_i-a_j)}{||a_i-a_j||}$. Note that, by definition $||\frac{x}{||x||}|| = \frac{1}{||x||}||x|| = 1$, hence $c_{ij}$ is the unit vector.
+We will denote $c_{ij}=\frac{(a_i-a_j)}{||a_i-a_j||}$. Note that, by definition $||\frac{x}{||x||}|| = \frac{1}{||x||}||x|| = 1$, hence $c_{ij}$ is a unit vector (it has norm 1).
 	
-Then, $\| W c\|^2-1=\su{i=1}{d}\left(\su{j=1}{D}W_{ij}c_j\right)^2-1$. Note that $\su{j=1}{D}W_{ij}c_j = N_i \sim \mathcal{N}(0,\frac{1}{d})$. Furthermore, $\su{i=1}{d}\mathbb{E}[N_i^2]=1$. Putting both things together, we can write 
+Then, $\| W c\|^2-1=\su{i=1}{d}\left(\su{j=1}{D}W_{ij}c_j\right)^2-1$. Note that $\su{j=1}{D}W_{ij}c_j = N_i \sim \mathcal{N}(0,\frac{1}{d})$ ($W_{ij}\sim \mathcal{N}(0,\frac{1}{d})$ and $c_{j}$ is a unit vector). Furthermore, $\su{i=1}{d}\mathbb{E}[N_i^2]=1$. Putting both things together, we can write 
 \begin{equation}
 	\|Wc\|^2-1=\sum\limits_{i=1}^d\left(N_i^2-\mathbb{E}[N_i^2]\right).
 \end{equation} 
@@ -249,7 +249,7 @@ Then, $\| W c\|^2-1=\su{i=1}{d}\left(\su{j=1}{D}W_{ij}c_j\right)^2-1$. Note that
 Now, note that $Z = \sum_{i=1}^{d}N_i^2 \sim \mathcal{X}^2(d)$ is a sum of squared normal random variables, hence we can apply Chernoff bounds
 $P(|\|Wc_{ij}\|-1>\epsilon)\leq e^{-\frac{\epsilon^2d}{4}}$, which implies
 \begin{equation}
-	P(\underset{i,j=1,\dots N}{\max}\|Wc_{ij}\|^2-1>\epsilon)\leq \left(\begin{array}{c}
+	P\left(\underset{i,j=1,\dots N}{\max}\|Wc_{ij}\|^2-1>\epsilon\right)\leq \left(\begin{array}{c}
 	N\\
 	2
 	\end{array}\right)e^{-\frac{\epsilon^2d}{4}}\leq \frac{N^2}{2}e^{-\frac{\epsilon^2d}{4}}.
@@ -283,13 +283,13 @@ $$l(y,p)=\|y-p\|.$$
 
 We will focus on the \textit{risk} of the decision $p$. Which is
 \begin{equation}
-	R(p)=\mathbb{E}l(y,p).
+	R(p)=\mathbb{E}\ l(y,p).
 \end{equation}
-For the risk function, the optimal prediction would be $p^*\in T$ such that $p^*=\underset{p\in T}{\text{argmin}}R(p)$. Then, the optimal risk is noted $R^*=R(p^*)$.\\
+For the risk function, the optimal prediction would be $p^*\in T$ such that $p^*=\underset{p\in T}{\text{argmin }}R(p)$. Then, the optimal risk is noted $R^*=R(p^*)$.\\
 
 For example, if $ T=\{0,1\}$ and $l(y,p)=\mathbbm{1}_{y\neq p}$, the risk would be 
 \begin{equation}
-	R(p)=\mathbb{E}l(Y,p)=p(Y=0)\mathbbm{1}_{p=1}+p(Y=1)\mathbbm{1}_{p=0}.
+	R(p)=\mathbb{E}\ l(Y,p)=p(Y=0)\mathbbm{1}_{p=1}+p(Y=1)\mathbbm{1}_{p=0}.
 \end{equation}
 Then, $R^*=R(p^*)=\min(p(Y=0),p(Y=1))$.\\
 
