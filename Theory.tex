@@ -175,7 +175,7 @@ For $u,v\in \Re^n$ vectors and $\|\cdot\|$ norm,
 
 The motivation of this section is to find a good estimator of the expected value of a population $X$ given a sample drawn from that population. That said, we assume that $X_1,\dots,X_n$ are independent identically distributed (iid from now on) random variables with expected value $\mathbb{E}X_1=m$. We would like to find a good empirical estimate $\hat{m}_n$ that is close to $m$. \\
 
-Hence, the estimator will be a function $\hat{m}_n(x_1,\dots,x_n)$ of the observations we have that. A good estimator should have "small" error $|\hat{m}_n-m|$. However, since $\hat{m}_n$ is a random variable (it is a function of random variables) there are many ways to measure the error. In general it is measured as the expected value of a function $l:\Re\times\Re\rightarrow\Re_+$ called loss function, that symbolizes how much we "pay" by saying $m=\hat{m}_n$. Common examples of loss functions are $l(\hat{m}_n,m)=(\hat{m}_n-m)^2$ and $l(\hat{m}_n,m)=|\hat{m}_n-m|$. \\
+Hence, the estimator will be a function $\hat{m}_n(x_1,\dots,x_n)$ of the observations we have. A good estimator should have "small" error $|\hat{m}_n-m|$. However, since $\hat{m}_n$ is a random variable (it is a function of random variables) there are many ways to measure the error. In general it is measured as the expected value of a function $l:\Re\times\Re\rightarrow\Re_+$ called loss function, that symbolizes how much we "pay" in average by saying $m=\hat{m}_n$. Common examples of loss functions are $l(\hat{m}_n,m)=(\hat{m}_n-m)^2$ and $l(\hat{m}_n,m)=|\hat{m}_n-m|$. \\
 A more flexible way of measuring the error is using the probability that $\hat{m}_n$ is at distance more than $\epsilon$, $P(|\hat{m}_n-m|>\epsilon)=\mathbb{E}\mathbbm{1}_{|\hat{m}_n-m|>\epsilon}$. This corresponds to the loss function $l(\hat{m}_n,m)=\mathbbm{1}_{|\hat{m}_n-m|>\epsilon}$.\\
 
 The naive estimator is the sample mean $\hat{m}_n=\frac{1}{n}\sum\limits_{i=1}^n x_i$, which is unbiased and has a mean squared error (MSE) of $\mathbb{E}[(\hat{m}_n-m)^2]=\frac{\sigma^2}{n}$. But it behaves poorly in general if the variance is large. The probability of being far from the real mean can be bounded using the inequalities:
@@ -190,7 +190,7 @@ In general it is difficult that we can apply Hoeffding's inequality or that we h
 
 The idea behind this estimator is to divide the data into $K$ blocks of size $l=\frac{n}{K}$ each, compute the mean in each block and compute the median of the means. \\
 
-So, the $K$ blocks would be $\{x_1,\dots,x_l\},\{x_{l+1},\dots,x_{2l}\},\dots\{x_{(K-1)l+1},\dots,x_{Kl}\}$, the means $\mu_1=\frac{1}{l}\sum\limits_{i=1}^l x_i,\mu_2=\frac{1}{l}\sum\limits_{i=l+1}^{2l}x_1,\dots,\mu_K=\frac{1}{l}\sum\limits_{i=(K-1)l+1}^{Kl}x_i$ and the estimator $\hat{m}_n=\text{median}(\mu_1,\dots,\mu_k)$.\\
+So, the $K$ blocks would be $\{x_1,\dots,x_l\},\{x_{l+1},\dots,x_{2l}\},\dots\{x_{(K-1)l+1},\dots,x_{Kl}\}$, the means\\ $\mu_1=\frac{1}{l}\sum\limits_{i=1}^l x_i,\ \mu_2=\frac{1}{l}\sum\limits_{i=l+1}^{2l}x_1,\ \dots,\ \mu_K=\frac{1}{l}\sum\limits_{i=(K-1)l+1}^{Kl}x_i$ and the estimator $\hat{m}_n=\text{median}(\mu_1,\dots,\mu_k)$.\\
 
 Assuming that $Var(X)=\sigma^2<\infty$, by Chebyshev 
 \begin{equation}
@@ -219,9 +219,9 @@ This bound is much better than the one obtained by Chebyshev. However it has two
 \subsection{By Random Projection}
 The idea is to map a set of $a_1,a_2,\dots,a_N$ points that belong to a space of dimension $D$, $\Re^D$ into a smaller space of dimension $d$, $\Re^d$ with $d<<D$. So we look for a function $f:\Re^D\rightarrow\Re^d$ such that $f(a_1),\dots,f(a_N)$ is a good representation of $a_1,\dots,a_N$. \\
 
-In this case the fundamental characteristic of ``good representation" would be $||f(a_i) - f(a_j)|| \approx ||a_i - a_j||$ that the pairwise distances between points are preserved. This characteristic is important on clustering. But in general, if inside the set \{$a_1,\dots,a_N$\} there are $s$ points that are independent, then at most we can only reduce the dimension to $\Re^{s-1}$, which is not enough because we could have a number of points of the order of $N$, so the dimensionality reduction would be minimal.\\
+In this case the fundamental characteristic of ``good representation" would be $||f(a_i) - f(a_j)|| \approx ||a_i - a_j||$ that the pairwise distances between points are preserved, which is an important characteristic on clustering. But in general, if inside the set \{$a_1,\dots,a_N$\} there are $s$ points that are independent, then at most we can only reduce the dimension to $\Re^{s-1}$, which is not enough because we could have a number of independent points of the order of $N$ (or $D$), so the dimensionality reduction would be minimal.\\
 
-However, if we allow some slack, the situation changes dramatically. We require that $f$ is such that
+However, if we allow some slack, the situation changes dramatically. We can require that $f$ is such that
 
 \begin{equation}
 	1-\epsilon\leq\frac{||f(a_i)-f(a_j)||^2}{||a_i-a_j||^2}\leq 1+\epsilon, \text{ for some }\epsilon>0. 
@@ -229,11 +229,11 @@ However, if we allow some slack, the situation changes dramatically. We require 
 
 And it turns out that such an $f$ exists whenever $d\geq 8\frac{\log N}{\epsilon^2}$ (Johnson-Lindenstrauss lemma). That is, independently of D! Even more surprising is that to find such a function we only need to take $f$ to be linear, that is, $f(a) = Wa$, where $W=(W_{ij})$ is some random $d\times D$ matrix that projects the data points in $\Re^D$ to $\Re^d$.
 
-We want to see that $||W(a_i-a_j)||^2\approx ||a_i-a_j||^2$. We will prove it for $W \sim \mathcal{N}(0, 1/d)$ and for any fixed $b\in \Re^D$, 
+We want to see that $||W(a_i-a_j)||^2\approx ||a_i-a_j||^2$. We will prove it for $W_{ij} \sim \mathcal{N}(0, 1/d)$ $\forall i=1,\dots,d,\ j=1,\dots,D$ and for any fixed $b\in \Re^D$, 
 \begin{align}
-	\mathbbm{E}||Wb||^2&= \mathbbm{E}\Bigg[\sum\limits_{i=1}^d\left(\sum\limits_{j=1}^D W_{ij}b_j\right)^2\Bigg]=\sum\limits_{i=1}^d\mathbbm{E}\Bigg[\left(\sum\limits_{j=1}^DW_{ij}b_j\right)^2\Bigg] \underset{\text{ind}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^D\mathbbm{E}[W_{ij}^2bj^2]\\
-	& \underset{b_j\text{ ctt}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j\mathbbm{E}[W_{ij}^2]=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j(\mathbbm{E}[W_{ij}^2] - \mathbbm{E}[W_{ij}]^2)\\
-	&=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_jVar(W)=\frac{1}{d} \sum_{i=1}^d\sum\limits_{j=1}^Db_j^2=||b||^2.
+	\mathbbm{E}||Wb||^2&= \mathbbm{E}\Bigg[\sum\limits_{i=1}^d\left(\sum\limits_{j=1}^D W_{ij}b_j\right)^2\Bigg]=\sum\limits_{i=1}^d\mathbbm{E}\Bigg[\left(\sum\limits_{j=1}^DW_{ij}b_j\right)^2\Bigg] \underset{\text{ind}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^D\mathbbm{E}[W_{ij}^2b_j^2]\\
+	& \underset{b_j\text{ ctt}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j^2\mathbbm{E}[W_{ij}^2]\underset{\mathbb{E}W_{ij}=0}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j^2(\mathbbm{E}[W_{ij}^2] - \mathbbm{E}[W_{ij}]^2)\\
+	&=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j^2\text{Var}(W)=\frac{1}{d} \sum_{i=1}^d\sum\limits_{j=1}^Db_j^2=||b||^2.
 \end{align}
 In particular, $\mathbbm{E}||W(a_i-a_j)||^2=||(a_i-a_j)||^2$. Now we want it with high probability,
 \begin{equation}
