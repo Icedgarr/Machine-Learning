@@ -74,7 +74,7 @@ If $X\geq 0$ is a non-negative random variable and $t>0$, then
 	P(X\geq t)\leq \frac{\mathbb{E}X}{t}.
 \end{equation}
 \begin{proof}
-	$X\geq t\mathbbm{1}_{X\geq t}$. Taking expectation on both sides: $\mathbb{E}X\geq \mathbb{E}t\mathbbm{1}_{X\geq t}=tP(X\geq t)$. \\ So, $P(X\geq t) \leq \frac{\mathbb{E}\mathbbm{1}_{X\geq t}}{t}$. \\ Q.E.D.
+	$X\geq t\mathbbm{1}_{X\geq t}$. Taking expectation on both sides: $\mathbb{E}X\geq \mathbb{E}t\mathbbm{1}_{X\geq t}=tP(X\geq t)$. \\ So, $P(X\geq t) \leq \frac{\mathbb{E}X}{t}$. \\ Q.E.D.
 \end{proof}
 
 \subsection*{Chebyshev's inequality}
@@ -86,7 +86,7 @@ For any random variable with finite variance
 
 \begin{proof}
 	$P(|X-\mathbb{E}X|\geq t)=P((X-\mathbb{E}X)^2\geq t^2)$. \\
-	By Markov's inequality $P((X-\mathbb{E}X)^2\geq t^2)\leq \frac{(X-\mathbb{E}X)^2}{t^2}=\frac{\text{Var} X}{t^2}$.\\
+	By Markov's inequality $P((X-\mathbb{E}X)^2\geq t^2)\leq \frac{\mathbb{E}[(X-\mathbb{E}X)^2]}{t^2}=\frac{\text{Var} X}{t^2}$.\\
 	Q.E.D.
 \end{proof}
 
@@ -117,7 +117,7 @@ For any $\lambda>0$,
 \textbf{Hoeffding's Lemma:} If $X$ is a random variable taking values in $[a,b]$, then $\mathbb{E}[e^{\lambda(X-\mathbb{E}X)}]\leq e^{\frac{\lambda^2(b-a)}{8}}$.
 (In particular for $X\in[0,1]$, $\mathbb{E}[e^{\lambda(X-\mathbb{E}X)}]\leq e^{\frac{\lambda^2}{8}}$).\\
 
-Though Hoeffding's Lemma and Chernoff's bounds, we get the Hoeffding's inequality:
+Using Hoeffding's Lemma and Chernoff's bounds, we get to the Hoeffding's inequality:
 \begin{equation}
 	P(S-\mathbb{E}S\geq t)\leq e^{-\frac{2t^2}{n(b-a)^2}}.
 \end{equation}
@@ -139,20 +139,43 @@ Let $X_1,\dots,X_n$ be independent such that $X_i\leq b$ for some $b > 0$ and le
 \end{equation}
 If $X_i$ are iid with $\mathbb{E}X=0$, then $v=n\sigma^2$ ($\sigma^2=Var(X)$), so
 \begin{equation}
-	P(\sum\limits_{i=1}^n X_i\geq t)\leq e^{-\frac{t}{2n\sigma^2+\frac{2}{3}t}}.
+	P(\sum\limits_{i=1}^n X_i\geq t)\leq e^{-\frac{t^2}{2n\sigma^2+\frac{2}{3}t}}.
 \end{equation} 
 
 
-\subsection{Jensen's inequality}
+\subsection*{Jensen's inequality}
 
-\subsection{Cauchy-Schwartz's inequality}
+Given $p_1,\dots,p_n$ positive numbers such that $\su{i=1}{n}p_i=1$ and $f(x)$ a continuous and convex function, then
+\begin{equation}
+	f(\su{i=1}{n}p_ix_i)\leq \su{i=1}{n}p_if(x_i).
+\end{equation}
+If $f(x)$ is concave, the inverse inequality holds,
+\begin{equation}
+f(\su{i=1}{n}p_ix_i)\geq \su{i=1}{n}p_if(x_i).
+\end{equation}
+It also works for the continuous case, where $f(x)$ is such that $\int_{\Omega}f(x)\text{d}x=1$ and $var\phi(x)$ is a differentiable convex function defined on $\Omega$, then
+\begin{equation}
+	\varphi(\int_{\Omega}f(x)x\text{d}x)\leq \int_{\Omega} f(x)\varphi(x)\text{d}x.
+\end{equation}
+This implies an inequality on expectations. For $f(x)$ convex and finite,
+\begin{equation}
+	f(\mathbb{E}[X])\leq \mathbb{E}[f(x)].
+\end{equation}
+
+
+\subsection*{Cauchy-Schwartz's inequality}
+
+For $u,v\in \Re^n$ vectors and $\|\cdot\|$ norm,
+\begin{equation}
+	|\langle u,v\rangle|\leq\|u\|\cdot\|v\|.
+\end{equation}
 
 \section{Mean estimator}
 
 
 The motivation of this section is to find a good estimator of the expected value of a population $X$ given a sample drawn from that population. That said, we assume that $X_1,\dots,X_n$ are independent identically distributed (iid from now on) random variables with expected value $\mathbb{E}X_1=m$. We would like to find a good empirical estimate $\hat{m}_n$ that is close to $m$. \\
 
-Hence, the estimator will be a function $\hat{m}_n(x_1,\dots,x_n)$ of the observations we have that. A good estimator should have "small" error $|\hat{m}_n-m|$. However, since $\hat{m}_n$ is a random variable (it is a function of random variables) there are many ways to measure the error. In general it is measured as the expected value of a function $l:\Re\times\Re\rightarrow\Re_+$ called loss function, that symbolizes how much we "pay" by saying $m=\hat{m}_n$. Common examples of loss functions are $l(\hat{m}_n,m)=(\hat{m}_n-m)^2$ and $l(\hat{m}_n,m)=|\hat{m}_n-m|$. \\
+Hence, the estimator will be a function $\hat{m}_n(x_1,\dots,x_n)$ of the observations we have. A good estimator should have "small" error $|\hat{m}_n-m|$. However, since $\hat{m}_n$ is a random variable (it is a function of random variables) there are many ways to measure the error. In general it is measured as the expected value of a function $l:\Re\times\Re\rightarrow\Re_+$ called loss function, that symbolizes how much we "pay" in average by saying $m=\hat{m}_n$. Common examples of loss functions are $l(\hat{m}_n,m)=(\hat{m}_n-m)^2$ and $l(\hat{m}_n,m)=|\hat{m}_n-m|$. \\
 A more flexible way of measuring the error is using the probability that $\hat{m}_n$ is at distance more than $\epsilon$, $P(|\hat{m}_n-m|>\epsilon)=\mathbb{E}\mathbbm{1}_{|\hat{m}_n-m|>\epsilon}$. This corresponds to the loss function $l(\hat{m}_n,m)=\mathbbm{1}_{|\hat{m}_n-m|>\epsilon}$.\\
 
 The naive estimator is the sample mean $\hat{m}_n=\frac{1}{n}\sum\limits_{i=1}^n x_i$, which is unbiased and has a mean squared error (MSE) of $\mathbb{E}[(\hat{m}_n-m)^2]=\frac{\sigma^2}{n}$. But it behaves poorly in general if the variance is large. The probability of being far from the real mean can be bounded using the inequalities:
@@ -167,7 +190,7 @@ In general it is difficult that we can apply Hoeffding's inequality or that we h
 
 The idea behind this estimator is to divide the data into $K$ blocks of size $l=\frac{n}{K}$ each, compute the mean in each block and compute the median of the means. \\
 
-So, the $K$ blocks would be $\{x_1,\dots,x_l\},\{x_{l+1},\dots,x_{2l}\},\dots\{x_{(K-1)l+1},\dots,x_{Kl}\}$, the means $\mu_1=\frac{1}{l}\sum\limits_{i=1}^l x_i,\mu_2=\frac{1}{l}\sum\limits_{i=l+1}^{2l}x_1,\dots,\mu_K=\sum\limits_{i=(K-1)l+1}^{Kl}x_i$ and the estimator $\hat{m}_n=\text{median}(\mu_1,\dots,\mu_k)$.\\
+So, the $K$ blocks would be $\{x_1,\dots,x_l\},\{x_{l+1},\dots,x_{2l}\},\dots\{x_{(K-1)l+1},\dots,x_{Kl}\}$, the means\\ $\mu_1=\frac{1}{l}\sum\limits_{i=1}^l x_i,\ \mu_2=\frac{1}{l}\sum\limits_{i=l+1}^{2l}x_1,\ \dots,\ \mu_K=\frac{1}{l}\sum\limits_{i=(K-1)l+1}^{Kl}x_i$ and the estimator $\hat{m}_n=\text{median}(\mu_1,\dots,\mu_k)$.\\
 
 Assuming that $Var(X)=\sigma^2<\infty$, by Chebyshev 
 \begin{equation}
@@ -196,9 +219,9 @@ This bound is much better than the one obtained by Chebyshev. However it has two
 \subsection{By Random Projection}
 The idea is to map a set of $a_1,a_2,\dots,a_N$ points that belong to a space of dimension $D$, $\Re^D$ into a smaller space of dimension $d$, $\Re^d$ with $d<<D$. So we look for a function $f:\Re^D\rightarrow\Re^d$ such that $f(a_1),\dots,f(a_N)$ is a good representation of $a_1,\dots,a_N$. \\
 
-In this case the fundamental characteristic of ``good representation" would be $||f(a_i) - f(a_j)|| \approx ||a_i - a_j||$ that the pairwise distances between points are preserved. This characteristic is important on clustering. But in general, if inside the set \{$a_1,\dots,a_N$\} there are $s$ points that are independent, then at most we can only reduce the dimension to $\Re^{s-1}$, which is not enough because we could have a number of points of the order of $N$, so the dimensionality reduction would be minimal.\\
+In this case the fundamental characteristic of ``good representation" would be $||f(a_i) - f(a_j)|| \approx ||a_i - a_j||$ that the pairwise distances between points are preserved, which is an important characteristic on clustering. But in general, if inside the set \{$a_1,\dots,a_N$\} there are $s$ points that are independent, then at most we can only reduce the dimension to $\Re^{s-1}$, which is not enough because we could have a number of independent points of the order of $N$ (or $D$), so the dimensionality reduction would be minimal.\\
 
-However, if we allow some slack, the situation changes dramatically. We require that $f$ is such that
+However, if we allow some slack, the situation changes dramatically. We can require that $f$ is such that
 
 \begin{equation}
 	1-\epsilon\leq\frac{||f(a_i)-f(a_j)||^2}{||a_i-a_j||^2}\leq 1+\epsilon, \text{ for some }\epsilon>0. 
@@ -206,19 +229,19 @@ However, if we allow some slack, the situation changes dramatically. We require 
 
 And it turns out that such an $f$ exists whenever $d\geq 8\frac{\log N}{\epsilon^2}$ (Johnson-Lindenstrauss lemma). That is, independently of D! Even more surprising is that to find such a function we only need to take $f$ to be linear, that is, $f(a) = Wa$, where $W=(W_{ij})$ is some random $d\times D$ matrix that projects the data points in $\Re^D$ to $\Re^d$.
 
-We want to see that $||W(a_i-a_j)||^2\approx ||a_i-a_j||^2$. We will prove it for $W \sim \mathcal{N}(0, 1/d)$ and for any fixed $b\in \Re^D$, 
+We want to see that $||W(a_i-a_j)||^2\approx ||a_i-a_j||^2$. We will prove it for $W_{ij} \sim \mathcal{N}(0, 1/d)$ $\forall i=1,\dots,d,\ j=1,\dots,D$ and for any fixed $b\in \Re^D$, 
 \begin{align}
-	\mathbbm{E}||Wb||^2&= \mathbbm{E}\Bigg[\sum\limits_{i=1}^d\left(\sum\limits_{j=1}^D W_{ij}b_j\right)^2\Bigg]=\sum\limits_{i=1}^d\mathbbm{E}\Bigg[\left(\sum\limits_{j=1}^DW_{ij}b_j\right)^2\Bigg] \underset{\text{ind}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^D\mathbbm{E}[W_{ij}^2bj^2]\\
-	& \underset{b_j\text{ ctt}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j\mathbbm{E}[W_{ij}^2]=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j(\mathbbm{E}[W_{ij}^2] - \mathbbm{E}[W_{ij}]^2)\\
-	&=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_jVar(W)=\frac{1}{d} \sum_{i=1}^d\sum\limits_{j=1}^Db_j^2=||b||^2.
+	\mathbbm{E}||Wb||^2&= \mathbbm{E}\Bigg[\sum\limits_{i=1}^d\left(\sum\limits_{j=1}^D W_{ij}b_j\right)^2\Bigg]=\sum\limits_{i=1}^d\mathbbm{E}\Bigg[\left(\sum\limits_{j=1}^DW_{ij}b_j\right)^2\Bigg] \underset{\text{ind}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^D\mathbbm{E}[W_{ij}^2b_j^2]\\
+	& \underset{b_j\text{ ctt}}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j^2\mathbbm{E}[W_{ij}^2]\underset{\mathbb{E}W_{ij}=0}{=}\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j^2(\mathbbm{E}[W_{ij}^2] - \mathbbm{E}[W_{ij}]^2)\\
+	&=\sum\limits_{i=1}^d\sum\limits_{j=1}^Db_j^2\text{Var}(W)=\frac{1}{d} \sum_{i=1}^d\sum\limits_{j=1}^Db_j^2=||b||^2.
 \end{align}
 In particular, $\mathbbm{E}||W(a_i-a_j)||^2=||(a_i-a_j)||^2$. Now we want it with high probability,
 \begin{equation}
 	\left\lvert\frac{||W(a_i-a_j)||^2}{||(a_i-a_j)||^2}-1\right\lvert<\epsilon.
 \end{equation}
-We will denote $c_{ij}=\frac{(a_i-a_j)}{||a_i-a_j||}$. Note that, by definition $||\frac{x}{||x||}|| = \frac{1}{||x||}||x|| = 1$, hence $c_{ij}$ is the unit vector.
+We will denote $c_{ij}=\frac{(a_i-a_j)}{||a_i-a_j||}$. Note that, by definition $||\frac{x}{||x||}|| = \frac{1}{||x||}||x|| = 1$, hence $c_{ij}$ is a unit vector (it has norm 1).
 	
-Then, $\| W c\|^2-1=\su{i=1}{d}\left(\su{j=1}{D}W_{ij}c_j\right)^2-1$. Note that $\su{j=1}{D}W_{ij}c_j = N_i \sim \mathcal{N}(0,\frac{1}{d})$. Furthermore, $\su{i=1}{d}\mathbb{E}[N_i^2]=1$. Putting both things together, we can write 
+Then, $\| W c\|^2-1=\su{i=1}{d}\left(\su{j=1}{D}W_{ij}c_j\right)^2-1$. Note that $\su{j=1}{D}W_{ij}c_j = N_i \sim \mathcal{N}(0,\frac{1}{d})$ ($W_{ij}\sim \mathcal{N}(0,\frac{1}{d})$ and $c_{j}$ is a unit vector). Furthermore, $\su{i=1}{d}\mathbb{E}[N_i^2]=1$. Putting both things together, we can write 
 \begin{equation}
 	\|Wc\|^2-1=\sum\limits_{i=1}^d\left(N_i^2-\mathbb{E}[N_i^2]\right).
 \end{equation} 
@@ -226,7 +249,7 @@ Then, $\| W c\|^2-1=\su{i=1}{d}\left(\su{j=1}{D}W_{ij}c_j\right)^2-1$. Note that
 Now, note that $Z = \sum_{i=1}^{d}N_i^2 \sim \mathcal{X}^2(d)$ is a sum of squared normal random variables, hence we can apply Chernoff bounds
 $P(|\|Wc_{ij}\|-1>\epsilon)\leq e^{-\frac{\epsilon^2d}{4}}$, which implies
 \begin{equation}
-	P(\underset{i,j=1,\dots N}{\max}\|Wc_{ij}\|^2-1>\epsilon)\leq \left(\begin{array}{c}
+	P\left(\underset{i,j=1,\dots N}{\max}\|Wc_{ij}\|^2-1>\epsilon\right)\leq \left(\begin{array}{c}
 	N\\
 	2
 	\end{array}\right)e^{-\frac{\epsilon^2d}{4}}\leq \frac{N^2}{2}e^{-\frac{\epsilon^2d}{4}}.
@@ -260,23 +283,23 @@ $$l(y,p)=\|y-p\|.$$
 
 We will focus on the \textit{risk} of the decision $p$. Which is
 \begin{equation}
-	R(p)=\mathbb{E}l(y,p).
+	R(p)=\mathbb{E}\ l(y,p).
 \end{equation}
-For the risk function, the optimal prediction would be $p^*\in T$ such that $p^*=\underset{p\in T}{\text{argmin}}R(p)$. Then, the optimal risk is noted $R^*=R(p^*)$.\\
+For the risk function, the optimal prediction would be $p^*\in T$ such that $p^*=\underset{p\in T}{\text{argmin }}R(p)$. Then, the optimal risk is noted $R^*=R(p^*)$.\\
 
 For example, if $ T=\{0,1\}$ and $l(y,p)=\mathbbm{1}_{y\neq p}$, the risk would be 
 \begin{equation}
-	R(p)=\mathbb{E}l(Y,p)=p(Y=0)\mathbbm{1}_{p=1}+p(Y=1)\mathbbm{1}_{p=0}.
+	R(p)=\mathbb{E}\ l(Y,p)=p(Y=0)\mathbbm{1}_{p=1}+p(Y=1)\mathbbm{1}_{p=0}.
 \end{equation}
 Then, $R^*=R(p^*)=\min(p(Y=0),p(Y=1))$.\\
 
-For $ T=\Re$ and $l(y,p)=(y-p)^2$, the risk would be $R(p)=\mathbb{E}(Y-p)^2=\mathbb{E}[Y^2]-2p\mathbb{E}[Y]+p^2$. The minimizer would be $p^*=\mathbb{E}Y$. If the loss function was $l(y,p)=|y-p|$, $p^*$ would be the median of $Y$. That is also a way to define the median for higher dimensional spaces $Med(Y)=\underset{p}{\text{argmin}}\|Y-p\|^2$.
+For $ T=\Re$ and $l(y,p)=(y-p)^2$, the risk would be $R(p)=\mathbb{E}(Y-p)^2=\mathbb{E}[Y^2]-2p\mathbb{E}[Y]+p^2$. The minimizer would be $p^*=\mathbb{E}Y$. If the loss function was $l(y,p)=|y-p|$, $p^*$ would be the median of $Y$. That is also a way to define the median for higher dimensional spaces $\text{Med}(Y)=\underset{p}{\text{argmin}}\|Y-p\|^2$.
 
 \subsection{Prediction problem with a covariate}
 
-Let ($X,Y$) be a pair of random variables taking values in $\Omega\times T$. We usually call $X$ observations, features or covariates and $Y$ label or target. We want to predict $Y$ given an observed value $X$. If we assume that the joint distribution of ($X,Y$) is known, a predictor $p$ is a function of $X$ $p:\Omega\times T$. Given a loss function $l:T\times T\rightarrow \Re_{+}$, the loss function will be $l(p(X),Y)$ and the risk $R(p)=\mathbb{E}l(p(X,Y))$. Then, the risk can also be written as 
+Let ($X,Y$) be a pair of random variables taking values in $\Omega\times T$. We usually call $X$ observations, features or covariates and $Y$ label or target. We want to predict $Y$ given an observed value $X$. If we assume that the joint distribution of ($X,Y$) is known, a predictor $p$ is a function of $X$ $p:\Omega\rightarrow T$. Given a loss function $l:T\times T\rightarrow \Re_{+}$, the loss function will be $l(p(X),Y)$ and the risk $R(p)=\mathbb{E}l(p(X,Y))$. Then, the risk can also be written as 
 \begin{equation}
-	R(p)=\mathbb{E}[l(p(x),Y)]=\mathbb{E}_X\mathbb{E}_{Y|X}[l(p(X),Y)|X].
+	R(p)=\mathbb{E}[l(p(X),Y)]=\mathbb{E}_X\mathbb{E}_{Y|X}[l(p(X),Y)|X].
 \end{equation}
 
 
@@ -289,7 +312,7 @@ Binary classification: $T=\{0,1\}$, $l(p,Y)=\mathbbm{1}_{p\neq Y}$. Then the ris
 Basically the risk minimization and optimal predictor with a covariate work as without it but instead of marginal probabilities we take conditional probabilities $Y|X$.\\
 
 \textbf{Notation in binary classification:\\}
-A posteriori probability: $\eta(x)=\mathbb{P}(Y=1|X=x)=\mathbb{E}(Y|X=x)$.\\
+A posteriori probability: $\eta(x)=\mathbb{P}(Y=1|X=x)=\mathbb{E}[Y|X=x]$.\\
 A priori probabilities: $q_0=\mathbb{P}(Y=0)$, $q_1=\mathbb{P}(Y=1)$.\\
 Marginal distribution of $X$: $\mu(A)=\mathbb{P}(X\in A)$.\\
 Conditional densities for $X$ given $Y$: $f_0(X)=f(X|Y=0)$, $f_1=(X|Y=1)$.\\
@@ -322,7 +345,7 @@ A better idea is to pick $p_n$ as the majority rate, meaning $p_n=\left\{\begin{
 0 & \text{if }\frac{1}{n}\sum\limits_{i=1}^nY_i<\frac{1}{2}\\
 1 & \text{otherwise}
 \end{array}\right.$. For $n$ big that would tend to $p^*=\left\{\begin{array}{ll}
-1 & \text{if }\mathbb{P}(Y=1|X)>\frac{1}{2}\\
+1 & \text{if }\mathbb{P}(Y=1)>\frac{1}{2}\\
 0 & \text{otherwise}\end{array}\right.$. \\
 This predictor is consistent: $R(p_n)=\eta\mathbbm{1}_{\sum\limits_{i=1}^nY_i<\frac{n}{2}}+(1-\eta)\mathbbm{1}_{\sum\limits_{i=1}^nY_i>\frac{n}{2}}$. The expected value  of the risk would be
 \begin{equation}
@@ -330,7 +353,7 @@ This predictor is consistent: $R(p_n)=\eta\mathbbm{1}_{\sum\limits_{i=1}^nY_i<\f
 \end{equation}
 Using that $\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})=1-\mathbb{P}(\text{Bin}(n,\eta)<\frac{n}{2})$ and assuming without lost of generality $\eta<\frac{1}{2}$ we get $\mathbb{E}R(p_n)=\eta+(1-2\eta)\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})$. Since in this case $R^*=\eta$, using Hoeffding's inequality we get that 
 \begin{equation}
-	\mathbb{E}R(p_n)-R^*=\eta+(1-2\eta)\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})\leq e^{-2n(\frac{1}{2}-\eta)^2},
+	\mathbb{E}R(p_n)-R^*=(1-2\eta)\mathbb{P}(\text{Bin}(n,\eta)\geq\frac{n}{2})\leq e^{-2n(\frac{1}{2}-\eta)^2},
 \end{equation}
 which decreases fast with $n$. The maximum will be taken for $\eta\approx \frac{1}{2}-\frac{1}{\sqrt{n}}$.
 
@@ -358,13 +381,13 @@ With this rule, we predict the new observation as the same category as his neare
 
 Note that if the features have different scales some of the previous measurements of distances make no sense (some previous scaling would be needed). However, when we increase the dimension we suffer the \textbf{curse of dimensionality}, the probability of being near decays exponentially with the dimensions. Suppose that our $X$ are uniformly distributed in $[0,1]$, then
 \begin{align}
-	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)&=\mathbb{P}(d(x,X_1)>\epsilon)\cdot\dots\cdot \mathbb{P}(d(x,X_n)>\epsilon)\\ &=\mathbb{P}(d(x,X_1)>\epsilon)^n=(1-\mathbb{P}(d(x,X_1)\leq \epsilon))^n.
+	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)&=\mathbb{P}(d(x,X_1)>\epsilon)\cdot\dots\cdot \mathbb{P}(d(x,X_n)>\epsilon)=\\ &=\mathbb{P}(d(x,X_1)>\epsilon)^n=(1-\mathbb{P}(d(x,X_1)\leq \epsilon))^n.
 \end{align}
 As $X$ are iid uniform distributions, $\mathbb{P}(d(x,X_1)\leq \epsilon)=\epsilon^dv_d$, where $v_d$ is the volume of the unit ball in $\Re^d$. So
 \begin{equation}
 	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)=(1-v_d\epsilon^d)^n\leq e^{-v_dn\epsilon^d},
 \end{equation}
-(using $1-x\approx e^{-x}$ for $x$ small). That will be small if $n\epsilon^d$ is huge, meaning that $\epsilon\geq \sqrt[d]{n}$. That means that for $d=1$, $d(x,X_{(1)}(x))$ is of the order $\frac{1}{n}<\frac{1}{100}\Leftrightarrow n\geq 100$; for $d=2$, $\frac{1}{n}<\frac{1}{100}\Leftrightarrow n\geq 10000$; for $d=10$, $\frac{1}{n}<\frac{1}{100}\Leftrightarrow n\geq 100^{10}$. So the distance between points increases very fast with the dimension. However, $\forall d$, $d(x,X_{(1)}(x))\rightarrow 0$ in probability when $n\rightarrow\infty$. This is true for all distributions.\\
+(using $1-x\approx e^{-x}$ for $x$ small). That will be small if $n\epsilon^d$ is huge, meaning that $\epsilon\geq \frac{1}{\sqrt[d]{n}}$. That means that, taking $\epsilon=\frac{1}{100}$, for $d=1$, $d(x,X_{(1)}(x))$ is of the order $\frac{1}{\sqrt[1]{n}}<\frac{1}{100}\Leftrightarrow n\geq 100$; for $d=2$, $\frac{1}{\sqrt[2]{n}}<\frac{1}{100}\Leftrightarrow n\geq 10000$; for $d=10$, $\frac{1}{\sqrt[10]{n}}<\frac{1}{100}\Leftrightarrow n\geq 100^{10}$. So, the distance between points increases very fast with the dimension, which implies that in order to have the nearest neighbor close we need a huge amount of points. However, $\forall d$, $d(x,X_{(1)}(x))\rightarrow 0$ in probability when $n\rightarrow\infty$. This is true for all distributions.\\
 
 Remark: Nearest neighbor works if the classes are well separated. Then, even if the distance is big, it is still much smaller than the distance to the nearest of the other class. This tells us that in order to increase dimensionality (adding new variables) we better do it with variables that give us real information. Adding unimportant information adds noise that difficult classification.\\
 
@@ -374,7 +397,7 @@ Remark: Nearest neighbor works if the classes are well separated. Then, even if 
 \end{equation}
 That is true for all distributions.\\
 
-As $\min(\eta,1-\eta)\leq2\eta(1-\eta)\leq 2\min(\eta,1-\eta)$, we always have that $R^*\leq R_{NN}\leq 2R^*(1-R^*)$, so $R_{NN}$ will only be consistent whenever $R^*=0$. That means that it will only be consistent if $Y$ is a deterministic function of $X$.\\
+As $\min(\eta,1-\eta)\leq2\eta(1-\eta)\leq 2\min(\eta,1-\eta)$, we always have that $R^*\leq R_{NN}\leq 2R^*(1-R^*)$, so $R_{NN}$ will only be consistent whenever $R^*=0$. That means that it will only be consistent if $Y$ is a deterministic function of $X$, which is not bad because it usually is.\\
 
 \subsubsection{K-nearest neighbor rule}
 
@@ -398,31 +421,29 @@ Although the problem becomes dangerous when we increase the dimensions, because 
 
 \section{Empirical risk minimization}
 
-Let $g:\Omega\rightarrow\{0,1\}$ be a classifier that not depends on data. Given data $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$, to know how good the estimator is we can estimate the risk as $R(g)=\mathbb{P}(g(X)\neq Y)$ by $R_n(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i)\neq Y_i}$. By Hoeffding's inequality we know that with probability $\geq 1-\delta$, 
+Let $g:\Omega\rightarrow\{0,1\}$ be a classifier that does not depends on data. Given data $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$, to know how good the estimator is we can estimate the risk as $R(g)=\mathbb{P}(g(X)\neq Y)$ by $R_n(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i)\neq Y_i}$. By Hoeffding's inequality we know that with probability $\geq 1-\delta$, 
 \begin{equation}
 	|R_n(g)-R(g)|\leq\sqrt{\frac{\log\frac{2}{\delta}}{2n}}.
 \end{equation}
-Now, the idea would be to know among different classifiers which is the best. That is given $N$ classifiers $g_1,\dots,g_N: X\rightarrow\{0,1\}$, choose the one that has less risk. We may estimate the risk with the same data and pick the best one, but this does not mean that in general it will be the best classifier.\\
+Now, the idea would be to know among different classifiers which is the best. That is given $N$ classifiers $g_1,\dots,g_N: X\rightarrow\{0,1\}$, choose the one that has less risk. We can estimate the risk with the same data and pick the best one, but this does not mean that in general it will be the best classifier.\\
 
 We can estimate the risk of each classifier $g_j$ as $R_n(g_j)=\frac{1}{n}\sum\limits_{i=1}^n \mathbbm{1}_{g_j(X_i)\neq Y_i}$. For each classifier we have the above inequality, but the risks are not independent of the classifier rule used. We will use the union bound ($\mathbb{P}(\bigcup\limits_{i=1}^n A_i)\leq\sum\limits_{i=1}^n\mathbb{P}(A_i)$).
 \begin{align}
-	\mathbb{P}(\underset{j=1,\dots,N}{\max}|R_n(g_j)-R(g_j)|\geq\epsilon) &=\mathbb{P}(\bigcup\limits_{j=1}^N\{|R_n(g_j)-R(g_j)|\geq \epsilon\})\\
-	&\leq\sum\limits_{j=1}^N\mathbb{P}(|R_n(g_j)-R(g_j)|\geq\epsilon)\\
-	&= 2N\mathbb{P}(R_n(g_1)-R(g_1)\geq\epsilon)\\
-	&= 2N\mathbb{P}(S -\mathbb{E}S\geq n\epsilon) \underset{Hoeff}{\leq} 2Ne^{-2n\epsilon^2}=\delta.
+	\mathbb{P}(\underset{j=1,\dots,N}{\max}|R_n(g_j)-R(g_j)|\geq\epsilon)=\mathbb{P}(\bigcup\limits_{j=1}^N\{|R_n(g_j)-R(g_j)|\geq \epsilon\})\\
+	\leq\sum\limits_{j=1}^N\mathbb{P}(|R_n(g_j)-R(g_j)|\geq\epsilon)\leq 2Ne^{-2n\epsilon^2}=\delta.
 \end{align}
-Now, solving for $\delta$ we get that with probability $\geq 1-\delta$, \begin{equation}
+Now, solving for $\epsilon$ we get that with probability $\geq 1-\delta$, \begin{equation}
 	|R_n(g_j)-R(g_j)|\leq\sqrt{\frac{\log\frac{2 N}{\delta}}{2n}}.
 \end{equation}
 
 One important consequence of this is that if we take a classifier rule depending on data $D_n$ $\hat{p}_n:\Omega\times(\Omega\times\{0,1\})^n\rightarrow \{0,1\}$ that picks a classifier from the set $\{g_1,\dots,g_N\}$. And we estimate the risk of $\hat{p}_n$ by $R_n(\hat{p}_n)= \frac{1}{n}\mathbbm{1}_{\hat{p}_n(X_i)\neq Y_i}$, then with probability $\geq 1-\delta$
 \begin{equation}
-	|R_n(\hat{p}_n)-R(\hat{p}_n)|\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}.
+	|R_n(\hat{p}_n-R(\hat{p}_n))|\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}.
 	\label{riskbound}
 \end{equation}
 Which implies that we can bound the theoretical risk of $\hat{p}_n$ from data as $R(\hat{p}_n)\leq R_n(\hat{p}_n)+ \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}$ (with probability $\geq 1-\delta$). We still have the bound depending on the number of classifiers in the class, which can be huge.\\
 
-Now, we will denote $\hat{p}_n=\underset{g_1,\dots,g_N}{\text{argmin}}\ R_n(g_j)$ the chosen classifier that empirically minimizes the risk and $\bar{p}=\underset{g_1,\dots,g_N}{\text{argmin}}\ R(g_j)$ the best classifier (that minimizes the theoretical risk). Let's see how close they are regarding their risk bounding the excess of risk:
+Now, we will denote $\hat{p}_n=\underset{g_1,\dots,g_N}{\text{argmin}}R_n(g_j)$ the chosen classifier that empirically minimizes the risk and $\bar{p}=\underset{g_1,\dots,g_N}{\text{argmin}}R(g_j)$ the best classifier (that minimizes the theoretical risk). Let's see how close they are regarding their risk by bounding the excess of risk:
 \begin{equation}
 	R(\hat{p}_n)-R(\bar{p})=(R(\hat{p}_n)-R_n(\hat{p}_n))+(R_n(\hat{p}_n)-R(\bar{p}_n)).
 \end{equation}
@@ -447,23 +468,23 @@ If the classifier chooses from a small class, then the resubstitution estimate w
 In this case the empirical risk would be computed as the sum of errors made on each point, but for every point $i$ we would train a $p_n^{(i)}$ with the data except $i$, so $p_n^{(i)}$ would be train on $D_n^{(-i)}=(X_1,Y_1),\dots,(X_{i-1},Y_{i-1}), (X_{i+1},Y_{i+1}),\dots,(X_n,Y_n)$.
 \begin{equation}
 	R_n^{(D)}(p_n)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}
-_{p^{(i)}_n(X_i)\neq Y_i}.
+_{p_n^{(i)}(X_i)\neq Y_i}.
 \end{equation}
-Now, we don't have the dependence problem, $p_n^{(i)}$ does not depend on $(X_i,Y_i)$. And
+Now, we don't have the dependence problem, $p_n^(i)$ does not depend on $(X_i,Y_i)$. And
 \begin{equation}
-	\mathbb{P}(p_n^{(i)}(X_i)\neq Y_i|D_n^{(-i)})=R(p_n^{(i)}),
+	\mathbb{P}(p_n^{(i)}(X_i)\neq Y_i|D_n^(-i))=R(p_n^(i)),
 \end{equation}
 Taking expectation over the $X_i$ we get
 \begin{equation}
-	\mathbb{E}R(p_n^{(i)})=\mathbb{E}R(p_n^{(j)}),\text{ for any }j=1,\dots,n.
+	\mathbb{E}R_(p_n^{(i)})=\mathbb{E}R(p_n^(j)),\text{ for any }j=1,\dots,n.
 \end{equation}
 In particular 
 \begin{equation}
-	\mathbb{E}R(p_n^{(i)})=\mathbb{E}R(p_n^{(n)})=\mathbb{E}R(p_{n-1}).
+	\mathbb{E}R_(p_n^{(i)})=\mathbb{E}R(p_n^(n))=\mathbb{E}R(p_{n-1}).
 \end{equation}
 So, the expected value is almost unbiased, 
 \begin{equation}
-	\mathbb{E}R_n^{(D)}(p_n)=\mathbb{E}R(p_{n-1}).
+	\mathbb{E}R_n^(D)(p_n)=\mathbb{E}R(p_{n-1}).
 \end{equation}
 
 In general saying something about $\mathbb{P}(|R_n^{(D)}-R(p_n)|>t|)$ is a challenge. All the dependencies that are when leaving one out are not trivial, so a lot of different classes have been studied to see in their particular case how it behaves. In practice we use the approximation that it is the same more or less when leaving one out, which works fairly well if we have a lot of data.
@@ -475,11 +496,11 @@ Suppose we have $N$ data-dependent classifiers $p_n^{(1)},\dots,p_n^{(N)}$ train
 \end{equation}
 Now the classifiers do not depend on the test data, $R_m'(p_n^{(j)})$ will depend on $D_n$ and $D_m'$, and $R(p_n^{(j)})$ will depend only on $D_n$.
 \begin{equation}
-	|R_m'(p_n^{(j)})-R(p_n^{(j)})|\leq \underset{j=1,\dots,N}{\max}|R_m'(p_n^{(j)})-R(p_n^{(j)})|.
+	|R_m'(p_n^{(j)}-R(p_n^{(j)})|\leq \underset{j=1,\dots,N}{\max}|R_m'(p_n^{(j)})-R(p_n^{(j)})|.
 \end{equation}
 If we condition now on $D_n$, then $p_n^{(j)}$ will be a fixed classifier not dependent on data, so we can bound it as
 \begin{equation}
-	|R_m'(p_n^{(j)})-R(p_n^{(j)})|\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2m}},
+	|R_m'(p_n^{(j)}-R(p_n^{(j)})|\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2m}},
 \end{equation}
 with probability $\geq 1-\delta$ respect to $D_m'$ conditioned on $D_n$. \\
 
@@ -508,7 +529,7 @@ Let us bound now the expected value $\mathbb{E}\underset{A\in\mathcal{A}}{\max}(
 As the exponential function is increasingly monotonous, the maximum value of the exponent leads to the maximum value of the exponential, so 
 \begin{align}
 	&\mathbb{E}e^{\lambda\text{ }\underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))}=\mathbb{E}\text{ }\underset{A\in\mathcal{A}}{\max}\text{ }e^{\lambda(\mathbb{P}_n(A)-\mathbb{P}(A))}\leq\mathbb{E}\sum\limits_{A\in\mathcal{A}}e^{\lambda(\mathbb{P}_n(A)-\mathbb{P}(A))}=\\
-	&\sum\limits_{A\in\mathcal{A}}\mathbb{E}e^{\lambda(\mathbb{P}_n(A)-\mathbb{P}(A))}\underset{\text{Hoeffding's}}{\leq}\sum\limits_{A\in\mathcal{A}}e^{\frac{\lambda^2}{8n}}=Ne^{\frac{\lambda^2}{8n}}.
+	&\sum\limits_{A\in\mathcal{A}}\mathbb{E}e^{\lambda(\mathbb{P}_n(A)-\mathbb{P}(A)}\underset{\text{Hoeffding's}}{\leq}\sum\limits_{A\in\mathcal{A}}e^{\frac{\lambda^2}{8n}}=Ne^{\frac{\lambda^2}{8n}}.
 \end{align}
 Now, applying logarithm on the beginning and on the end of the inequality, we get
 \begin{equation}
@@ -519,11 +540,11 @@ where the last equality is the result of finding the minimum with respect to $\l
 Now, let us look the case where we have \textbf{possibly infinite classes:}. To tackle this problem we will use a beautiful trick called \textbf{symmetrization}.\\
 We generate a ghost sample $X_1',\dots,X_n'$ iid with the same distribution as $X_1,\dots,X_n$. Then, the ghost empirical probability is $\mathbb{P}_n'(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_1'\in A}$. The main idea is that if $P_n'$ and $P_n$ are close with probability $\geq 1-\delta$, then $P_n$ and $P$ are also close with probability $\geq 1-\delta$ and vice-versa. Because both empirical distributions are drawn from $P$. Let's show that
 \begin{align}
-	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-\mathbb{E}'P_n'(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A)),
+	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-\mathbb{E}'P_n'(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A),
 \end{align}
 because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality (because the supreme of a convex function is convex).
 \begin{align}
-	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A))\leq \mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A)).
+	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A)\leq \mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A)).
 \end{align}
  This in particular implies our previous statement, if the expected value of the supreme of $P_n(A)-P_n'(A)$ is small, then the expected value of the supreme of $P_n(A)-P(A)$ will also be close (it is smaller). Now,
  \begin{align}
@@ -531,7 +552,7 @@ because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality
  	&\leq 2\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A}\\
  	&=2\mathbb{E}_X\mathbb{E}_{\sigma}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A},
  \end{align}
- where $\sigma_1,\dots,\sigma_n$ are Rademacher random variables with $\mathbb{P}(\sigma_i=1)=\mathbb{P}(\sigma_i=-1)=\frac{1}{2}$.\\
+ where $\sigma_1,\dots,\sigma_n$ are Rademacher random variables with $\mathbb{P}(\sigma_i=1)=\mathbb{P}(\sigma_i=-1)=\frac{1}{n}$.\\
  
  Given a class $\mathcal{A}$ of subsets of $\Omega$ and $X_1,\dots,X_n\in \Omega$, the \textbf{shatter coefficient} of $\mathcal{A}$ is 
  \begin{equation}
@@ -582,7 +603,7 @@ for some constant $c$. The last inequality can be found working harder in a non-
 
 \textbf{Proof:} We want to prove that for all collections of $r+1$ points, $X=\{x_1,x_2,\dots,x_{r+1}\}$ the set is not shattered. Meaning that there exists a subset $B\subset X$ of points that cannot be obtained by intersection with a subset of $\mathcal{A}$ (if all points in $B$ are obtained by intersection, there will also be at least another point $x_j\notin B$ also contained in the intersection).\\
 
-To prove this let's fix $x_1,\dots,x_{r+1}$ and define $L:\Re^r\rightarrow\Re^{r+1}$ by 
+To prove this let's fix $x_1,\dots,x_{r+1}$ and define $L:\Re^r\rightarrow\Re{r+1}$ by 
 \begin{equation}
 L(a_1,\dots,a_r)\rightarrow(\su{i=1}{r}a_i\varphi_i(x_1),\su{i=1}{r}a_i\varphi_i(x_2),\dots,\su{i=1}{r}a_i\varphi_i(x_{r+1})).
 \end{equation}
@@ -670,7 +691,7 @@ If we bound the shatter coefficient, then we have a bound for the VC dimension a
 	\item The union of two classes have a smaller coefficient than the sum of their respective shatter coefficients. That is, if $\mathcal{A}=\mathcal{A}_1\bigcup\mathcal{A}_2$, then 
 	$S_{\mathcal{A}} (n)\leq S_{\mathcal{A}_1}(n) +S_{\mathcal{A}_2}(n)$.
  	\item If $\mathcal{A}_c=\{A^c:A\in\mathcal{A}\}$, then $S_{\mathcal{A}_c}(n)=S_{\mathcal{A}}(n)$.
-	\item The shatter coefficient of a class of sets that are union of sets of other classes is bounded by the product of their shatter coefficients. If $\mathcal{A}=\{A=B\bigcup C:B\in\mathcal{B},C\in\mathcal{C}\}$, then $S_{\mathcal{A}}(n)\leq S_{\mathcal{B}}(n)S_{\mathcal{C}}(n)$. If instead of unions we have intersections we obtain the same result. We will prove the intersection.\\
+	\item The shatter coefficient of a class of sets that are union of sets of other classes is bounded by the product of their shatter coefficients. If $\mathcal{A}=\{A=B\bigcup C:B\in\mathcal{B},C\mathcal{C}\}$, then $S_{\mathcal{A}}(n)\leq S_{\mathcal{B}}(n)S_{\mathcal{C}}(n)$. If instead of unions we have intersections we obtain the same result. We will prove the intersection.\\
 	\textbf{Proof:} Let's fix $x_1,\dots,x_n$ and suppose that $\mathcal{B}$ induces $N\leq S_{\mathcal{B}}(n)$ subsets of $\{x_1,\dots,x_n\}$. Call them $S_1,S_2,\dots,S_N$. For each $S_i$, $\mathcal{C}$ picks at most $S_{\mathcal{C}}(|S_i|)\leq S_{\mathcal{C}}(n)$. In total we have at most $S_{\mathcal{B}}(n)S_{\mathcal{C}}(n)$ subsets. From here, as $B\bigcup C=(B^c\bigcap C^c)^c$, using the previous property we obtain the union.
 	\item 
 \end{itemize}
@@ -700,7 +721,7 @@ where $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ is the penalty for complexity that w
 
 If $g_n$ is the classifier minimizing the penalized empirical risk, then
 \begin{equation}
-	R(g_n)\leq \underset{k}{\min}(R(\bar{g}^{(k)})+\text{Penalty}(k))+\text{peanuts},
+	R_(g_n)\leq \underset{k}{\min}(R(\bar{g}^{(k)})+\text{Penalty}(k))+\text{peanuts},
 \end{equation} 
 where $\bar{g}^{(k)}=\underset{g\in\mathcal{C}_k}{\text{argmin }}R(g)$.
 
@@ -723,11 +744,8 @@ Suppose that the data is nearly separable. Let's see the algorithm.\\
 1. We start with an arbitrary $w_0$, for example $w_0=0$.\\
 2. Then we go through our data points one by one.\\
 At time $t$:
-\begin{itemize}
-	\item[]  if $w_{t-1}X_tY_t> 0$ then we do nothing.
-	\item[]  if $w_{t-1}X_tY_t\leq 0$ then $w_t=w_{t-1}+X_tY_t$.
-\end{itemize}
-
+\hspace{2cm} if $w_{t-1}X_tY_t> 0$ then we do nothing\\
+\hspace{2cm} if $w_{t-1}X_tY_t\leq 0$ then $w_t=w_{t-1}+X_tY_t$.\\
 3. Stop when all data points are correctly classified. Cycle through the data the several times if needed. \\
 So the linear classifier is $\hat{w}=\su{t}{}X_tY_t\mathbbm{1}_{w_{t-1}X_tY_t\leq 0}$.\\
 
