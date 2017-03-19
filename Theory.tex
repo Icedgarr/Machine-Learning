@@ -381,13 +381,13 @@ With this rule, we predict the new observation as the same category as his neare
 
 Note that if the features have different scales some of the previous measurements of distances make no sense (some previous scaling would be needed). However, when we increase the dimension we suffer the \textbf{curse of dimensionality}, the probability of being near decays exponentially with the dimensions. Suppose that our $X$ are uniformly distributed in $[0,1]$, then
 \begin{align}
-	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)&=\mathbb{P}(d(x,X_1)>\epsilon)\cdot\dots\cdot \mathbb{P}(d(x,X_n)>\epsilon)\\ &=\mathbb{P}(d(x,X_1)>\epsilon)^n=(1-\mathbb{P}(d(x,X_1)\leq \epsilon))^n.
+	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)&=\mathbb{P}(d(x,X_1)>\epsilon)\cdot\dots\cdot \mathbb{P}(d(x,X_n)>\epsilon)=\\ &=\mathbb{P}(d(x,X_1)>\epsilon)^n=(1-\mathbb{P}(d(x,X_1)\leq \epsilon))^n.
 \end{align}
 As $X$ are iid uniform distributions, $\mathbb{P}(d(x,X_1)\leq \epsilon)=\epsilon^dv_d$, where $v_d$ is the volume of the unit ball in $\Re^d$. So
 \begin{equation}
 	\mathbb{P}(d(x,X_{(1)}(x))>\epsilon)=(1-v_d\epsilon^d)^n\leq e^{-v_dn\epsilon^d},
 \end{equation}
-(using $1-x\approx e^{-x}$ for $x$ small). That will be small if $n\epsilon^d$ is huge, meaning that $\epsilon\geq \sqrt[d]{n}$. That means that for $d=1$, $d(x,X_{(1)}(x))$ is of the order $\frac{1}{n}<\frac{1}{100}\Leftrightarrow n\geq 100$; for $d=2$, $\frac{1}{n}<\frac{1}{100}\Leftrightarrow n\geq 10000$; for $d=10$, $\frac{1}{n}<\frac{1}{100}\Leftrightarrow n\geq 100^{10}$. So the distance between points increases very fast with the dimension. However, $\forall d$, $d(x,X_{(1)}(x))\rightarrow 0$ in probability when $n\rightarrow\infty$. This is true for all distributions.\\
+(using $1-x\approx e^{-x}$ for $x$ small). That will be small if $n\epsilon^d$ is huge, meaning that $\epsilon\geq \frac{1}{\sqrt[d]{n}}$. That means that, taking $\epsilon=\frac{1}{100}$, for $d=1$, $d(x,X_{(1)}(x))$ is of the order $\frac{1}{\sqrt[1]{n}}<\frac{1}{100}\Leftrightarrow n\geq 100$; for $d=2$, $\frac{1}{\sqrt[2]{n}}<\frac{1}{100}\Leftrightarrow n\geq 10000$; for $d=10$, $\frac{1}{\sqrt[10]{n}}<\frac{1}{100}\Leftrightarrow n\geq 100^{10}$. So, the distance between points increases very fast with the dimension, which implies that in order to have the nearest neighbor close we need a huge amount of points. However, $\forall d$, $d(x,X_{(1)}(x))\rightarrow 0$ in probability when $n\rightarrow\infty$. This is true for all distributions.\\
 
 Remark: Nearest neighbor works if the classes are well separated. Then, even if the distance is big, it is still much smaller than the distance to the nearest of the other class. This tells us that in order to increase dimensionality (adding new variables) we better do it with variables that give us real information. Adding unimportant information adds noise that difficult classification.\\
 
@@ -397,7 +397,7 @@ Remark: Nearest neighbor works if the classes are well separated. Then, even if 
 \end{equation}
 That is true for all distributions.\\
 
-As $\min(\eta,1-\eta)\leq2\eta(1-\eta)\leq 2\min(\eta,1-\eta)$, we always have that $R^*\leq R_{NN}\leq 2R^*(1-R^*)$, so $R_{NN}$ will only be consistent whenever $R^*=0$. That means that it will only be consistent if $Y$ is a deterministic function of $X$.\\
+As $\min(\eta,1-\eta)\leq2\eta(1-\eta)\leq 2\min(\eta,1-\eta)$, we always have that $R^*\leq R_{NN}\leq 2R^*(1-R^*)$, so $R_{NN}$ will only be consistent whenever $R^*=0$. That means that it will only be consistent if $Y$ is a deterministic function of $X$, which is not bad because it usually is.\\
 
 \subsubsection{K-nearest neighbor rule}
 
@@ -421,7 +421,7 @@ Although the problem becomes dangerous when we increase the dimensions, because 
 
 \section{Empirical risk minimization}
 
-Let $g:\Omega\rightarrow\{0,1\}$ be a classifier that not depends on data. Given data $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$, to know how good the estimator is we can estimate the risk as $R(g)=\mathbb{P}(g(X)\neq Y)$ by $R_n(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i)\neq Y_i}$. By Hoeffding's inequality we know that with probability $\geq 1-\delta$, 
+Let $g:\Omega\rightarrow\{0,1\}$ be a classifier that does not depends on data. Given data $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$, to know how good the estimator is we can estimate the risk as $R(g)=\mathbb{P}(g(X)\neq Y)$ by $R_n(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i)\neq Y_i}$. By Hoeffding's inequality we know that with probability $\geq 1-\delta$, 
 \begin{equation}
 	|R_n(g)-R(g)|\leq\sqrt{\frac{\log\frac{2}{\delta}}{2n}}.
 \end{equation}
@@ -429,10 +429,10 @@ Now, the idea would be to know among different classifiers which is the best. Th
 
 We can estimate the risk of each classifier $g_j$ as $R_n(g_j)=\frac{1}{n}\sum\limits_{i=1}^n \mathbbm{1}_{g_j(X_i)\neq Y_i}$. For each classifier we have the above inequality, but the risks are not independent of the classifier rule used. We will use the union bound ($\mathbb{P}(\bigcup\limits_{i=1}^n A_i)\leq\sum\limits_{i=1}^n\mathbb{P}(A_i)$).
 \begin{align}
-	\mathbb{P}(\underset{j=1,\dots,N}{\max}|R_n(g_j)-R(g_j)|\geq\epsilon)=\mathbb{P}(\bigcup\limits_{j=1}^n\{|R_n(g_j)-R(g_j)|\geq \epsilon\})\\
-	\leq\sum\limits_{j=1}^n\mathbb{P}(|R_n(g_j)-R(g_j)|\geq\epsilon)\leq 2Ne^{-2n\epsilon^2}=\delta.
+	\mathbb{P}(\underset{j=1,\dots,N}{\max}|R_n(g_j)-R(g_j)|\geq\epsilon)=\mathbb{P}(\bigcup\limits_{j=1}^N\{|R_n(g_j)-R(g_j)|\geq \epsilon\})\\
+	\leq\sum\limits_{j=1}^N\mathbb{P}(|R_n(g_j)-R(g_j)|\geq\epsilon)\leq 2Ne^{-2n\epsilon^2}=\delta.
 \end{align}
-Now, solving for $\delta$ we get that with probability $\geq 1-\delta$, \begin{equation}
+Now, solving for $\epsilon$ we get that with probability $\geq 1-\delta$, \begin{equation}
 	|R_n(g_j)-R(g_j)|\leq\sqrt{\frac{\log\frac{2 N}{\delta}}{2n}}.
 \end{equation}
 
@@ -443,7 +443,7 @@ One important consequence of this is that if we take a classifier rule depending
 \end{equation}
 Which implies that we can bound the theoretical risk of $\hat{p}_n$ from data as $R(\hat{p}_n)\leq R_n(\hat{p}_n)+ \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}$ (with probability $\geq 1-\delta$). We still have the bound depending on the number of classifiers in the class, which can be huge.\\
 
-Now, we will denote $\hat{p}_n=\underset{g_1,\dots,g_N}{\text{argmin}}R_n(g_j)$ the chosen classifier that empirically minimizes the risk and $\bar{p}=\underset{g_1,\dots,g_N}{\text{argmin}}R(g_j)$ the best classifier (that minimizes the theoretical risk). Let's see how close they are regarding their risk bounding the excess of risk:
+Now, we will denote $\hat{p}_n=\underset{g_1,\dots,g_N}{\text{argmin}}R_n(g_j)$ the chosen classifier that empirically minimizes the risk and $\bar{p}=\underset{g_1,\dots,g_N}{\text{argmin}}R(g_j)$ the best classifier (that minimizes the theoretical risk). Let's see how close they are regarding their risk by bounding the excess of risk:
 \begin{equation}
 	R(\hat{p}_n)-R(\bar{p})=(R(\hat{p}_n)-R_n(\hat{p}_n))+(R_n(\hat{p}_n)-R(\bar{p}_n)).
 \end{equation}
@@ -468,7 +468,7 @@ If the classifier chooses from a small class, then the resubstitution estimate w
 In this case the empirical risk would be computed as the sum of errors made on each point, but for every point $i$ we would train a $p_n^{(i)}$ with the data except $i$, so $p_n^{(i)}$ would be train on $D_n^{(-i)}=(X_1,Y_1),\dots,(X_{i-1},Y_{i-1}), (X_{i+1},Y_{i+1}),\dots,(X_n,Y_n)$.
 \begin{equation}
 	R_n^{(D)}(p_n)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}
-_{p_n^{(i)(X_i)\neq Y_i}}.
+_{p_n^{(i)}(X_i)\neq Y_i}.
 \end{equation}
 Now, we don't have the dependence problem, $p_n^(i)$ does not depend on $(X_i,Y_i)$. And
 \begin{equation}
