@@ -26,6 +26,7 @@
 \usepackage{dsfont}
 \usepackage{bbm}
 \usepackage{tikz}
+\usepackage{tikzsymbols} %Roger
 \usetikzlibrary{positioning,arrows.meta,calc}
 
 
@@ -535,22 +536,22 @@ As the exponential function is increasingly monotonous, the maximum value of the
 \end{align}
 Now, applying logarithm on the beginning and on the end of the inequality, we get
 \begin{equation}
-	\mathbb{E}\underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))\leq\frac{\log N}{\lambda}+\frac{\lambda}{8n}=\sqrt{\frac{\log N}{2n}},
+	\mathbb{E}\ \underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))\leq\frac{\log N}{\lambda}+\frac{\lambda}{8n}=\sqrt{\frac{\log N}{2n}}, %Roger
 \end{equation}
 where the last equality is the result of finding the minimum with respect to $\lambda$.\\
 
-Now, let us look the case where we have \textbf{possibly infinite classes:}. To tackle this problem we will use a beautiful trick called \textbf{symmetrization}.\\
-We generate a ghost sample $X_1',\dots,X_n'$ iid with the same distribution as $X_1,\dots,X_n$. Then, the ghost empirical probability is $\mathbb{P}_n'(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_1'\in A}$. The main idea is that if $P_n'$ and $P_n$ are close with probability $\geq 1-\delta$, then $P_n$ and $P$ are also close with probability $\geq 1-\delta$ and vice-versa. Because both empirical distributions are drawn from $P$. Let's show that
+Now, let us look the case where we have \textbf{possibly infinite classes}. To tackle this problem we will use a beautiful trick called \textbf{symmetrization}.\\
+We generate a ghost sample $X_1',\dots,X_n'$ iid with the same distribution as $X_1,\dots,X_n$. Then, the ghost empirical probability is $\mathbb{P}_n'(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_i'\in A}$. The main idea is that if $P_n'$ and $P_n$ are close with probability $\geq 1-\delta$, then $P_n$ and $P$ are also close with probability $\geq 1-\delta$ and vice-versa. Because both empirical distributions are drawn from $P$. Let's show that
 \begin{align}
-	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}(P_n(A)-\mathbb{E}'P_n'(A))=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A)),
+	\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-P(A))=\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-\mathbb{E}'P_n'(A))=\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A)), %Roger
 \end{align}
 because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality (because the supreme of a convex function is convex).
 \begin{align}
-	\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A))\leq \mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A)).
+	\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A))\leq \mathbb{E}\mathbb{E}'\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A)). %Roger
 \end{align}
  This in particular implies our previous statement, if the expected value of the supreme of $P_n(A)-P_n'(A)$ is small, then the expected value of the supreme of $P_n(A)-P(A)$ will also be close (it is smaller). Now,
  \begin{align}
- 	\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A))&=\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n(\mathbbm{1}_{Y_i\in A}-\mathbbm{1}_{Y_i'\in A})\\
+ 	\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A))&=\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n(\mathbbm{1}_{X_i\in A}-\mathbbm{1}_{X_i'\in A})\\ %Roger
  	&\leq 2\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A}\\
  	&=2\mathbb{E}_X\mathbb{E}_{\sigma}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A},
  \end{align}
@@ -577,14 +578,14 @@ because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality
  	\mathbb{E}\underset{A_a\in\mathcal{A}}{\max}|F(X)-F_n(X)|\leq 4\sqrt{\frac{2\log(n+1)}{n}}\underset{n\rightarrow\infty}{\longrightarrow}0.
  \end{equation}
  
- \textbf{Example:} Let $\Omega=\Re$ ad $\mathcal{A}=\{\{A_{a,b}=[a,b]\},\forall a,b\in\Re \}$. In this case, we choose left part ($n+1$ choices) and then the right part. So the shatter coefficient will be $S(X_1^n,\mathcal{A})\leq\frac{n(n+1)}{2}\leq(n+1)^2$, so $\mathbb{E}\underset{A_{a,b}\in\mathcal{A}}{\max}|P(A)-P_n(A)|\leq4\sqrt{\frac{4\log(n+1)}{n}}$.\\
+ \textbf{Example:} Let $\Omega=\Re$ ad $\mathcal{A}=\{\{A_{a,b}=[a,b]\},\forall a,b\in\Re \}$. In this case, we choose left part ($n+1$ choices) and then the right part. So the shatter coefficient will be $S(X_1^n,\mathcal{A})\leq\frac{n(n+1)}{2}+1\leq(n+1)^2$, so $\mathbb{E}\underset{A_{a,b}\in\mathcal{A}}{\max}|P(A)-P_n(A)|\leq4\sqrt{\frac{4\log(n+1)}{n}}$.\\
  
  \textbf{Corollary:} If $\mathcal{C}$ is a class of classifiers, \begin{equation}
  	\mathbb{E}\underset{g\in\mathcal{C}}{\sup}|R(g)-R_n(g)|\leq 2\mathbb{E}\sqrt{\frac{2\log 2S(D_n,\mathcal{C})}{n}},
  \end{equation} where $S(D_n,\mathcal{C})$ is the nº of ways the data $X_1,\dots,X_n$ can be classified by classifiers on the class $\mathcal{C}$.\\
  
 \subsection*{The shatter coefficient and the VC-dimension}
-Let $\mathcal{A}$ be a class of sets and let $S_{\mathcal{A}}(n=\underset{x_1,\dots,x_n}{\max}S(X_1^n,\mathcal{A}))$. The largest integer $V$ for which $S_{\mathcal{A}}(V)=2^V$ is the \textbf{VC-dimension} of the class $\mathcal{A}$. It will be the last time that $S_{\mathcal{A}}(n)$ is the maximum possible. If $S_{\mathcal{A}}=2^n\forall n$, then $V_{\mathcal{A}}=\infty$.\\
+Let $\mathcal{A}$ be a class of sets and let $S_{\mathcal{A}}(n=\underset{x_1,\dots,x_n}{\max}S(X_1^n,\mathcal{A}))$. The largest integer $V$ for which $S_{\mathcal{A}}(V)=2^V$ is the \textbf{VC-dimension} of the class $\mathcal{A}$. It will be the last time that $S_{\mathcal{A}}(n)$ is the maximum possible. If $S_{\mathcal{A}}=2^n$ $\forall n$, then $V_{\mathcal{A}}=\infty$.\\%Roger
  
 \textbf{Theorem: Sauer's lemma:} For all $n$, $S_{\mathcal{A}}(n)\leq (n+1)^{V_{\mathcal{A}}}$.\\
  
@@ -598,16 +599,16 @@ for some constant $c$. The last inequality can be found working harder in a non-
 \begin{itemize}
 	\item Let $\Omega=\Re$, $\mathcal{A}=\{A_a=(-\infty,a]\}$, then $S_{\mathcal{A}}=n+1$. For $n=1$ $S_{\mathcal{A}}(1)=2=2^1$, for $n=2$ $S_{\mathcal{A}}(2)=3<2^2$ $\Longrightarrow$ the VC-dimension is $V_{\mathcal{A}}=1$.
 	\item Let $\Omega=\Re$, $\mathcal{A}=\{A_{ab}=[a,b]: a<b\}$, then $S_{\mathcal{A}}(n)=\frac{n(n-1)}{2}$. For $n=1$ $S_{\mathcal{A}}(1)=2=2^1$, for $n=2$ $S_{\mathcal{A}}(2)=4=2^2$, for $n=3$ $S_{\mathcal{A}}(3)=7<2^3$ $\Longrightarrow$ the VC dimension is $V_{\mathcal{A}}=2$.
-	\item Now, let $\Omega=\Re^d$, $\mathcal{A}=\{[a_1,b_1]x[a_2,b_2]x\dots x[a_d,b_d]\}$. First we consider $\Omega=\Re^2$, then we have $S_{\mathcal{A}}(1)=2^1$, $S_{\mathcal{A}}(2)=2^2$, $S_{\mathcal{A}}(3)=2^3$, $S_{\mathcal{A}}(4)=2^4$, but $S_{\mathcal{A}}(5)<2^5$. That is because we cannot build a rectangle containing all points that are extremal (the most east point, the most west point, the most north point and the most south point) but not the rest. In $d$ dimension it would happen the same, we cannot build a rectangle containing the extremal points in each side of each dimension but not the rest, so $V_{\mathcal{A}}=2d$.
+	\item Now, let $\Omega=\Re^d$, $\mathcal{A}=\{[a_1,b_1]\times[a_2,b_2]\times\dots \times[a_d,b_d]\}$. First we consider $\Omega=\Re^2$, then we have $S_{\mathcal{A}}(1)=2^1$, $S_{\mathcal{A}}(2)=2^2$, $S_{\mathcal{A}}(3)=2^3$, $S_{\mathcal{A}}(4)=2^4$, but $S_{\mathcal{A}}(5)<2^5$. That is because we cannot build a rectangle containing all points that are extremal (the most east point, the most west point, the most north point and the most south point) but not the rest. In $d$ dimension it would happen the same, we cannot build a rectangle containing the extremal points in each side of each dimension but not the rest, so $V_{\mathcal{A}}=2d$.%Roger
 	\item Finally, $\Omega=\Re^2$, $\mathcal{A}=\{\text{all convex sets}\}$. In this case the VC dimension is $V_{\mathcal{A}}=\infty$. The way of picking the maximum of points is intersecting with the convex hull, in this case if there exists a point inside we could not obtain the points on the hull in the intersection without obtaining also the one inside. However, for any $n$ it is possible that all the points belong to the convex hull. So the VC dimension is $\infty$. That case, though, is very unlikely, therefore the effective VC dimension is not infinite, but it will depend on the distribution of the data, the number of points and the dimension. There is no general way to bound the effective VC dimension in this case.
 \end{itemize} 
-\textbf{Theorem:} Let $\varphi_1,\dots,\varphi_r:\Omega\longrightarrow\Re$ be fixed functions (called "feature mappings"), meaning that $\forall x\in \Omega$ we have $\varphi_i(x)\forall i=1,\dots,r$. And we consider $\mathcal{A}=\{\{x:\sum\limits_{i=1}^ra_i\varphi_i(x)\geq 0\}:a_1,\dots,a_r\in\Re\}$. Then, $V_{\mathcal{A}}\leq r$.
+\textbf{Theorem:} Let $\varphi_1,\dots,\varphi_r:\Omega\longrightarrow\Re$ be fixed functions (called "feature mappings"), meaning that $\forall x\in \Omega$ we have $\varphi_i(x)$ $\forall i=1,\dots,r$. And we consider $\mathcal{A}=\{\{x:\sum\limits_{i=1}^ra_i\varphi_i(x)\geq 0\}:a_1,\dots,a_r\in\Re\}$. Then, $V_{\mathcal{A}}\leq r$. %Roger
 
 \textbf{Proof:} We want to prove that for all collections of $r+1$ points, $X=\{x_1,x_2,\dots,x_{r+1}\}$ the set is not shattered. Meaning that there exists a subset $B\subset X$ of points that cannot be obtained by intersection with a subset of $\mathcal{A}$ (if all points in $B$ are obtained by intersection, there will also be at least another point $x_j\notin B$ also contained in the intersection).\\
 
 To prove this let's fix $x_1,\dots,x_{r+1}$ and define $L:\Re^r\rightarrow\Re^{r+1}$ by 
 \begin{equation}
-L(a_1,\dots,a_r)\rightarrow(\su{i=1}{r}a_i\varphi_i(x_1),\su{i=1}{r}a_i\varphi_i(x_2),\dots,\su{i=1}{r}a_i\varphi_i(x_{r+1})).
+L(a_1,\dots,a_r)\rightarrow\left(\su{i=1}{r}a_i\varphi_i(x_1),\su{i=1}{r}a_i\varphi_i(x_2),\dots,\su{i=1}{r}a_i\varphi_i(x_{r+1})\right). %Roger
 \end{equation}
 As $L$ is a linear function, the image of $L$ is at most an $r$ dimensional subspace (it comes from a $r$ dimensional space) of $\Re^{r+1}$. This means that $L(a_1,\dots,a_r)$ is contain in an hyperplane that goes through the origin. So, there exists a vector $\gamma=(\gamma_1,\dots,\gamma_{r+1})$ that is orthogonal to $L(a)\forall a=(a_1,\dots,a_r)$. Which means that
 \begin{equation}
@@ -624,7 +625,7 @@ Suppose that $a_1,\dots,a_r$ are such that $\{x:\su{i=1}{r}a_i\varphi_i(x)\geq0\
 	\item Let $\Omega=\Re^d$ and $\mathcal{A}=\{\{x:x^Tw\geq 0\}:w\in\Re^d\}$. This class $\mathcal{A}$ can be written in the same form as in the theorem taking $\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)}$, where $x=(x^{(1)},\dots,x^{(d)})$. Then, by the theorem $V_{\mathcal{A}}\leq d$. In fact for this case $V_{\mathcal{A}}=d$.
 	\item A similar case would be with $\Omega=\Re^d$ and $\mathcal{A}=\{\{x:x^Ta+b\geq 0\}:a\in\Re^d,b\in\Re\}$. Here $\mathcal{A}$ can also be written as before but taking $\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)},\varphi_{d+1}(x)=1$, where $x=(x^{(1)},\dots,x^{(d)})$. By the theorem $V_{\mathcal{A}}\leq d+1$ and in this case also we have that $V_{\mathcal{A}}=d+1$.
 	\item Let $\Omega=\Re^d$ and take the class of all closed balls $\mathcal{A}=\{\{x:||x-a||\leq r\}:a\in\Re^d,r>0 \}$. We can work a bit to rewrite on our desired form: $||x-a||\leq r\Leftrightarrow ||x-a||^2\leq r^2$, now expanding the square we get $||x-a||^2-r^2=||x||^2-2\su{i=1}{d}a_ix^{(i)}+||a||^2-||r||^2$, and now taking $\varphi=||x||^2,\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)},\varphi_{d+1}(x)$ we can write all possible $||x-a||^2-r^2$ and apply the theorem. So, the VC dimension will be $V_{\mathcal{A}}\leq d+2$ and, in this case it turns out that $V_{\mathcal{A}}=d+1$ (this is not trivial to prove).
-	\item Now, consider the ellipsoids in $\Omega=\Re^d$: $\mathcal{A}=\{\{x:(x)^TA(x)+b\leq 0\}:A\text{symmetric positive semidefinite matrix } dxd,b\in\Re^d\}$. Then, we can write the product as $x^TAx=\su{i,j}{}x^{(i)}x^{(j)}A_{ij}$, so we would take $\varphi_{i,j}(x)=x^{(i)}x^{(j)}$, and since in a positive semidefinite $dxd$ matrix we have $\frac{d(d+1)}{2}$ free parameters, that would be the number of $\varphi$'s. So, applying the theorem, the VC dimension would be $V_{\mathcal{A}}\leq\frac{d(d+1)}{2}+1$.
+	\item Now, consider the ellipsoids in $\Omega=\Re^d$: $\mathcal{A}=\{\{x:(x)^TA(x)+b\leq 0\}:A$ symmetric positive semidefinite matrix $dxd,b\in\Re^d\}$. Then, we can write the product as $x^TAx=\su{i,j}{}x^{(i)}x^{(j)}A_{ij}$, so we would take $\varphi_{i,j}(x)=x^{(i)}x^{(j)}$, and since in a positive semidefinite $dxd$ matrix we have $\frac{d(d+1)}{2}$ free parameters, that would be the number of $\varphi$'s. So, applying the theorem, the VC dimension would be $V_{\mathcal{A}}\leq\frac{d(d+1)}{2}+1$.%Roger
 
 \end{itemize}
 A lot of classes of sets can be written on the form $\{x:\su{i=1}{d}\varphi_i(x)a_i\geq 0\}$ and the number features $\varphi_i$ (algebraic dimension) will give us an upper bound of the VC dimension. However, there are more complicated things that cannot be written in this form, so finding the VC dimension is not an easy problem in general.\\
@@ -685,9 +686,9 @@ Now the class of sets would be
 \begin{equation}
 	\mathcal{A}=\left\{\left\{\su{j=1}{k} b_j \sigma\left(\su{i=1}{d}a_{ij}x^{(i)}+c_j\right)+d\geq 0\right\}:b_j,c_j,d\in\Re,\text{ and }\sigma \text{ fixed decision function}\right\}.
 \end{equation}
-In this case the VC dimension would depend on the properties of $\sigma$ and it could be infinite or finite. Moreover, when one increases the number of layers this becomes more and more complicated and the VC dimension keeps growing. But, since we use stochastic gradient descend, back-propagation or any other algorithm, we probably do not explore the entire space of possible combinations. So, probably because of this algorithms the entire complexity of the class do not matter, if it mattered the deep neural networks would not work (the VC of the entire class where they are defined is either uncontrollable or just too big). There is a mysterious reason not yet understood that makes deep neural networks avoid overfitting (probably because of the algorithms).\\
+In this case the VC dimension would depend on the properties of $\sigma$ and it could be infinite or finite. Moreover, when one increases the number of layers this becomes more and more complicated and the VC dimension keeps growing, which means that in principle they could lead to overfitting. But, since we use stochastic gradient descend, back-propagation or any other algorithm, we probably do not explore the entire space of possible combinations. So, probably because of this algorithms the entire complexity of the class do not matter, if it mattered the deep neural networks would not work (the VC of the entire class where they are defined is either uncontrollable or just too big). There is a mysterious reason not yet understood that makes deep neural networks avoid overfitting (probably because of the algorithms).\\%Roger
 
-\textbf{Structural properties that are useful\\}
+\textbf{Structural properties that are useful}\\\\ %Roger
 If we bound the shatter coefficient, then we have a bound for the VC dimension and vice-versa. Results that bound the shatter coefficient:
 \begin{itemize}
 	\item The union of two classes have a smaller coefficient than the sum of their respective shatter coefficients. That is, if $\mathcal{A}=\mathcal{A}_1\bigcup\mathcal{A}_2$, then 
@@ -695,7 +696,6 @@ If we bound the shatter coefficient, then we have a bound for the VC dimension a
  	\item If $\mathcal{A}_c=\{A^c:A\in\mathcal{A}\}$, then $S_{\mathcal{A}_c}(n)=S_{\mathcal{A}}(n)$.
 	\item The shatter coefficient of a class of sets that are union of sets of other classes is bounded by the product of their shatter coefficients. If $\mathcal{A}=\{A=B\bigcup C:B\in\mathcal{B},C\in\mathcal{C}\}$, then $S_{\mathcal{A}}(n)\leq S_{\mathcal{B}}(n)S_{\mathcal{C}}(n)$. If instead of unions we have intersections we obtain the same result. We will prove the intersection.\\
 	\textbf{Proof:} Let's fix $x_1,\dots,x_n$ and suppose that $\mathcal{B}$ induces $N\leq S_{\mathcal{B}}(n)$ subsets of $\{x_1,\dots,x_n\}$. Call them $S_1,S_2,\dots,S_N$. For each $S_i$, $\mathcal{C}$ picks at most $S_{\mathcal{C}}(|S_i|)\leq S_{\mathcal{C}}(n)$. In total we have at most $S_{\mathcal{B}}(n)S_{\mathcal{C}}(n)$ subsets. From here, as $B\bigcup C=(B^c\bigcap C^c)^c$, using the previous property we obtain the union.
-	\item 
 \end{itemize}
 \textbf{Example:} Class $\mathcal{A}$ of all unions of $k$ intervals in $\Re$. As we know that the shatter coefficient of one interval is $S(n)\leq (n+1)^2$, then the shatter coefficient of $\mathcal{A}$ will be $S_{\mathcal{A}}\leq (n+1)^{2k}$. From here we can bound the VC dimension. We would need to find the smallest $n$ such that $(n+1)^{2k}<2^n$. Solving the equation for $k$ we would obtain $k<\frac{n}{2\log_2(n+1)}$ and from this we can say that the $VC$ dimension is $V_{\mathcal{A}}\leq ck\log k$.\\
 
@@ -723,13 +723,13 @@ where $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ is the penalty for complexity that w
 
 If $g_n$ is the classifier minimizing the penalized empirical risk, then
 \begin{equation}
-	R(g_n)\leq \underset{k}{\min}(R(\bar{g}^{(k)})+\text{Penalty}(k))+\text{peanuts},
+	R(g_n)\leq \underset{k}{\min}(R(\bar{g}^{(k)})+\text{Penalty}(k))+\text{peanuts \Winkey},%Roger
 \end{equation} 
 where $\bar{g}^{(k)}=\underset{g\in\mathcal{C}_k}{\text{argmin }}R(g)$.
 
 \section{Machine Learning Algorithms}
 
-\subsubsection{Linear Classifiers}
+\subsection{Linear Classifiers} %Roger
 
 Suppose that $\Omega= \Re^d$, our data is $\mathcal{D}_n=(X_1,Y_1),\dots,(X_n,Y_n)$, $X_i\in \Omega$, $Y_i\in\{-1,1\}$. We want to learn a linear classifier that has the form of 
 \begin{equation}
@@ -751,7 +751,7 @@ At time $t$:
 	\item[]  if $w_{t-1}X_tY_t\leq 0$ then $w_t=w_{t-1}+X_tY_t$.
 \end{itemize}
 
-3. Stop when all data points are correctly classified. Cycle through the data the several times if needed. \\
+3. Stop when all data points are correctly classified. Cycle through the data several times if needed. \\%Roger
 So the linear classifier is $\hat{w}=\su{t}{}X_tY_t\mathbbm{1}_{w_{t-1}X_tY_t\leq 0}$.\\
 
 The beautiful thing is that this algorithm will work, and the time it takes to stop depends on how nice the data is. The niceness of the data is measured by how big is the circle that contains all the points and how far the nearest points to the boundary are (margin). (If the margin is large the algorithm will converge fast).\\
