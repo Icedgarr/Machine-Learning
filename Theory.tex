@@ -756,7 +756,7 @@ So the linear classifier is $\hat{w}=\su{t}{}X_tY_t\mathbbm{1}_{w_{t-1}X_tY_t\le
 
 The beautiful thing is that this algorithm will work, and the time it takes to stop depends on how nice the data is. The niceness of the data is measured by how big is the circle that contains all the points and how far the nearest points to the boundary are (margin). (If the margin is large the algorithm will converge fast).\\
 
-\textbf{Perceptron convergence theorem - Novinkov theorem: }Let $w_*$ be such that $\|w_*\|=1$, $w_*^TX_iY_i>0$ and $\underset{i=1,\dots,n}{\min}|w_*^TX_i|\geq\gamma$ is the margin. Then, the perceptron algorithm holds after at most $\left(\frac{R}{\gamma}\right)^2$ times (adjustments), where $R=\underset{i}{\|X_i\|}$. Observe that it does not depend on the dimension $d$, so if we can guarantee a map in an arbitrary large dimensional space in which we can represent our points that are not too big and can be classified with a large margin, then the perceptron algorithm will work very fast.\\
+\textbf{Perceptron convergence theorem - Novinkov theorem: }Let $w_*$ be such that $\|w_*\|=1$, $w_*^TX_iY_i>0$ and $\underset{i=1,\dots,n}{\min}|w_*^TX_i|\geq\gamma$ is the margin. Then, the perceptron algorithm holds after at most $\left(\frac{R}{\gamma}\right)^2$ times (adjustments), where $R=\underset{i}{\max}\|X_i\|$. Observe that it does not depend on the dimension $d$, so if we can guarantee a map in an arbitrary large dimensional space in which we can represent our points that are not too big and can be classified with a large margin, then the perceptron algorithm will work very fast.\\%Roger
 
 \textbf{Proof:} Whenever an update is made (noting it as the update number $t^*$), by definition of $w_t$
 \begin{equation}
@@ -774,7 +774,7 @@ so $t\leq\left(\frac{R}{\gamma}\right)^2$ Q.E.D.\\
 
 This result implies that under the conditions that our data is linearly separable in a certain $d$-dimensional space with a margin $\gamma$ and the constrain $R$.
 
-\subsection{Large Margin Classifiers}
+\subsection{Large Margin Classifiers}%Roger
  
 If the data are not linearly separable, the perceptron algorithm does not halt. In this section, we consider classifiers of the form:
  
@@ -872,7 +872,7 @@ Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk i
 which is $f^*$ the optimal function. Note that $f^*(x)>0 \Leftrightarrow \eta(x)>\frac{1}{2}$, so $g^* = sgn(f^*(x))$ is the Bayes classifier. The same argument holds for all convex surrogate risks.
  
 
-\section{Kernel methods}
+\subsection{Kernel methods}%Roger
 
 Suppose that $X_i \in R^d$. We may define a ``feature map'' $\Phi : R^d \rightarrow R^D$ where $ D>d$ and work with $(\Phi(X_i), Y_i), \dots, (\Phi(X_n), Y_n)$ and do linear classification in $R^D$. If one achieves a classifier that correctly classifies most of the data with a high margin, then the generalization error is small. The key of kernel methods methods is the inner product $<\Phi(x), \Phi(y)> = \Phi(x)^T \Phi(y) = K(x,y)$.\\
 
@@ -923,7 +923,7 @@ Hence, in $\mathbb{R}^2$, $K(x,y) = (x^Ty)^2$ is a kernel function.\\
 
 \textbf{Theorem:} A function $K : \Omega\ \text{x}\ \Omega$ is a kernel if and only if K is a \textbf{positive definite} function, that is, the matrix $(K(x_i,x_j))_{n x n}$ is positive definite $\forall n\ \text{and}\ x_i, \dots, x_n \in \Omega$.
 
-\subsection{Properties of kernels and examples}
+\subsubsection{Properties of kernels and examples}%Roger
 
 If $K_1, K_2$ are kernels on $\Omega$, then 
 \begin{itemize}
@@ -939,7 +939,7 @@ Intuitively, a kernel, being an inner product, is a similarity measure. The inne
 
 Let's imagine we want to classify news articles. In text classification we have sequences of strings that we need to classify. In these cases one often uses ``string kernels'' as similarity measures. One possibility could be the number of (contiguous) subsequences of a certain length that appear in both strings.
 
-\subsection{Kernel perceptron}
+\subsubsection{Kernel perceptron}%Roger
 
 \textbf{Algorithm:}
 \begin{enumerate}
@@ -965,7 +965,7 @@ where $\alpha_i$ is the number of times we make a mistake for point $i$.\\
 Note that $X_i^TX^{t+1}$ can be replaced by $K(X_i, X^{t+1})$ realizing the perceptron algorithm in the Hilbert space in which $K$ is an inner product.
 
 
-\subsection{Kernelizing regularized risk minimizers}
+\subsubsection{Kernelizing regularized risk minimizers}%Roger
 
 Suppose we want to compute
 \begin{equation}
@@ -1001,7 +1001,7 @@ Here again, the regularization parameter $R(x) = \lambda x^2$.\\
 
 LASSO is not of this form because it uses the L1-norm and we need the L2-norm as we will soon see.
 
-\subsection{Representer theorem}
+\subsubsection{Representer theorem}%Roger
 
 The representer theorem states that the previous minimization problem always has a solution of the form $w = \sum_{i=1}^{n} x_i \Phi(x)$. That is, the representer theorem restricts the search of the solution to a finite dimensional space.
 
