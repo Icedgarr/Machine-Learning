@@ -26,7 +26,7 @@
 \usepackage{dsfont}
 \usepackage{bbm}
 \usepackage{tikz}
-\usepackage{tikzsymbols} %Roger
+\usepackage{tikzsymbols} 
 \usetikzlibrary{positioning,arrows.meta,calc}
 
 
@@ -65,7 +65,15 @@
 
 \begin{document}
 \maketitle
-
+\vspace{1cm}
+\begin{center}
+	\includegraphics*[scale=0.8]{ML.jpg}
+\end{center}
+\vfill
+\begin{center}
+	\small{Acknowledgments: Laura Roman, Alfonso Braulio, Veronika Kyuchukova}
+\end{center}
+\newpage
 \section{Important probability's inequalities}
 
 \subsection*{Markov's inequality}
@@ -490,12 +498,12 @@ So, the expected value is almost unbiased,
 	\mathbb{E}R_n^{(D)}(p_n)=\mathbb{E}R(p_{n-1}).
 \end{equation}
 
-In general saying something about $\mathbb{P}(|R_n^{(D)}-R(p_n)|>t|)$ is a challenge. All the dependencies that there are when leaving one out are not trivial, so a lot of different classes have been studied to see in their particular case how it behaves. In practice we use the approximation that it is the same leaving one out or not, which works fairly well if we have a lot of data. %Roger
+In general saying something about $\mathbb{P}(|R_n^{(D)}-R(p_n)|>t|)$ is a challenge. All the dependencies that there are when leaving one out are not trivial, so a lot of different classes have been studied to see in their particular case how it behaves. In practice we use the approximation that it is the same leaving one out or not, which works fairly well if we have a lot of data. 
 
 \subsection{Data splitting}
 
 Suppose we have $N$ data-dependent classifiers $p_n^{(1)},\dots,p_n^{(N)}$ trained on the same data $D_n=(X_1,Y_1),\dots,(X_n,Y_n)$. And suppose we have $m$ additional data points $D_m'=(X_1',Y_1'),\dots,(X_m',Y_m')$ to test the performance. Then, we may define \begin{equation}
-	R_m'(p_n^{(j)})=\frac{1}{m}\sum\limits_{i=1}^m\mathbbm{1}_{p_n^{(j)}(X_i')\neq Y_i'}. %Roger
+	R_m'(p_n^{(j)})=\frac{1}{m}\sum\limits_{i=1}^m\mathbbm{1}_{p_n^{(j)}(X_i')\neq Y_i'}. 
 \end{equation}
 Now the classifiers do not depend on the test data, $R_m'(p_n^{(j)})$ will depend on $D_n$ and $D_m'$, and $R(p_n^{(j)})$ will depend only on $D_n$.
 \begin{equation}
@@ -513,15 +521,15 @@ We will try to quantify overfitting by taking into account the structure of the 
 \begin{equation}
 	\underset{g\in\mathcal{C}}{\max}|R_n(g)-R(g)|,
 \end{equation}
-where $R_n(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i\neq Y_i)}$ and $R(g)=\mathbb{P}(g(X)\neq Y)$. We know that if $\hat{g}_n=\underset{g\in\mathcal{C}}{\text{argmin}\ }R_n(g)$, then $R(\hat{g}_n)-\underset{g\in\mathcal{C}}{\min}\ R(g)\leq2\underset{g\in\mathcal{C}}{\min}\ |R_n(g)-R(g)|$.\\ %Roger
+where $R_n(g)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{g(X_i\neq Y_i)}$ and $R(g)=\mathbb{P}(g(X)\neq Y)$. We know that if $\hat{g}_n=\underset{g\in\mathcal{C}}{\text{argmin}\ }R_n(g)$, then $R(\hat{g}_n)-\underset{g\in\mathcal{C}}{\min}\ R(g)\leq2\underset{g\in\mathcal{C}}{\min}\ |R_n(g)-R(g)|$.\\ 
 
-Also, we have seen that if $\mathcal{C}$ is finite, then with probability $\geq 1-\delta$ the maximum is $\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}$. Observe that $R_n(g)$ counts for each $g$ how many mistakes it takes, so it is a binomial random variable $R_n(g)\sim \frac{1}{n}\text{Bin}(n,R(g))$. So, we are looking for the deviation of binomials with their expected value.\\ %Roger
+Also, we have seen that if $\mathcal{C}$ is finite, then with probability $\geq 1-\delta$ the maximum is $\leq \sqrt{\frac{\log\frac{2N}{\delta}}{2n}}$. Observe that $R_n(g)$ counts for each $g$ how many mistakes it takes, so it is a binomial random variable $R_n(g)\sim \frac{1}{n}\text{Bin}(n,R(g))$. So, we are looking for the deviation of binomials with their expected value.\\ 
 
 Let's start simplifying the notation. Let $X_1,\dots,X_n$ be iid taking values on $\Omega$. For $A\subset \Omega$, we define $P(A)=P(X\in A)$ and $P_n(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_i\in A}$. And let $\mathcal{A}$ be a class of sets $A$. We are interested in 
 \begin{equation}
 	\underset{A\in\mathcal{A}}{\max}|P_n(A)-P(A)|.
 \end{equation}
-This notation is more general, the case we were studying is the particular case when the new $X_i$ are $(X_i,Y_i)$, $\mathcal{A}$ is a correspondence to the class of classifiers $\mathcal{C}$ in a way that the sets $A$ are the set of $(X_i,Y_i)$ such that $g(X_i)\neq Y_i$ (each $A$ correspond to a classifier $g$). For the finite case, $\mathcal{A}=\{A_1,\dots,A_N\}$, with probability $\geq 1-\delta$ we got that %Roger 
+This notation is more general, the case we were studying is the particular case when the new $X_i$ are $(X_i,Y_i)$, $\mathcal{A}$ is a correspondence to the class of classifiers $\mathcal{C}$ in a way that the sets $A$ are the set of $(X_i,Y_i)$ such that $g(X_i)\neq Y_i$ (each $A$ correspond to a classifier $g$). For the finite case, $\mathcal{A}=\{A_1,\dots,A_N\}$, with probability $\geq 1-\delta$ we got that  
 \begin{equation}
 	\underset{A\in\mathcal{A}}{\max}|\mathbb{P}_n(A)-\mathbb{P}(A)|\leq\sqrt{\frac{\log\frac{2N}{\delta}}{2n}}.
 \end{equation}
@@ -536,22 +544,22 @@ As the exponential function is increasingly monotonous, the maximum value of the
 \end{align}
 Now, applying logarithm on the beginning and on the end of the inequality, we get
 \begin{equation}
-	\mathbb{E}\ \underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))\leq\frac{\log N}{\lambda}+\frac{\lambda}{8n}=\sqrt{\frac{\log N}{2n}}, %Roger
+	\mathbb{E}\ \underset{A\in\mathcal{A}}{\max}(\mathbb{P}_n(A)-\mathbb{P}(A))\leq\frac{\log N}{\lambda}+\frac{\lambda}{8n}=\sqrt{\frac{\log N}{2n}}, 
 \end{equation}
 where the last equality is the result of finding the minimum with respect to $\lambda$.\\
 
 Now, let us look the case where we have \textbf{possibly infinite classes}. To tackle this problem we will use a beautiful trick called \textbf{symmetrization}.\\
 We generate a ghost sample $X_1',\dots,X_n'$ iid with the same distribution as $X_1,\dots,X_n$. Then, the ghost empirical probability is $\mathbb{P}_n'(A)=\frac{1}{n}\sum\limits_{i=1}^n\mathbbm{1}_{X_i'\in A}$. The main idea is that if $P_n'$ and $P_n$ are close with probability $\geq 1-\delta$, then $P_n$ and $P$ are also close with probability $\geq 1-\delta$ and vice-versa. Because both empirical distributions are drawn from $P$. Let's show that
 \begin{align}
-	\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-P(A))=\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-\mathbb{E}'P_n'(A))=\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A)), %Roger
+	\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-P(A))=\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-\mathbb{E}'P_n'(A))=\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A)), 
 \end{align}
 because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality (because the supreme of a convex function is convex).
 \begin{align}
-	\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A))\leq \mathbb{E}\mathbb{E}'\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A)). %Roger
+	\mathbb{E}\ \underset{A\in\mathcal{A}}{\sup}\mathbb{E}'(P_n(A)-P_n'(A))\leq \mathbb{E}\mathbb{E}'\ \underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A)). 
 \end{align}
  This in particular implies our previous statement, if the expected value of the supreme of $P_n(A)-P_n'(A)$ is small, then the expected value of the supreme of $P_n(A)-P(A)$ will also be close (it is smaller). Now,
  \begin{align}
- 	\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A))&=\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n(\mathbbm{1}_{X_i\in A}-\mathbbm{1}_{X_i'\in A})\\ %Roger
+ 	\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}(P_n(A)-P_n'(A))&=\mathbb{E}\mathbb{E}'\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n(\mathbbm{1}_{X_i\in A}-\mathbbm{1}_{X_i'\in A})\\ 
  	&\leq 2\mathbb{E}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A}\\
  	&=2\mathbb{E}_X\mathbb{E}_{\sigma}\underset{A\in\mathcal{A}}{\sup}\frac{1}{n}\sum\limits_{i=1}^n\sigma_i\mathbbm{1}_{X_i\in A},
  \end{align}
@@ -585,7 +593,7 @@ because $P_n(A)$ does not depend on $X_i'$. Now we can apply Jensen's inequality
  \end{equation} where $S(D_n,\mathcal{C})$ is the nº of ways the data $X_1,\dots,X_n$ can be classified by classifiers on the class $\mathcal{C}$.\\
  
 \subsection*{The shatter coefficient and the VC-dimension}
-Let $\mathcal{A}$ be a class of sets and let $S_{\mathcal{A}}(n=\underset{x_1,\dots,x_n}{\max}S(X_1^n,\mathcal{A}))$. The largest integer $V$ for which $S_{\mathcal{A}}(V)=2^V$ is the \textbf{VC-dimension} of the class $\mathcal{A}$. It will be the last time that $S_{\mathcal{A}}(n)$ is the maximum possible. If $S_{\mathcal{A}}=2^n$ $\forall n$, then $V_{\mathcal{A}}=\infty$.\\%Roger
+Let $\mathcal{A}$ be a class of sets and let $S_{\mathcal{A}}(n=\underset{x_1,\dots,x_n}{\max}S(X_1^n,\mathcal{A}))$. The largest integer $V$ for which $S_{\mathcal{A}}(V)=2^V$ is the \textbf{VC-dimension} of the class $\mathcal{A}$. It will be the last time that $S_{\mathcal{A}}(n)$ is the maximum possible. If $S_{\mathcal{A}}=2^n$ $\forall n$, then $V_{\mathcal{A}}=\infty$.\\
  
 \textbf{Theorem: Sauer's lemma:} For all $n$, $S_{\mathcal{A}}(n)\leq (n+1)^{V_{\mathcal{A}}}$.\\
  
@@ -599,16 +607,16 @@ for some constant $c$. The last inequality can be found working harder in a non-
 \begin{itemize}
 	\item Let $\Omega=\Re$, $\mathcal{A}=\{A_a=(-\infty,a]\}$, then $S_{\mathcal{A}}=n+1$. For $n=1$ $S_{\mathcal{A}}(1)=2=2^1$, for $n=2$ $S_{\mathcal{A}}(2)=3<2^2$ $\Longrightarrow$ the VC-dimension is $V_{\mathcal{A}}=1$.
 	\item Let $\Omega=\Re$, $\mathcal{A}=\{A_{ab}=[a,b]: a<b\}$, then $S_{\mathcal{A}}(n)=\frac{n(n-1)}{2}$. For $n=1$ $S_{\mathcal{A}}(1)=2=2^1$, for $n=2$ $S_{\mathcal{A}}(2)=4=2^2$, for $n=3$ $S_{\mathcal{A}}(3)=7<2^3$ $\Longrightarrow$ the VC dimension is $V_{\mathcal{A}}=2$.
-	\item Now, let $\Omega=\Re^d$, $\mathcal{A}=\{[a_1,b_1]\times[a_2,b_2]\times\dots \times[a_d,b_d]\}$. First we consider $\Omega=\Re^2$, then we have $S_{\mathcal{A}}(1)=2^1$, $S_{\mathcal{A}}(2)=2^2$, $S_{\mathcal{A}}(3)=2^3$, $S_{\mathcal{A}}(4)=2^4$, but $S_{\mathcal{A}}(5)<2^5$. That is because we cannot build a rectangle containing all points that are extremal (the most east point, the most west point, the most north point and the most south point) but not the rest. In $d$ dimension it would happen the same, we cannot build a rectangle containing the extremal points in each side of each dimension but not the rest, so $V_{\mathcal{A}}=2d$.%Roger
+	\item Now, let $\Omega=\Re^d$, $\mathcal{A}=\{[a_1,b_1]\times[a_2,b_2]\times\dots \times[a_d,b_d]\}$. First we consider $\Omega=\Re^2$, then we have $S_{\mathcal{A}}(1)=2^1$, $S_{\mathcal{A}}(2)=2^2$, $S_{\mathcal{A}}(3)=2^3$, $S_{\mathcal{A}}(4)=2^4$, but $S_{\mathcal{A}}(5)<2^5$. That is because we cannot build a rectangle containing all points that are extremal (the most east point, the most west point, the most north point and the most south point) but not the rest. In $d$ dimension it would happen the same, we cannot build a rectangle containing the extremal points in each side of each dimension but not the rest, so $V_{\mathcal{A}}=2d$.
 	\item Finally, $\Omega=\Re^2$, $\mathcal{A}=\{\text{all convex sets}\}$. In this case the VC dimension is $V_{\mathcal{A}}=\infty$. The way of picking the maximum of points is intersecting with the convex hull, in this case if there exists a point inside we could not obtain the points on the hull in the intersection without obtaining also the one inside. However, for any $n$ it is possible that all the points belong to the convex hull. So the VC dimension is $\infty$. That case, though, is very unlikely, therefore the effective VC dimension is not infinite, but it will depend on the distribution of the data, the number of points and the dimension. There is no general way to bound the effective VC dimension in this case.
 \end{itemize} 
-\textbf{Theorem:} Let $\varphi_1,\dots,\varphi_r:\Omega\longrightarrow\Re$ be fixed functions (called "feature mappings"), meaning that $\forall x\in \Omega$ we have $\varphi_i(x)$ $\forall i=1,\dots,r$. And we consider $\mathcal{A}=\{\{x:\sum\limits_{i=1}^ra_i\varphi_i(x)\geq 0\}:a_1,\dots,a_r\in\Re\}$. Then, $V_{\mathcal{A}}\leq r$. %Roger
+\textbf{Theorem:} Let $\varphi_1,\dots,\varphi_r:\Omega\longrightarrow\Re$ be fixed functions (called "feature mappings"), meaning that $\forall x\in \Omega$ we have $\varphi_i(x)$ $\forall i=1,\dots,r$. And we consider $\mathcal{A}=\{\{x:\sum\limits_{i=1}^ra_i\varphi_i(x)\geq 0\}:a_1,\dots,a_r\in\Re\}$. Then, $V_{\mathcal{A}}\leq r$. 
 
 \textbf{Proof:} We want to prove that for all collections of $r+1$ points, $X=\{x_1,x_2,\dots,x_{r+1}\}$ the set is not shattered. Meaning that there exists a subset $B\subset X$ of points that cannot be obtained by intersection with a subset of $\mathcal{A}$ (if all points in $B$ are obtained by intersection, there will also be at least another point $x_j\notin B$ also contained in the intersection).\\
 
 To prove this let's fix $x_1,\dots,x_{r+1}$ and define $L:\Re^r\rightarrow\Re^{r+1}$ by 
 \begin{equation}
-L(a_1,\dots,a_r)\rightarrow\left(\su{i=1}{r}a_i\varphi_i(x_1),\su{i=1}{r}a_i\varphi_i(x_2),\dots,\su{i=1}{r}a_i\varphi_i(x_{r+1})\right). %Roger
+L(a_1,\dots,a_r)\rightarrow\left(\su{i=1}{r}a_i\varphi_i(x_1),\su{i=1}{r}a_i\varphi_i(x_2),\dots,\su{i=1}{r}a_i\varphi_i(x_{r+1})\right). 
 \end{equation}
 As $L$ is a linear function, the image of $L$ is at most an $r$ dimensional subspace (it comes from a $r$ dimensional space) of $\Re^{r+1}$. This means that $L(a_1,\dots,a_r)$ is contain in an hyperplane that goes through the origin. So, there exists a vector $\gamma=(\gamma_1,\dots,\gamma_{r+1})$ that is orthogonal to $L(a)\forall a=(a_1,\dots,a_r)$. Which means that
 \begin{equation}
@@ -625,7 +633,7 @@ Suppose that $a_1,\dots,a_r$ are such that $\{x:\su{i=1}{r}a_i\varphi_i(x)\geq0\
 	\item Let $\Omega=\Re^d$ and $\mathcal{A}=\{\{x:x^Tw\geq 0\}:w\in\Re^d\}$. This class $\mathcal{A}$ can be written in the same form as in the theorem taking $\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)}$, where $x=(x^{(1)},\dots,x^{(d)})$. Then, by the theorem $V_{\mathcal{A}}\leq d$. In fact for this case $V_{\mathcal{A}}=d$.
 	\item A similar case would be with $\Omega=\Re^d$ and $\mathcal{A}=\{\{x:x^Ta+b\geq 0\}:a\in\Re^d,b\in\Re\}$. Here $\mathcal{A}$ can also be written as before but taking $\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)},\varphi_{d+1}(x)=1$, where $x=(x^{(1)},\dots,x^{(d)})$. By the theorem $V_{\mathcal{A}}\leq d+1$ and in this case also we have that $V_{\mathcal{A}}=d+1$.
 	\item Let $\Omega=\Re^d$ and take the class of all closed balls $\mathcal{A}=\{\{x:||x-a||\leq r\}:a\in\Re^d,r>0 \}$. We can work a bit to rewrite on our desired form: $||x-a||\leq r\Leftrightarrow ||x-a||^2\leq r^2$, now expanding the square we get $||x-a||^2-r^2=||x||^2-2\su{i=1}{d}a_ix^{(i)}+||a||^2-||r||^2$, and now taking $\varphi=||x||^2,\varphi_1(x)=x^{(1)},\varphi_2(x)=x^{(2)},\dots,\varphi_d(x)=x^{(d)},\varphi_{d+1}(x)$ we can write all possible $||x-a||^2-r^2$ and apply the theorem. So, the VC dimension will be $V_{\mathcal{A}}\leq d+2$ and, in this case it turns out that $V_{\mathcal{A}}=d+1$ (this is not trivial to prove).
-	\item Now, consider the ellipsoids in $\Omega=\Re^d$: $\mathcal{A}=\{\{x:(x)^TA(x)+b\leq 0\}:A$ symmetric positive semidefinite matrix $dxd,b\in\Re^d\}$. Then, we can write the product as $x^TAx=\su{i,j}{}x^{(i)}x^{(j)}A_{ij}$, so we would take $\varphi_{i,j}(x)=x^{(i)}x^{(j)}$, and since in a positive semidefinite $dxd$ matrix we have $\frac{d(d+1)}{2}$ free parameters, that would be the number of $\varphi$'s. So, applying the theorem, the VC dimension would be $V_{\mathcal{A}}\leq\frac{d(d+1)}{2}+1$.%Roger
+	\item Now, consider the ellipsoids in $\Omega=\Re^d$: $\mathcal{A}=\{\{x:(x)^TA(x)+b\leq 0\}:A$ symmetric positive semidefinite matrix $dxd,b\in\Re^d\}$. Then, we can write the product as $x^TAx=\su{i,j}{}x^{(i)}x^{(j)}A_{ij}$, so we would take $\varphi_{i,j}(x)=x^{(i)}x^{(j)}$, and since in a positive semidefinite $dxd$ matrix we have $\frac{d(d+1)}{2}$ free parameters, that would be the number of $\varphi$'s. So, applying the theorem, the VC dimension would be $V_{\mathcal{A}}\leq\frac{d(d+1)}{2}+1$.
 
 \end{itemize}
 A lot of classes of sets can be written on the form $\{x:\su{i=1}{d}\varphi_i(x)a_i\geq 0\}$ and the number features $\varphi_i$ (algebraic dimension) will give us an upper bound of the VC dimension. However, there are more complicated things that cannot be written in this form, so finding the VC dimension is not an easy problem in general.\\
@@ -686,9 +694,9 @@ Now the class of sets would be
 \begin{equation}
 	\mathcal{A}=\left\{\left\{\su{j=1}{k} b_j \sigma\left(\su{i=1}{d}a_{ij}x^{(i)}+c_j\right)+d\geq 0\right\}:b_j,c_j,d\in\Re,\text{ and }\sigma \text{ fixed decision function}\right\}.
 \end{equation}
-In this case the VC dimension would depend on the properties of $\sigma$ and it could be infinite or finite. Moreover, when one increases the number of layers this becomes more and more complicated and the VC dimension keeps growing, which means that in principle they could lead to overfitting. But, since we use stochastic gradient descend, back-propagation or any other algorithm, we probably do not explore the entire space of possible combinations. So, probably because of this algorithms the entire complexity of the class do not matter, if it mattered the deep neural networks would not work (the VC of the entire class where they are defined is either uncontrollable or just too big). There is a mysterious reason not yet understood that makes deep neural networks avoid overfitting (probably because of the algorithms).\\%Roger
+In this case the VC dimension would depend on the properties of $\sigma$ and it could be infinite or finite. Moreover, when one increases the number of layers this becomes more and more complicated and the VC dimension keeps growing, which means that in principle they could lead to overfitting. But, since we use stochastic gradient descend, back-propagation or any other algorithm, we probably do not explore the entire space of possible combinations. So, probably because of this algorithms the entire complexity of the class do not matter, if it mattered the deep neural networks would not work (the VC of the entire class where they are defined is either uncontrollable or just too big). There is a mysterious reason not yet understood that makes deep neural networks avoid overfitting (probably because of the algorithms).\\
 
-\textbf{Structural properties that are useful}\\\\ %Roger
+\textbf{Structural properties that are useful}\\\\ 
 If we bound the shatter coefficient, then we have a bound for the VC dimension and vice-versa. Results that bound the shatter coefficient:
 \begin{itemize}
 	\item The union of two classes have a smaller coefficient than the sum of their respective shatter coefficients. That is, if $\mathcal{A}=\mathcal{A}_1\bigcup\mathcal{A}_2$, then 
@@ -723,13 +731,13 @@ where $c\sqrt{\frac{V_{\mathcal{C}_k}}{n}}$ is the penalty for complexity that w
 
 If $g_n$ is the classifier minimizing the penalized empirical risk, then
 \begin{equation}
-	R(g_n)\leq \underset{k}{\min}(R(\bar{g}^{(k)})+\text{Penalty}(k))+\text{peanuts \Winkey},%Roger
+	R(g_n)\leq \underset{k}{\min}(R(\bar{g}^{(k)})+\text{Penalty}(k))+\text{peanuts \Winkey},
 \end{equation} 
 where $\bar{g}^{(k)}=\underset{g\in\mathcal{C}_k}{\text{argmin }}R(g)$.
 
 \section{Machine Learning Algorithms}
 
-\subsection{Linear Classifiers} %Roger
+\subsection{Linear Classifiers} 
 
 Suppose that $\Omega= \Re^d$, our data is $\mathcal{D}_n=(X_1,Y_1),\dots,(X_n,Y_n)$, $X_i\in \Omega$, $Y_i\in\{-1,1\}$. We want to learn a linear classifier that has the form of 
 \begin{equation}
@@ -751,12 +759,12 @@ At time $t$:
 	\item[]  if $w_{t-1}X_tY_t\leq 0$ then $w_t=w_{t-1}+X_tY_t$.
 \end{itemize}
 
-3. Stop when all data points are correctly classified. Cycle through the data several times if needed. \\%Roger
+3. Stop when all data points are correctly classified. Cycle through the data several times if needed. \\
 So the linear classifier is $\hat{w}=\su{t}{}X_tY_t\mathbbm{1}_{w_{t-1}X_tY_t\leq 0}$.\\
 
 The beautiful thing is that this algorithm will work, and the time it takes to stop depends on how nice the data is. The niceness of the data is measured by how big is the circle that contains all the points and how far the nearest points to the boundary are (margin). (If the margin is large the algorithm will converge fast).\\
 
-\textbf{Perceptron convergence theorem - Novinkov theorem: }Let $w_*$ be such that $\|w_*\|=1$, $w_*^TX_iY_i>0$ and $\underset{i=1,\dots,n}{\min}|w_*^TX_i|\geq\gamma$ is the margin. Then, the perceptron algorithm holds after at most $\left(\frac{R}{\gamma}\right)^2$ times (adjustments), where $R=\underset{i}{\max}\|X_i\|$. Observe that it does not depend on the dimension $d$, so if we can guarantee a map in an arbitrary large dimensional space in which we can represent our points that are not too big and can be classified with a large margin, then the perceptron algorithm will work very fast.\\%Roger
+\textbf{Perceptron convergence theorem - Novinkov theorem: }Let $w_*$ be such that $\|w_*\|=1$, $w_*^TX_iY_i>0$ and $\underset{i=1,\dots,n}{\min}|w_*^TX_i|\geq\gamma$ is the margin. Then, the perceptron algorithm holds after at most $\left(\frac{R}{\gamma}\right)^2$ times (adjustments), where $R=\underset{i}{\max}\|X_i\|$. Observe that it does not depend on the dimension $d$, so if we can guarantee a map in an arbitrary large dimensional space in which we can represent our points that are not too big and can be classified with a large margin, then the perceptron algorithm will work very fast.\\
 
 \textbf{Proof:} Whenever an update is made (noting it as the update number $t^*$), by definition of $w_t$
 \begin{equation}
@@ -774,7 +782,7 @@ so $t\leq\left(\frac{R}{\gamma}\right)^2$ Q.E.D.\\
 
 This result implies that under the conditions that our data is linearly separable in a certain $d$-dimensional space with a margin $\gamma$ and the constrain $R$.
 
-\subsection{Large Margin Classifiers}%Roger
+\subsection{Large Margin Classifiers}
  
 If the data are not linearly separable, the perceptron algorithm does not halt. In this section, we consider classifiers of the form:
  
@@ -786,12 +794,12 @@ If the data are not linearly separable, the perceptron algorithm does not halt. 
 \end{equation}
 where $f:\Omega \rightarrow R$.\\
 \textbf{Example.} $f(x) = w^TX+c$ for some $w \in \mathbb{R}^d$.
-We write $R(f) = R(g_f) = P(-Yf(x)>0) = \mathbb{E}\mathbbm{1}_{-Yf(x)>0}$ for the risk or expectation of the number of mislabeled inputs. %javi
+We write $R(f) = R(g_f) = P(-Yf(x)>0) = \mathbb{E}\mathbbm{1}_{-Yf(x)>0}$ for the risk or expectation of the number of mislabeled inputs. 
  
-One usually ``convexifies" the optimization problem by replacing the cost function $\mathbbm{1}_x>0$ by a convex (or at least continuous) cost function, such that, %javi
+One usually ``convexifies" the optimization problem by replacing the cost function $\mathbbm{1}_x>0$ by a convex (or at least continuous) cost function, such that, 
  
 \begin{equation}
-\phi(x) \geq \mathbbm{1}_{x>0} %javi
+\phi(x) \geq \mathbbm{1}_{x>0} 
 \end{equation}
  
  
@@ -803,27 +811,27 @@ One usually ``convexifies" the optimization problem by replacing the cost functi
 For instance, in a linear regression setting, $R_n(w) = \frac{1}{n} \sum_{i=1}^{n} \mathbbm{1}_{-Yw^TX_i>0}$, which is not convex, therefore, we need a function $\frac{1}{n} \sum_{i=1}^{n} \phi(-Yw^TX_i>0)$ such that it becomes convex problem (in $w$), which is easier to optimize.\\ %
  
 \textbf{Example.} ``Hinge loss" a.k.a. Rectified Linear Unit (ReLU)\\
-\begin{equation} %javi
+\begin{equation} 
 \phi(x) = (1+x)_+
 \end{equation}
 
 \textbf{Example.} Exponential loss\\
-\begin{equation} %javi
+\begin{equation} 
 \phi(x) = e^x
 \end{equation}
 
 \textbf{Example.} Logarithmic loss\\
-\begin{equation} %javi
+\begin{equation} 
 \phi(x) = log_2(1+e^x)
 \end{equation}
 
  
 Define 
-\begin{align} %javi
+\begin{align} 
 A(f) &= \mathbbm{E}\phi(-yf(x)).\\
 A_n(f) &= \frac{1}{n}\sum_{i=1}^n \phi(-yf(x_i)),
 \end{align}
-Then, $\ \forall f \in \mathfrak{F}$:%javi
+Then, $\ \forall f \in \mathfrak{F}$:
 \begin{align}
 R(f) &\leq A(f),\\
 R_n(f) &\leq A_n(f).
@@ -836,37 +844,37 @@ Suppose $\mathfrak{F}$ is a class of real valued functions and we use data to le
 	 & \approx A_n(f_n) + \mathbbm{E}\ \max_{f \in \mathfrak{F}}(A(f) - A_n(f))\\
 	 & \leq A_n(f_n) + 2 \mathbbm{E}\ \max_{f \in \mathfrak{F}} \Big|\frac{1}{n} \sum_{i=1}^{n}\sigma_i \phi(-Y_i f(x_i))\Big|\\ 
 	 & \leq A_n(f) + 2L \mathbbm{E}\ \max_{f \in \mathfrak{F}} \Big|\frac{1}{n} \sum_{i=1}^{n}\sigma_i f(x_i)\Big|,
-\end{align} %javi
+\end{align} 
 
-where the introduction of the Rademacher complexity stems from the symmetrization trick that we also used in the VC-dimension section. The last $L$ refers to the Lipschitz bound (in Gabor we trust).%javi
+where the introduction of the Rademacher complexity stems from the symmetrization trick that we also used in the VC-dimension section. The last $L$ refers to the Lipschitz bound (in Gabor we trust).
  
 \textbf{Example.} $\mathfrak{F} = \{f(x) = w^Tx : ||w|| = 1\}$ then the Rademacher average
  
 \begin{equation}
-\mathbbm{E}\ \sup\limits_{w:||w||=1} \ \frac{1}{n} \sum_{i=1}^n \sigma_i w^T X_i = \mathbbm{E}\ \sup\limits_{w:||w||=1} \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i X_i)%javi
+\mathbbm{E}\ \sup\limits_{w:||w||=1} \ \frac{1}{n} \sum_{i=1}^n \sigma_i w^T X_i = \mathbbm{E}\ \sup\limits_{w:||w||=1} \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i X_i)
 \end{equation}
  
 Note that $\sup\limits_{w:||w||=1} \ w^T a = ||a||$, therefore
  
-\begin{align} %javi
+\begin{align} 
 	 \mathbbm{E} \sup\limits_{w:||w||=1} \ w^T(\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i) &=\mathbbm{E} \Bigg|\Bigg|\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i\Bigg|\Bigg|\\
  	 &\leq \sqrt{\mathbbm{E}\Bigg|\Bigg|\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i\Bigg|\Bigg|^2}
 \end{align}
 where the last inequality is due to the fact that $EX \leq \sqrt{E(X^2)}$ for any $X$.
-\begin{align}%javi
+\begin{align}
  	 \sqrt{\mathbbm{E}\Bigg|\Bigg|\frac{1}{n} \sum_{i=1}^{n} \sigma_i x_i\Bigg|\Bigg|^2}&= \sqrt{\mathbbm{E} \sum_{j=1}^{d} (\frac{1}{n} \sum_{i=1}^{n} \sigma_i X_i^{(j)})^2}\\
  	 &=\sqrt{\mathbb{E}\sum_{j=1}^{d}\frac{1}{n^2}\sum_{i=1}^{n}X_i^{(j)^2}}\\
 	 &= \frac{1}{n} \sqrt{\mathbbm{E} \sum_{i=1}^{n} ||X_i||^2},
 \end{align}
  
-where $||X_i||^2 \leq R^2$ (see Perceptron algorithm), hence: %javi
+where $||X_i||^2 \leq R^2$ (see Perceptron algorithm), hence: 
 
 \begin{equation}
 \frac{1}{n} \sqrt{\mathbbm{E} \sum_{i=1}^{n} ||X_i||^2} \leq \frac{R}{\sqrt{n}}
 \end{equation}
 
  
-which is independent of the dimensions of the problem. If we apply the previous to our inequality $R(f_n) \leq A_n(f) + 2L \mathbbm{E}\ \max\limits_{f \in \mathfrak{F}} |\frac{1}{n} \sum_{i=1}^{n}\sigma_i f(x_i)|$, we get %javi
+which is independent of the dimensions of the problem. If we apply the previous to our inequality $R(f_n) \leq A_n(f) + 2L \mathbbm{E}\ \max\limits_{f \in \mathfrak{F}} |\frac{1}{n} \sum_{i=1}^{n}\sigma_i f(x_i)|$, we get 
  
 \begin{equation}
 R(f_n) \leq A_n(f_n) + \frac{2LR}{\sqrt{n}} + c
@@ -888,12 +896,12 @@ Now, consider the "margin loss", then $L = \frac{1}{\gamma}$, and
 	 R(f_n) &\leq A_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c\\
 	 &\leq R_n^{\gamma}(f) + \frac{2R}{\gamma\sqrt{n}} + c
 \end{align*}
-where the empirical risk $R_n^{\gamma}(f) = \frac{1}{n} \sum_i \mathbbm{1}_{Y_iw^TX_i < -\gamma}$ and $\gamma$ is the distance from our linear classifier that defines a boundary beyond which a correct classification is not considered risk (and viceversa).\\ %javi
+where the empirical risk $R_n^{\gamma}(f) = \frac{1}{n} \sum_i \mathbbm{1}_{Y_iw^TX_i < -\gamma}$ and $\gamma$ is the distance from our linear classifier that defines a boundary beyond which a correct classification is not considered risk (and viceversa).\\ 
 If we manage to classify with a large margin, then $R(f_n)$ will be small no matter the dimension, hence we can map the problem into a larger dimension.\\
  
-Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk is $\mathbbm{E}[e^{-Yf(x)}] = \mathbbm{E_xE_y}[e^{-Yf(x)}|X]$, where $\mathbbm{E_y}[e^{-Y\phi(x)}|X] = \eta(x) e^{-f(x)} + (1-\eta(x))e^{f(x)}$, and that we can minimize: %javi
+Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk is $\mathbbm{E}[e^{-Yf(x)}] = \mathbbm{E_xE_y}[e^{-Yf(x)}|X]$, where $\mathbbm{E_y}[e^{-Y\phi(x)}|X] = \eta(x) e^{-f(x)} + (1-\eta(x))e^{f(x)}$, and that we can minimize: 
  
-\begin{align}%javi
+\begin{align}
 	 arg min &\ -\eta e^{-f} + (1-\eta)e^f\\
 	 & e^{2f} = \frac{\eta}{1 - \eta}\\
 	 & f = \frac{1}{2} ln \frac{\eta}{1 - \eta}
@@ -902,10 +910,7 @@ Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk i
 which is $f^*$ the optimal function. Note that $f^*(x)>0 \Leftrightarrow \eta(x)>\frac{1}{2}$, so $g^* = sgn(f^*(x))$ is the Bayes classifier. The same argument holds for all convex surrogate risks.
  
 
-\section{Kernel methods}
-
-
-\subsection{Kernel methods}%Roger
+\subsection{Kernel methods}
 
 
 Suppose that $X_i \in R^d$. We may define a ``feature map'' $\Phi : R^d \rightarrow R^D$ where $ D>d$ and work with $(\Phi(X_i), Y_i), \dots, (\Phi(X_n), Y_n)$ and do linear classification in $R^D$. If one achieves a classifier that correctly classifies most of the data with a high margin, then the generalization error is small. The key of kernel methods methods is the inner product $<\Phi(x), \Phi(y)> = \Phi(x)^T \Phi(y) = K(x,y)$.\\
@@ -957,7 +962,7 @@ Hence, in $\mathbb{R}^2$, $K(x,y) = (x^Ty)^2$ is a kernel function.\\
 
 \textbf{Theorem:} A function $K : \Omega\ \text{x}\ \Omega$ is a kernel if and only if K is a \textbf{positive definite} function, that is, the matrix $(K(x_i,x_j))_{n x n}$ is positive definite $\forall n\ \text{and}\ x_i, \dots, x_n \in \Omega$.
 
-\subsubsection{Properties of kernels and examples}%Roger
+\subsubsection{Properties of kernels and examples}
 
 If $K_1, K_2$ are kernels on $\Omega$, then 
 \begin{itemize}
@@ -973,7 +978,7 @@ Intuitively, a kernel, being an inner product, is a similarity measure. The inne
 
 Let's imagine we want to classify news articles. In text classification we have sequences of strings that we need to classify. In these cases one often uses ``string kernels'' as similarity measures. One possibility could be the number of (contiguous) subsequences of a certain length that appear in both strings.
 
-\subsubsection{Kernel perceptron}%Roger
+\subsubsection{Kernel perceptron}
 
 \textbf{Algorithm:}
 \begin{enumerate}
@@ -999,7 +1004,7 @@ where $\alpha_i$ is the number of times we make a mistake for point $i$.\\
 Note that $X_i^TX^{t+1}$ can be replaced by $K(X_i, X^{t+1})$ realizing the perceptron algorithm in the Hilbert space in which $K$ is an inner product.
 
 
-\subsubsection{Kernelizing regularized risk minimizers}%Roger
+\subsubsection{Kernelizing regularized risk minimizers}
 
 Suppose we want to compute
 \begin{equation}
@@ -1035,7 +1040,7 @@ Here again, the regularization parameter $R(x) = \lambda x^2$.\\
 
 LASSO is not of this form because it uses the L1-norm and we need the L2-norm as we will soon see.
 
-\subsubsection{Representer theorem}%Roger
+\subsubsection{Representer theorem}
 
 The representer theorem states that the previous minimization problem always has a solution of the form $w = \sum_{i=1}^{n} x_i \Phi(x)$. That is, the representer theorem restricts the search of the solution to a finite dimensional space.
 
@@ -1062,8 +1067,6 @@ and
 
 Therefore, the solution can be computed by the Gram matrix $G = (K(x_i,x_j))_{nxn}$.
 
-
-\section{Gradient Descend}
 
  
 \end{document}
