@@ -65,14 +65,21 @@
 
 \begin{document}
 \maketitle
+\thispagestyle{empty}
 \vspace{1cm}
 \begin{center}
 	\includegraphics*[scale=0.8]{ML.jpg}
 \end{center}
 \vfill
 \begin{center}
-	\small{Acknowledgments: Laura Roman, Alfonso Braulio, Veronika Kyuchukova}
+	\small{Source: Lectures of Gabor Lugosi (Barcelona Graduate School of Economics - MSc.Data Science 2016-2017)}
 \end{center}
+\begin{center}
+	\small{Acknowledgments: Akhil Lohia, Laura Roman, Alfonso Braulio, Veronika Kyuchukova}
+\end{center}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
 \newpage
 \section{Important probability's inequalities}
 
@@ -782,7 +789,7 @@ so $t\leq\left(\frac{R}{\gamma}\right)^2$ Q.E.D.\\
 
 This result implies that under the conditions that our data is linearly separable in a certain $d$-dimensional space with a margin $\gamma$ and the constrain $R$.
 
-\subsection{Large Margin Classifiers}
+\subsubsection{Large Margin Classifiers}
  
 If the data are not linearly separable, the perceptron algorithm does not halt. In this section, we consider classifiers of the form:
  
@@ -902,9 +909,9 @@ If we manage to classify with a large margin, then $R(f_n)$ will be small no mat
 Now, consider the ``exponential loss" $\phi(x) = e^x$, then the surrogate risk is $\mathbbm{E}[e^{-Yf(x)}] = \mathbbm{E_xE_y}[e^{-Yf(x)}|X]$, where $\mathbbm{E_y}[e^{-Y\phi(x)}|X] = \eta(x) e^{-f(x)} + (1-\eta(x))e^{f(x)}$, and that we can minimize: 
  
 \begin{align}
-	 arg min &\ -\eta e^{-f} + (1-\eta)e^f\\
+	 \text{argmin} &\{-\eta e^{-f} + (1-\eta)e^f\}\\
 	 & e^{2f} = \frac{\eta}{1 - \eta}\\
-	 & f = \frac{1}{2} ln \frac{\eta}{1 - \eta}
+	 & f = \frac{1}{2} \ln \frac{\eta}{1 - \eta}
 \end{align}
 
 which is $f^*$ the optimal function. Note that $f^*(x)>0 \Leftrightarrow \eta(x)>\frac{1}{2}$, so $g^* = sgn(f^*(x))$ is the Bayes classifier. The same argument holds for all convex surrogate risks.

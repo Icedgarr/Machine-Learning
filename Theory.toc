@@ -1,0 +1,26 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Important probability's inequalities}{3}
+\contentsline {section}{\numberline {2}Mean estimator}{5}
+\contentsline {subsection}{\numberline {2.1}Median of means estimator (MoM)}{5}
+\contentsline {section}{\numberline {3}Dimensionality Reduction}{6}
+\contentsline {subsection}{\numberline {3.1}By Random Projection}{6}
+\contentsline {section}{\numberline {4}Basic decision theory}{7}
+\contentsline {subsection}{\numberline {4.1}Prediction problem with a covariate}{8}
+\contentsline {subsection}{\numberline {4.2}Classification}{9}
+\contentsline {subsubsection}{\numberline {4.2.1}The nearest neighbor rule}{10}
+\contentsline {subsubsection}{\numberline {4.2.2}K-nearest neighbor rule}{11}
+\contentsline {section}{\numberline {5}Empirical risk minimization}{12}
+\contentsline {subsection}{\numberline {5.1}The resubstitution estimate:}{13}
+\contentsline {subsection}{\numberline {5.2}The deleted (or leave one out crossvalidation) estimate}{13}
+\contentsline {subsection}{\numberline {5.3}Data splitting}{14}
+\contentsline {subsection}{\numberline {5.4}Vapnik\IeC {\textendash }Chervonenkis (VC) theory}{15}
+\contentsline {subsection}{\numberline {5.5}Model selection: Structure risk minimization, complexity regularization}{21}
+\contentsline {section}{\numberline {6}Machine Learning Algorithms}{22}
+\contentsline {subsection}{\numberline {6.1}Linear Classifiers}{22}
+\contentsline {subsubsection}{\numberline {6.1.1}Perceptron algorithm}{22}
+\contentsline {subsubsection}{\numberline {6.1.2}Large Margin Classifiers}{23}
+\contentsline {subsection}{\numberline {6.2}Kernel methods}{26}
+\contentsline {subsubsection}{\numberline {6.2.1}Properties of kernels and examples}{27}
+\contentsline {subsubsection}{\numberline {6.2.2}Kernel perceptron}{27}
+\contentsline {subsubsection}{\numberline {6.2.3}Kernelizing regularized risk minimizers}{28}
+\contentsline {subsubsection}{\numberline {6.2.4}Representer theorem}{28}
